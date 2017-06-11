@@ -1,0 +1,52 @@
+.table_container
+  {
+  padding:20px 15px 50px 15px;
+  table
+    {
+    width:90%;
+    margin-left:auto;
+    margin-right:auto;
+    }
+
+
+  th, td
+    {
+    text-align:center;
+    border-bottom:1px solid $devider;
+    }
+
+
+
+  //HEADER
+  .th
+    {
+    display:inline-block;
+    text-align:center;
+
+    text-transform: uppercase;
+    font-size: 14px;
+    color:$primary_text;
+    padding: 10px;
+    box-sizing: border-box;
+    text-align:left;
+    }
+
+
+
+  //BODY
+  .td
+    {
+
+    font-size: 14px;
+    color:$text;
+
+    padding: 10px;
+    //border-top: 1px solid #eee;
+    //border-bottom: 1px solid #eee;
+    box-sizing: border-box;
+
+    display:inline-block;
+    text-align:left;
+    }
+
+  }

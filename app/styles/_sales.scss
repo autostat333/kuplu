@@ -1,0 +1,47 @@
+.sales_container
+  {
+
+  .widget.table_list
+    {
+    width:100%;
+    }
+
+
+  .form_container
+    {
+    width:300px;
+
+    md-input-container:nth-child(1)
+      {
+      display:block;
+      width:100%;
+      }
+
+
+    .price_qty
+      {
+      width:100%;
+      display:flex;
+      justify-content:space-between;
+
+      md-input-container
+        {
+        width:100px;
+        }
+      }
+
+    }
+
+
+  .table_container table
+    {
+    //width:600px;
+    margin:0px 0px 0px 0px;
+    .td, .th
+      {
+      width:30%;
+      }
+
+    }
+
+  }

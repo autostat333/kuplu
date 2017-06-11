@@ -1,0 +1,102 @@
+<div class="main_controller">
+
+
+	<div class="top_bar md-whiteframe-3dp">
+
+		<div class="logo_container">
+			<div class="line_center">
+				<span>Boutiq Finance</span>
+			</div>
+		</div>
+
+		<div class="toolkit">
+			<div class="line_center">
+				<div class="messages_block">
+					<md-icon class="not_active">add_alert</md-icon>
+					<span>Messages:</span>
+					<span class="text">No new message!</span>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="cur_date">
+			<div class="line_center">
+				<div class="time_wrap">
+					<div>{{CURRENT_DATE.time_str}}</div>
+					<span>{{CURRENT_DATE.week_day_str}}</span>
+					<span>{{CURRENT_DATE.day_str}}</span>
+				</div>
+			</div>
+		</div>
+
+		<div class="user_name">
+			<div class="line_center">
+				<md-menu>
+					<md-button class="user_btn" ng-click="open_dropdown($mdMenu,$event)">
+						<i class="material-icons">account_circle</i>
+						<span>Sergiy Sergiyovich Sergiyovich</span>
+					</md-button>
+					<md-menu-content width="4">
+						<md-menu-item><span>Sergiyovich Sergiyovich</span></md-menu-item>
+						<md-menu-divider></md-menu-divider>
+						<md-menu-item><md-button>
+							<md-icon>subject</md-icon>Profile
+						</md-button></md-menu-item>
+						<md-menu-item><md-button>
+							<md-icon>exit_to_app</md-icon>Log Out
+						</md-button></md-menu-item>
+					</md-menu-content>
+				</md-menu>
+			</div>
+		</div>
+
+	</div>
+
+
+
+	<!-- content -->
+	<div class="content">
+
+		<div class="create_advert_container">
+			<div class="advert_form">
+
+				<md-input-container class="select_container">
+					<label>
+						Description
+					</label>
+					<md-select data-ng-model="lineWidth">
+						<md-option value="test_1">Test1</md-option>
+						<md-option value="test_2">Test2</md-option>
+						<md-option value="test_3">Test3</md-option>
+					</md-select>
+				</md-input-container>
+
+
+				<md-input-container>
+					<label>
+						What Exactly
+					</label>
+					<input>
+				</md-input-container>
+
+				<md-input-container>
+					<label>
+						What Exactly
+					</label>
+					<input>
+				</md-input-container>
+
+
+			</div>
+		</div>
+
+		<div class="results_content">
+			<ui-view></ui-view>
+		</div>
+
+	</div>
+
+
+
+</div>
