@@ -1,23 +1,36 @@
 {
-  "name": "frame",
+  "name": "kuplu",
   "version": "1.0.0",
-  "description": "",
+  "description": "Shop Vise Versa",
   "main": "Gruntfile.js",
   "dependencies": {
-    "grunt": "=1.0.1",
-    "grunt-browserify": "=4.0.1",
-    "grunt-cli": "=1.2.0",
-    "grunt-contrib-concat": "=0.5.1",
-    "grunt-contrib-clean": "=0.7.0",
-    "grunt-contrib-sass": "=1.0.0",
-    "grunt-contrib-uglify": "=0.11.1",
-    "grunt-contrib-watch": "=0.6.1"
+    "async": "^2.4.1",
+    "express": "^4.15.3",
+    "grunt": "^1.0.1",
+    "body-parser": "^1.17.2",
+    "grunt-browserify": "^4.0.1",
+    "grunt-cli": "^1.2.0",
+    "grunt-contrib-clean": "^0.7.0",
+    "grunt-contrib-concat": "^0.5.1",
+    "grunt-contrib-sass": "^1.0.0",
+    "grunt-contrib-uglify": "^0.11.1",
+    "grunt-contrib-watch": "^0.6.1",
+    "mongodb": "^2.2.28",
+    "request": "^2.81.0"
   },
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
-  "author": "",
-  "license": "ISC"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/autostat333/kuplu.git"
+  },
+  "author": "AM",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/autostat333/kuplu/issues"
+  },
+  "homepage": "https://github.com/autostat333/kuplu#readme"
 }

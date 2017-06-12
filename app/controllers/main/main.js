@@ -5,7 +5,7 @@
 //  - all handlers for clicking on toolbar
 //
 
-module.exports = function Controllers($scope,$mdMenu,$filter,$timeout)
+module.exports = function Controllers($scope,$filter,$timeout)
 	{
 
 
@@ -89,4 +89,4 @@ module.exports = function Controllers($scope,$mdMenu,$filter,$timeout)
 	}
 
 
-module.exports.$inject = ['$scope','$mdMenu','$filter','$timeout'];
+module.exports.$inject = ['$scope','$filter','$timeout'];

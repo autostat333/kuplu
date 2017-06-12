@@ -41,6 +41,7 @@ module.exports = function(grunt)
                 //'./bower_components/angular-material/angular-material.min.js',
                 './bower_components/angular-material/angular-material.js',
                 './bower_components/angular-ui-router/release/angular-ui-router.min.js',
+                './bower_components/owl.carousel/dist/owl.carousel.min.js',
               ],
             dest: './app/dist/libs_bundle.js',
             },
@@ -53,7 +54,9 @@ module.exports = function(grunt)
               },
             src:[
                 './bower_components/angular-material/angular-material.min.css',
-              ],
+                './bower_components/owl.carousel/dist/assets/owl.carousel.min.css',
+                './bower_components/owl.carousel/dist/assets/owl.theme.default.min.css',
+            ],
             dest:'./app/dist/libs_styles.css'
             }
           },
