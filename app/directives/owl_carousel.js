@@ -15,9 +15,12 @@ module.exports = function owlCarouse($timeout)
             function init()
                 {
                 $(elem).owlCarousel({
-                    animateOut: 'slideOutDown',
-                    animateIn: 'flipInX',
+                   // animateOut: 'slideOutDown',
+                   // animateIn: 'flipInX',
                     items:1,
+                    dots:true,
+                    autoPLay:1000,
+                    dotsContainer:'.titles_container',
                     //margin:0,
                     //stagePadding:0,
                     //navSpeed:450,
