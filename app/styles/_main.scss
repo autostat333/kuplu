@@ -260,35 +260,124 @@
 					align-items:flex-start;
 					justify-content:space-around;
 					height:170px;
+					max-width:1200px;
+					margin-left:auto;
+					margin-right:auto;
 
 					.title
 						{
-
+						cursor:pointer;
 						width:15%;
 						max-width:200px;
 						color:white;
-
+						opacity:0.6;
 						display:block;
-						height:80px;
+						height:100%;
 						text-align:center;
 						margin-top:0px;
+						position:relative;
+						padding-top:60px;
+						overflow:hidden;
+						box-sizing:border-box;
+
+						svg
+							{
+							position:absolute;
+							height: 76px;
+							width:76px;
+							transform:scale(0,0);
+							transition:all ease 0.4s;
+
+							top:0px;
+							left:calc(50% - 38px);
+							}
+
 						md-icon
 							{
+							position:absolute;
+							border-radius:500px;
+							border:1px solid transparent;
+							padding:10px;
 							font-size: 50px;
-							color: white;
+							color:white;
 							height: 50px;
 							width: 50px;
+
+							top:2px;
+							left:calc(50% - 35px);
+							transition:all ease 0.2s;
+							}
+						h3
+							{
+							font-weight:100;
+							color:white;
+							}
+
+						.triangle
+							{
+							width: 80px;
+							height: 80px;
+							position: absolute;
+							bottom: -80px;
+							left: calc(50% - 40px);
+							transform: rotate(45deg);
+
+							background: rgba(31, 31, 31, 0.44);
+							//border-top:1px solid #d0483d;
+							//border-left:1px solid #d0483d;
+							box-shadow:0px 0px 1px #4a4a4a;
+							display:none;
+							}
+
+
+
+						}
+
+					.title:hover
+						{
+						opacity:1;
+						md-icon
+							{
+							//transform:rotate(360deg);
+							//transform:scale(1.1,1.1);
+							border:1px solid white;
+							}
+						svg
+							{
+							transform:scale(1,1);
+							}
+						}
+
+					.title.active
+						{
+						opacity:1;
+						md-icon
+							{
+							color:#ff7d7d;
+							background:white;
+							}
+						h3
+							{
+							font-weight:600;
+							color:white;
+							}
+						.triangle
+							{
+							display:block;
 							}
 						}
 					}
 
-
+				.owl-stage-outer, .owl-stage, .owl-item, .item
+					{
+					height:100%;
+					}
 				.p_container
 					{
 					//display: flex;
 					height: 120px;
 					color: #ffffff;
-					font-style: italic;
+					//font-style: italic;
 					width: 100%;
 					box-sizing: border-box;
 					border-top: 1px solid #985151;
@@ -297,9 +386,20 @@
 					border-bottom:1px solid #d0483d;
 					div.item
 						{
+						display: flex;
+						align-items: center;
+						justify-content: center;
 						font-size:20px;
 						box-sizing:border-box;
-						padding: 18px 150px 10px 155px;
+						//padding: 18px 150px 10px 155px;
+						p
+							{
+							text-shadow:none;
+							max-width: 800px;
+							border-left: 1px solid white;
+							padding-left: 10px;
+							font-weight: 100;
+							}
 						}
 					}
 

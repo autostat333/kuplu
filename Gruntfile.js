@@ -32,14 +32,14 @@ module.exports = function(grunt)
               separator:';'
               },
             src: [
-                //'./bower_components/angular/angular.min.js',
-                './bower_components/angular/angular.js',
+                './bower_components/angular/angular.min.js',
+                //'./bower_components/angular/angular.js',
                 './bower_components/jquery/dist/jquery.min.js',
                 //'./bower_components/angular-aria/angular-aria.min.js',
                 './bower_components/angular-aria/angular-aria.min.js',
                 './bower_components/angular-animate/angular-animate.min.js',
-                //'./bower_components/angular-material/angular-material.min.js',
-                './bower_components/angular-material/angular-material.js',
+                './bower_components/angular-material/angular-material.min.js',
+                //'./bower_components/angular-material/angular-material.js',
                 './bower_components/angular-ui-router/release/angular-ui-router.min.js',
                 './bower_components/owl.carousel/dist/owl.carousel.min.js',
               ],
@@ -56,6 +56,8 @@ module.exports = function(grunt)
                 './bower_components/angular-material/angular-material.min.css',
                 './bower_components/owl.carousel/dist/assets/owl.carousel.min.css',
                 './bower_components/owl.carousel/dist/assets/owl.theme.default.min.css',
+                //'./app/non_bower_libs/Hover-master/css/hover-min.css',
+                //'./app/non_bower_libs/animate.css',
             ],
             dest:'./app/dist/libs_styles.css'
             }
