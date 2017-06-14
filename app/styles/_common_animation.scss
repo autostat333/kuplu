@@ -1,4 +1,42 @@
 
+
+//for circle
+@keyframes circle_pulse
+  {
+  0%
+    {
+    opacity:0;
+    transform:scale(0.5,0.5);
+    }
+  30%
+    {
+    opacity:1;
+    }
+  100%
+    {
+    opacity:0;
+    transform:scale(1,1);
+    }
+  }
+
+@-webkit-keyframes circle_pulse
+  {
+  0%
+    {
+    opacity:0;
+    transform:scale(0.5,0.5);
+    }
+  100%
+    {
+    opacity:1;
+    transform:scale(1,1);
+    }
+  }
+
+
+
+
+//for hover of advantages
 /* Buzz Out */
 @-webkit-keyframes hvr-buzz-out {
   10% {
