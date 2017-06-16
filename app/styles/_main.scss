@@ -249,9 +249,38 @@
 				.select_container
 					{
 					height:54px;
-
 					}
 
+				//customization for typed.js
+				label>div
+					{
+					display:inline-block;	
+					}
+				//for blinking cursor
+				label
+					{
+					text-align:middle;
+					div
+						{
+						font-size: 24px;
+						text-align: left;
+						color: #3beacf!important;
+						}
+					span
+						{
+						animation:flash 1s infinite;
+						-webkit-animation:flash 1s infinite;
+						-moz-animation:flash 1s infinite;
+						-o-animation:flash 1s infinite;
+						-ms-animation:flash 1s infinite;
+						-khtml-animation:flash 1s infinite;
+						
+						font-size: 24px;
+						padding-left: 3px;
+						color: #3beacf!important;
+						}
+					}
+					
 				}
 
 			.advert_form .circle

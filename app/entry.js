@@ -16,6 +16,7 @@ angular.module('app',['ui.router','ngMaterial'])
 	.config(require('./routes.js'))
 	.factory('$models',require('./factory/models.js')) //factory for models for managing datasets
 	.directive('owlCarousel',require('./directives/owl_carousel.js'))
+	.directive('typedJs',require('./directives/typed-js.js'))
 
 
 

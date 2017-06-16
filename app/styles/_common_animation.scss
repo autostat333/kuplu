@@ -142,3 +142,30 @@
 
 
 
+//for cursor in typed.js
+@keyframes flash 
+	{
+	from, 50%, to 
+		{
+		opacity: 1;
+		}
+
+	25%, 75% 
+		{
+		opacity: 0;
+		}
+	}
+
+	
+.flash 
+	{
+	animation:flash 1s infinite;
+	-webkit-animation:flash 1s infinite;
+	-moz-animation:flash 1s infinite;
+	-o-animation:flash 1s infinite;
+	-ms-animation:flash 1s infinite;
+	-khtml-animation:flash 1s infinite;
+	}
+
+
+
