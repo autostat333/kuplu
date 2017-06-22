@@ -56,7 +56,7 @@
 				font-family: cursive;
 				color: white;
 				padding: 5px 10px 10px 10px;
-				background: #ff7d7d;
+				background: $light_primary;
 				margin-top: 49px;
 				box-sizing: border-box;
 				border-radius: 5px;
@@ -181,12 +181,17 @@
 		//margin-top:50px;
 		min-height:1000px;
 
+		
+		//title board (includes advantages and advert_form)
 		.create_advert_container
 			{
 			background: #e96443; /* fallback for old browsers */
 			background: -webkit-linear-gradient(to right, #e96443, #904e95); /* Chrome 10-25, Safari 5.1-6 */
 			background: linear-gradient(to right, #e96443, #904e95); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-			height: 600px;
+			//height: 600px;
+			height:auto;
+			
+			transition:all ease 1s;
 
 			display: flex;
 			align-items: center;
@@ -200,6 +205,7 @@
 			//header
 			.title
 				{
+				height:100px;
 				margin-top:15px;
 				h1
 					{
@@ -217,72 +223,74 @@
 				overflow: hidden;
 
 				padding: 20px;
-				background: rgba(175, 36, 97, 0);
 				position:relative;
+				height:80px;
 
-				input, md-select-value
+				
+				form
 					{
-					border-color: rgba(214, 214, 214, 0.6);
-					color: white;
-					}
-
-				label, md-select-value
-					{
-					color: rgba(214, 214, 214, 0.6);
-					}
-
-				.md-input-focused
-					{
-					input, md-select-value
-						{
-						border-color: white;
-						color: white;
-						}
-					label, md-select-value
-						{
-						color: white;
-						}
-
-					}
-
-
-				.select_container
-					{
-					height:54px;
-					}
-
-				//customization for typed.js
-				label>div
-					{
-					display:inline-block;	
-					}
-				//for blinking cursor
-				label
-					{
-					text-align:middle;
-					div
-						{
-						font-size: 24px;
-						text-align: left;
-						color: #3beacf!important;
-						}
-					span
-						{
-						animation:flash 1s infinite;
-						-webkit-animation:flash 1s infinite;
-						-moz-animation:flash 1s infinite;
-						-o-animation:flash 1s infinite;
-						-ms-animation:flash 1s infinite;
-						-khtml-animation:flash 1s infinite;
-						
-						font-size: 24px;
-						padding-left: 3px;
-						color: #3beacf!important;
-						}
-					}
+					max-width:700px;
+					width:100%;
 					
+					margin-left:auto;
+					margin-right:auto;
+					
+					
+					.input_row
+						{
+						width:100%;
+						display:flex;
+						justify-content:space-between;
+						}
+					
+					.title_price
+						{
+						md-input-container:nth-of-type(1)
+							{
+							width:75%
+							}
+						
+						md-input-container:nth-of-type(2)
+							{
+							width:15%;
+							}						
+						}
+
+					.address
+						{
+						//region
+						md-input-container:nth-child(1)
+							{
+							width:25%;
+							}
+						//city
+						md-input-container:nth-child(2)
+							{
+							width:25%;
+							}
+							
+						//street
+						md-input-container:nth-child(3)
+							{
+							width:42%;
+							}
+
+							
+
+
+							
+						}
+
+						
+					}
+	
 				}
 
+			.advert_form.expand //for showing additional input fields
+				{
+				height:300px;
+				}
+				
 			.advert_form .circle
 				{
 				position: absolute;
@@ -471,7 +479,7 @@
 					}
 
 
-				}
+				}  //close advantages
 
 			}
 

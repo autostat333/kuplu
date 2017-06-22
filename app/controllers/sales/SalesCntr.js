@@ -3,11 +3,12 @@ module.exports = function SalesCntr($scope,$models, $mdDialog)
 
     $scope.submit = submit;
     $scope.init = init;
-    $scope.init();
+    //$scope.init();
 
 
     function init()
         {
+			
         $scope.SALES = $models()
         $scope.SALES.$get().then(function()
             {

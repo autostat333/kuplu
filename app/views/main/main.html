@@ -112,7 +112,7 @@
 				</div>
 			</div>
 
-			<div class="advert_form">
+			<div class="advert_form expand">
 				<div class="circle"></div>
 				<div class="circle"></div>
 				<div class="circle"></div>
@@ -131,20 +131,114 @@
 				</md-input-container>
 				-->
 
-				<md-input-container>
-					<label>
-						<div id="label_1" typed-js></div>
-					</label>
-					<input>
-				</md-input-container>
+				<form name=advert_form>
+					<div class="input_row title_price">
+						<md-input-container>
+							<label>
+								<div id="label_1" typed-js></div>
+								<div class="static_label">Напишите Ваше намерение:</div>
+							</label>
+							<input
+								ng-model="new_advert['Title']"
+								>
+						</md-input-container>
 
-				<md-input-container>
-					<label>
-						What Exactly
-					</label>
-					<input>
-				</md-input-container>
+						<md-input-container>
+							<label>
+								Цена:
+							</label>
+							<input
+								ng-model="new_advert['Price']"
+								>
+						</md-input-container>
+						
+					</div>
 
+
+					
+					
+					<div class="input_row address">
+					
+						<md-input-container>
+							<label>
+								Регион:
+							</label>
+							<md-select
+								ng-model="new_advert['Region']"
+								>
+								<md-option 
+									ng-repeat="region in REGIONS.data"
+									value="{{region}}"
+									>
+									{{region}}
+								</md-option>
+							</md-select>
+						</md-input-container>
+
+						<md-input-container>
+							<label>
+								Город:
+							</label>
+							<md-select
+								ng-model="new_advert['City']"
+								>
+								<md-option
+									ng-repeat="city in REGIONS.data"
+									value="{{city}}"
+									>
+								{{city}}
+								</md-option>
+							</md-select>
+						</md-input-container>
+						
+						
+						<md-input-container>
+							<label>
+								Улица:
+							</label>
+							<input
+								ng-model="new_advert['Street']"
+								>
+						</md-input-container>
+						
+					</div>
+
+
+					<div class="input_row">
+						 <md-autocomplete
+							md-selected-item="new_advert['Autocomplete']"
+							md-items="item in REGIONS.data"
+							md-item-text="item"
+							placeholder="What is your favorite US state?"
+							>
+
+						<md-item-template>
+							<span md-highlight-text="ctrl.searchText" md-highlight-flags="^i">{{item}}</span>
+						</md-item-template>
+						
+						<md-not-found>
+							No states matching "{{ctrl.searchText}}" were found.
+						<a ng-click="ctrl.newState(ctrl.searchText)">Create a new one!</a>
+						</md-not-found>
+						-->
+					</md-autocomplete>
+				</div>
+					
+					
+					<div class="input_row">
+						<md-input-container class="md-block">
+							<label>
+								<div id="label_2" typed-js></div>
+								<div class="static_label">Детальное описание:</div>
+							</label>
+							<textarea></textarea>
+						</md-input-container>
+
+					</div>
+
+					
+					
+				</form>
 
 			</div>
 		</div>

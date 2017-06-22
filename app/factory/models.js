@@ -21,7 +21,6 @@ module.exports = function modelsFactory($q,$http)
             function(err)
             {
             //HANDLE ERRORS from server
-            console.log(err.data);
             defer.resolve('Error'); //simply answer error to run logic for error
             });
 
@@ -29,13 +28,15 @@ module.exports = function modelsFactory($q,$http)
         }
 
 
-    var args = Array.prototype.slice.call(arguments);
-    args.push(send_http);
 
     return function(model_type)
         {
-        var url = '../models/salesModel.js';
-        return require('../models/salesModel.js').apply(null,args);
+		if (model_type=='regions')
+			return require('../models/regionsModel.js')($q,send_http);
+		
+		if (model_type=='adverts')
+			return require('../models/advertsModel.js')($q,send_http);
+		
         };
 
     }

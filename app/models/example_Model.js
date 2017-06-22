@@ -1,15 +1,15 @@
-module.exports = function SalesModel($q,$http,send_http)
+module.exports = function AdvertsModel($q,send_http)
     {
 
     //must be located in require
-    var sales = {};
-    sales.data = [];
-    sales['$get'] = sales_get;
-    sales['$add'] = sales_add;
-    sales['$create_blank'] = sales_create_blank; //create new sales object
+    var adverts = {};
+	adverts.data = [];
+    adverts['$get'] = $get;
+    adverts['$add'] = $add;
+    adverts['$create_blank'] = $create_blank; //create new sales object
 
 
-    function sales_get()
+    function $get()
         {
         return send_http('./api/sales/get','GET').then(function(res)
             {
@@ -28,7 +28,7 @@ module.exports = function SalesModel($q,$http,send_http)
 
 
 
-    function sales_add(doc)
+    function $add(doc)
         {
         var defer = $q.defer();
 
@@ -46,7 +46,7 @@ module.exports = function SalesModel($q,$http,send_http)
         }
 
 
-    function sales_create_blank()
+    function $create_blank()
         {
         var tmp  = new _aux_methods;
         tmp['name'] = '';
@@ -58,20 +58,21 @@ module.exports = function SalesModel($q,$http,send_http)
 
 
 
+	//methods for one instances in array
     function _aux_methods()
         {
-        //check whether sales is Empty
+
         this.isEmpty = function()
             {
             for (var each in this)
                 {
                 if (typeof this[each]!='function')
                     {
-                    if (this[each])
-                        return false;
+                    if (!this[each])
+                        return true;
                     }
                 }
-            return true;
+            return false;
             }
 
 
@@ -80,11 +81,12 @@ module.exports = function SalesModel($q,$http,send_http)
 
 
         this.clear_int_methods = function()
-            {
+            {			
             for (var each in cache_int_methods)
                 {
                 delete this[cache_int_methods[each]];
                 }
+				
             }
 
         //for saving internal methods for removing them from object when save
@@ -92,6 +94,6 @@ module.exports = function SalesModel($q,$http,send_http)
 
         }
 
-    return sales;
+    return adverts;
 
     }

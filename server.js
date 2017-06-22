@@ -42,10 +42,31 @@ app.get('/',function(req,resp)
         })
     });
 
+	
 
-app.get('/api/sales/get',function(req,resp)
+/////CONTROLLERS
+////////////////
+var commonInfoCntr = function(){return require('./server/CommonInfoCntr.js')()};
+	
+	
+
+app.get('/api/regions/get',function(req,resp)
     {
-    resp.send([]);
+	
+	
+	commonInfoCntr().get_regions(function(err,res)
+		{
+		if (res.Error)
+			{
+			resp.send('Error');
+			}
+		else
+			{
+			resp.send(res);
+			}
+		});
+		
+
     });
 
 

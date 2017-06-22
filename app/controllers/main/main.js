@@ -5,14 +5,10 @@
 //  - all handlers for clicking on toolbar
 //
 
-module.exports = function Controllers($scope,$filter,$timeout)
+module.exports = function Controllers($scope,$filter,$timeout,$models)
 	{
 
-
 	$scope.open_dropdown = open_dropdown; //for login
-	$scope.minimize = minimize;
-	$scope.fullscreen_switch = fullscreen_switch;
-	$scope.close = close;
 	$scope.cur_dt = cur_dt;
 	$scope.init = init;
 
@@ -27,10 +23,16 @@ module.exports = function Controllers($scope,$filter,$timeout)
 		{
 		///determine current DATE obj and run every minute refreshing
 		$scope.CURRENT_DATE = {};
-		$scope.cur_dt();
+		$scope.cur_dt(); //set current date
 
-		$scope.fullscreen = false;
 
+		$scope.REGIONS = $models('regions');
+		$scope.REGIONS.$get();
+		
+		$scope.ADVERTS = $models('adverts');
+		$scope.new_advert = $scope.ADVERTS.$create_blank();
+		
+		
 		}
 
 
@@ -63,25 +65,9 @@ module.exports = function Controllers($scope,$filter,$timeout)
 		mdMenu.open(e);
 		}
 
-
-	function minimize()
-		{
-		ipcRenderer.send('minimize');
-		}
-
-
-	function fullscreen_switch(param)
-		{
-		ipcRenderer.send(param?'fullscreen_in':'fullscreen_out');
-		$scope.fullscreen = param;
-		}
-
-
-
-	function close()
-		{
-		ipcRenderer.send('close');
-		}
+		
+	
+		
 
 
 
@@ -89,4 +75,4 @@ module.exports = function Controllers($scope,$filter,$timeout)
 	}
 
 
-module.exports.$inject = ['$scope','$filter','$timeout'];
+module.exports.$inject = ['$scope','$filter','$timeout','$models'];
