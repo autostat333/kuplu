@@ -11,6 +11,7 @@ module.exports = function Controllers($scope,$filter,$timeout,$models)
 	$scope.open_dropdown = open_dropdown; //for login
 	$scope.cur_dt = cur_dt;
 	$scope.init = init;
+	$scope.check_error = check_error;
 
 
 	$scope.$on('$destroy',$scope.destroy_callback);
@@ -32,10 +33,10 @@ module.exports = function Controllers($scope,$filter,$timeout,$models)
 		$scope.ADVERTS = $models('adverts');
 		$scope.new_advert = $scope.ADVERTS.$create_blank();
 		
-		
 		}
 
-
+		
+		
 	function destroy_callback()
 		{
 		$timeout.cancel($scope.dater_callback);
@@ -66,6 +67,11 @@ module.exports = function Controllers($scope,$filter,$timeout,$models)
 		}
 
 		
+	function check_error(name)
+		{
+		return Object.keys($scope.advert_form[name].$error).length!=0;
+			
+		}
 	
 		
 

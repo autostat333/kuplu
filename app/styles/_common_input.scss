@@ -12,9 +12,7 @@ md-input-container
 		}
 
 	//for placeholder of select field
-		
-		
-	label, md-select .md-select-value.md-select-placeholder
+	label, md-select .md-select-value.md-select-placeholder, md-select .md-select-icon
 		{
 		color:lighten(rgba($secondary_text,0.7),20%);
 		//color:rgba($accent,0.7);
@@ -78,14 +76,14 @@ md-input-container
 //when input contains text
 md-input-container:not(.md-input-invalid).md-input-has-value, md-input-container:not(.md-input-invalid).md-input-focused
 	{
-	.md-input
+	.md-input, md-select .md-select-value
 		{
 		//border-color: rgba($accent,0.5);
 		//color: rgba($accent,1);
 		color:white;
 		}
 
-	label
+	label, md-select .md-select-icon
 		{
 		//color:rgba($accent,0.5);
 		color:lighten(rgba($secondary_text,0.7),20%);
@@ -101,19 +99,21 @@ md-input-container:not(.md-input-invalid).md-input-has-value, md-input-container
 		{
 		display:block;
 		//color:rgba($accent,0.5);
-		color:lighten(rgba($secondary_text,0.7),20%);;
+		color:lighten(rgba($secondary_text,0.7),20%);
 		}
 		
 	span.typed-cursor
 		{
 		display:none;
 		}
+		
+		
 	}
 		
 //when input focused
 md-input-container.md-input-focused:not(.md-input-invalid)
 	{
-	label, .static_label
+	label, .static_label, md-select .md-select-value.md-select-placeholder, md-select .md-select-icon
 		{
 		color:$accent;
 		}
@@ -124,6 +124,21 @@ md-input-container.md-input-focused:not(.md-input-invalid)
 		}
 	}
 
+	
+	
+//FOR HINTS
+div.hint
+	{
+    position: absolute;
+    left: 2px;
+    right: auto;
+    bottom: 7px;
+    font-size: 12px;
+    line-height: 14px;
+    transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
+    //color: #d4d4d4;
+	color:lighten(rgba($secondary_text,0.7),20%);
+	}
 
 	
 

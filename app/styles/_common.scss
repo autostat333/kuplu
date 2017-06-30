@@ -72,6 +72,8 @@ md-icon
   }
 
 
+  
+  
 .user_select_none
   {
   user-select:none;
@@ -91,6 +93,27 @@ $secondary_text:#999; //for gray text
 $text:#555; //for plain text
 
 $devider:#eee;
+
+
+
+.md-button.md-raised:not([disabled])
+	{
+	background:#55A79A!important;
+	color:white;
+	}
+
+
+
+
+//letter-spacing for headers and titles
+h1,h2,{letter-spacing:3px !important;}
+
+h3, h4,h5,h6,h7 {letter-spacing:2px !important;}
+	 
+span,p,label, input, textarea {letter-spacing:2px !important;}
+button span{letter-spacing:1px !important;}
+
+
 
 
 

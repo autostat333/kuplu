@@ -8,7 +8,7 @@ module.exports = function($timeout)
 		function init()
 			{
 			Typed.new('#'+element[0].id,{
-				'strings':['Test','Buy ^200some goods'],
+				'strings':attr['text'].split(';'),
 				'loop':true,
 				'fadeOut':false,
 				

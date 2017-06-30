@@ -61,7 +61,7 @@
 		<div class="create_advert_container">
 
 			<div class="title">
-				<h1>Доска намерений: КУПИТЬ, ПРОДАТЬ, АРЕНДОВАТЬ</h1>
+				<h1>Доска намерений: КУПИТЬ, ЗАКАЗАТЬ, АРЕНДОВАТЬ</h1>
 				<!--
 				<h1>1. Вы можете разместить объявление о намерениях купить товары, заказать услуги или аренды теперь легко и быстро</h1>
 				<h1>2. Ожидать предложений на почту!</h1>
@@ -112,35 +112,40 @@
 				</div>
 			</div>
 
-			<div class="advert_form expand">
+			<div class="advert_form"
+				ng-class="{'expand':!new_advert.isEmpty()||new_advert.getOnceCompleted()}"
+				>
 				<div class="circle"></div>
 				<div class="circle"></div>
 				<div class="circle"></div>
 				<div class="circle"></div>
 				
-				<!--
-				<md-input-container class="select_container">
-					<label>
-						Description
-					</label>
-					<md-select data-ng-model="lineWidth">
-						<md-option value="test_1">Test1</md-option>
-						<md-option value="test_2">Test2</md-option>
-						<md-option value="test_3">Test3</md-option>
-					</md-select>
-				</md-input-container>
-				-->
 
 				<form name=advert_form>
+				
 					<div class="input_row title_price">
 						<md-input-container>
 							<label>
-								<div id="label_1" typed-js></div>
+								<div id="label_1" typed-js text="Куплю ^1000Toyota Camry 2008г,черный до 120 тыс км;
+																	Куплю ^1000Щебень фракция 20х40m 10 мешков;
+																	Сниму ^1000квартиру, Площадь Победы, 1ком, один человек;
+																	Посмотреть зуб^1000, МЕТРО Лукьяновская, в районе 15:00 29.05"
+								></div>
 								<div class="static_label">Напишите Ваше намерение:</div>
 							</label>
 							<input
 								ng-model="new_advert['Title']"
+								md-maxlength=5
+								name="title"
 								>
+								
+							<div class="hint" ng-show="!check_error('title')">Длина сообщения не может быть больше 200 символов</div>
+
+
+							<div class="messages" ng-messages="advert_form.title.$error">
+								<div ng-message="md-maxlength">Максимально допустимая длина заголовка - 30 символов!</div>
+							</div>
+							
 						</md-input-container>
 
 						<md-input-container>
@@ -156,88 +161,73 @@
 
 
 					
-					
-					<div class="input_row address">
-					
-						<md-input-container>
-							<label>
-								Регион:
-							</label>
-							<md-select
-								ng-model="new_advert['Region']"
-								>
-								<md-option 
-									ng-repeat="region in REGIONS.data"
-									value="{{region}}"
+					<div class="input_row optional">
+						<div class="title_tab">Опционально:</div>
+						<div class="input_row address">
+							<md-input-container>
+								<label>
+									Регион:
+								</label>
+								<md-select
+									ng-model="new_advert['Region']"
 									>
-									{{region}}
-								</md-option>
-							</md-select>
-						</md-input-container>
+									<md-option 
+										ng-repeat="region in REGIONS.data"
+										value="{{region}}"
+										>
+										{{region}}
+									</md-option>
+								</md-select>
+							</md-input-container>
 
-						<md-input-container>
-							<label>
-								Город:
-							</label>
-							<md-select
-								ng-model="new_advert['City']"
-								>
-								<md-option
-									ng-repeat="city in REGIONS.data"
-									value="{{city}}"
+							<md-input-container>
+								<label>
+									Город:
+								</label>
+								<md-select
+									ng-model="new_advert['City']"
 									>
-								{{city}}
-								</md-option>
-							</md-select>
-						</md-input-container>
-						
-						
-						<md-input-container>
-							<label>
-								Улица:
-							</label>
-							<input
-								ng-model="new_advert['Street']"
-								>
-						</md-input-container>
+									<md-option
+										ng-repeat="city in REGIONS.data"
+										value="{{city}}"
+										>
+									{{city}}
+									</md-option>
+								</md-select>
+							</md-input-container>
+							
+							
+							<md-input-container>
+								<label>
+									Улица:
+								</label>
+								<input
+									ng-model="new_advert['Street']"
+									>
+							</md-input-container>
+						</div>
+							
+						<div class="input_row large_descr">
+							<md-input-container class="md-block">
+								<label>
+									Детальное описание:
+								</label>
+								<textarea
+									ng-model="new_advert['Description']"
+									></textarea>
+							</md-input-container>
+						</div>
 						
 					</div>
 
-
-					<div class="input_row">
-						 <md-autocomplete
-							md-selected-item="new_advert['Autocomplete']"
-							md-items="item in REGIONS.data"
-							md-item-text="item"
-							placeholder="What is your favorite US state?"
+					<div class="input_row submit_container">
+						<md-button class="md-button md-raised md-ink-ripple"
+							ng-disabled="new_advert.isEmpty()"
 							>
-
-						<md-item-template>
-							<span md-highlight-text="ctrl.searchText" md-highlight-flags="^i">{{item}}</span>
-						</md-item-template>
-						
-						<md-not-found>
-							No states matching "{{ctrl.searchText}}" were found.
-						<a ng-click="ctrl.newState(ctrl.searchText)">Create a new one!</a>
-						</md-not-found>
-						-->
-					</md-autocomplete>
-				</div>
-					
-					
-					<div class="input_row">
-						<md-input-container class="md-block">
-							<label>
-								<div id="label_2" typed-js></div>
-								<div class="static_label">Детальное описание:</div>
-							</label>
-							<textarea></textarea>
-						</md-input-container>
-
+							СОЗДАТЬ
+						</md-button>
 					</div>
 
-					
-					
 				</form>
 
 			</div>

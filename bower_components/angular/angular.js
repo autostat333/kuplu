@@ -17503,6 +17503,8 @@ function $RootScopeProvider() {
           traverseScopesLoop:
           do { // "traverse the scopes" loop
             if ((watchers = current.$$watchers)) {
+				
+				if (window.start==current.$id)debugger;
               // process our watches
               length = watchers.length;
               while (length--) {
@@ -24926,6 +24928,7 @@ function classDirective(name, selector) {
       link: function(scope, element, attr) {
         var oldVal;
 
+		debugger;
         scope.$watch(attr[name], ngClassWatchAction, true);
 
         attr.$observe('class', function(value) {

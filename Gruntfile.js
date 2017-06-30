@@ -32,13 +32,13 @@ module.exports = function(grunt)
               separator:';'
               },
             src: [
-                './bower_components/angular/angular.min.js',
-                //'./bower_components/angular/angular.js',
+                //'./bower_components/angular/angular.min.js',
+                './bower_components/angular/angular.js',
                 './bower_components/jquery/dist/jquery.min.js',
                 './bower_components/angular-aria/angular-aria.min.js',
                 './bower_components/angular-animate/angular-animate.min.js',
-                './bower_components/angular-material/angular-material.min.js',
-                //'./bower_components/angular-material/angular-material.js',
+                //'./bower_components/angular-material/angular-material.min.js',
+                './bower_components/angular-material/angular-material.js',
                 './bower_components/angular-ui-router/release/angular-ui-router.min.js',
                 './bower_components/owl.carousel/dist/owl.carousel.min.js',
 				'./bower_components/typed.js/dist/typed.min.js',

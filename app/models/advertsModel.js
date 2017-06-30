@@ -9,6 +9,7 @@ module.exports = function AdvertsModel($q,send_http)
     adverts['$create_blank'] = $create_blank; //create new sales object
 
 
+
     function $get()
         {
         return send_http('./api/adverts/get','POST',{}).then(function(res)
@@ -55,6 +56,7 @@ module.exports = function AdvertsModel($q,send_http)
 		tmp['Street'] = '';
 		tmp['Description'] = '';
 
+		
         return tmp;
         }
 
@@ -63,25 +65,39 @@ module.exports = function AdvertsModel($q,send_http)
 	//methods for one instances in array
     function _aux_methods()
         {
+		//private variables
+		
+		
+		//to control that first row (title+price) has been completed at least one time
+		//because if user has selected region, but remove price and title - expand class will be applied
+		//and advert_form will be reduced
+		var once_completed = false;
 
-        this.isEmpty = function()
-            {
-            for (var each in this)
-                {
-                if (typeof this[each]!='function')
-                    {
-                    if (!this[each])
-                        return true;
-                    }
-                }
-            return false;
-            }
+		
+		this.isEmpty = function()
+			{
+			if (this['Title']&&this['Price'])
+				{
+				this.setOnceCompleted();
+				return false;
+				}
+			else
+				return true;
+
+			}
 
 
-
-
-
-
+		this.getOnceCompleted = function()
+			{
+			return once_completed;
+			}
+		this.setOnceCompleted = function()
+			{
+			once_completed = true;
+			}
+			
+			
+		//slear all methods for 
         this.clear_int_methods = function()
             {			
             for (var each in cache_int_methods)

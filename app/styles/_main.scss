@@ -126,6 +126,7 @@
 
 			span
 				{
+				letter-spacing:0px !important;
 				display:inline-block;
 				vertical-align:middle;
 				font-size:12px;
@@ -224,7 +225,8 @@
 
 				padding: 20px;
 				position:relative;
-				height:80px;
+				height:65px;
+				transition:all ease 0.3s;
 
 				
 				form
@@ -256,39 +258,108 @@
 							}						
 						}
 
-					.address
+					.optional
 						{
-						//region
-						md-input-container:nth-child(1)
-							{
-							width:25%;
-							}
-						//city
-						md-input-container:nth-child(2)
-							{
-							width:25%;
-							}
-							
-						//street
-						md-input-container:nth-child(3)
-							{
-							width:42%;
-							}
-
-							
-
-
-							
-						}
-
+						flex-direction: column;
+						padding: 20px;
+						background: rgba(255,255,255,0.1);
+						margin-top: 20px;
+						border-radius: 0px 7px 7px 7px;
+						position: relative;
+						box-sizing: border-box;
+						transition:all ease 0.7s;
+						transform:scale(1,0);
+						transform-origin:top;
 						
+						.title_tab
+							{
+							position:absolute;
+							top:-30px;
+							left:0px;
+							background:rgba(255,255,255,0.1);
+							border-radius:3px 3px 0px 0px;
+							height:30px;
+							display:flex;
+							justify-content:center;
+							align-items:center;
+							font-size:16px;
+							color:lighten(rgba($secondary_text,0.7),20%);
+							
+							padding-left: 15px;
+							padding-right: 15px;
+	
+							letter-spacing: 3px;
+							}
+						
+						
+						.address
+							{
+							//region
+							md-input-container:nth-child(1)
+								{
+								width:25%;
+								}
+							//city
+							md-input-container:nth-child(2)
+								{
+								width:25%;
+								}
+								
+							//street
+							md-input-container:nth-child(3)
+								{
+								width:42%;
+								}							
+							}
+						
+						.large_descr 
+							{
+							label, textarea
+								{
+								padding-left:10px;
+								}
+								
+							
+							textarea
+								{
+								transition:all ease 0.5s;
+								min-height: 80px;
+								background: rgba(255,255,255,0.1);
+								box-shadow: 0px 2px 2px -1px rgba(58, 58, 58, 0.14) inset;
+								border-top: 1px solid rgba(144, 144, 144, 0.11);
+								}
+							textarea:focus
+								{
+								box-shadow: 0px 2px 2px 1px rgba(58, 58, 58, 0.14) inset;
+								}
+							
+							md-input-container
+								{
+								width:100%;
+								}
+							}
+						
+						}
+					
+					.submit_container
+						{
+						justify-content:flex-end;
+						margin-top:15px;
+						}
+					
 					}
 	
 				}
 
 			.advert_form.expand //for showing additional input fields
 				{
-				height:300px;
+				height:440px;
+				
+				.optional
+					{
+					transform:scale(1,1);
+					}
+				
 				}
 				
 			.advert_form .circle
