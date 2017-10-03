@@ -1,5 +1,8 @@
-{
-	"HOST":"localhost",
-	"PORT":"3001"
 
-}
+module.exports = {
+	"HOST":"localhost",
+	"PORT":"3008",
+	"DBNAME":"kuplu",
+	"SECRET":"test"
+
+	}
