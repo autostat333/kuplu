@@ -2,10 +2,17 @@
 
 
 	<div class="top_bar">
-
+	
+		<div class="logo_container">
+			<div class="line_center">
+				<a href="/#/main/adverts" class="user_select_none">Kuplu.Online</a>
+			</div>
+		</div>
 
 		<div class="toolkit">
-			<div class="line_center">
+			<div class="line_center"
+				ng-show="$root.USER"
+				>
 				<div class="messages_block">
 					<md-icon class="not_active">add_alert</md-icon>
 					<span>Сообщения:</span>
@@ -14,11 +21,7 @@
 			</div>
 		</div>
 
-		<div class="logo_container">
-			<div class="line_center">
-				<a href="/" class="user_select_none">Kuplu.UA</a>
-			</div>
-		</div>
+
 
 		<div class="cur_date">
 			<div class="line_center">
@@ -32,22 +35,35 @@
 
 		<div class="user_name">
 			<div class="line_center">
-				<md-menu>
+				<md-menu
+					ng-show="$root.USER"
+					>
 					<md-button class="user_btn" ng-click="open_dropdown($mdMenu,$event)">
 						<i class="material-icons">account_circle</i>
-						<span>Sergiy Sergiyovich Sergiyovich</span>
+						<span>{{$root.USER.visibleName}}</span>
 					</md-button>
 					<md-menu-content width="4">
-						<md-menu-item><span>Sergiyovich Sergiyovich</span></md-menu-item>
+						<md-menu-item><span>{{$root.USER.visibleName}}</span></md-menu-item>
 						<md-menu-divider></md-menu-divider>
-						<md-menu-item><md-button>
-							<md-icon>subject</md-icon>Profile
+						<md-menu-item><md-button ng-click="goToProfile()">
+							<md-icon>subject</md-icon>Профиль
 						</md-button></md-menu-item>
-						<md-menu-item><md-button>
-							<md-icon>exit_to_app</md-icon>Log Out
-						</md-button></md-menu-item>
+						<md-menu-item>
+							<md-button ng-click="logout()">
+							<md-icon>exit_to_app</md-icon>Выйти
+							</md-button>
+						</md-menu-item>
 					</md-menu-content>
 				</md-menu>
+				<md-button
+					ng-show="!$root.USER"
+					ng-click="login()"
+					>
+					<md-icon>input</md-icon>
+					<span>ВОЙТИ</span>
+				
+				</md-button>
+				
 			</div>
 		</div>
 
@@ -57,186 +73,7 @@
 
 	<!-- content -->
 	<div class="content">
-
-		<div class="create_advert_container">
-
-			<div class="title">
-				<h1>Доска намерений: КУПИТЬ, ЗАКАЗАТЬ, АРЕНДОВАТЬ</h1>
-				<!--
-				<h1>1. Вы можете разместить объявление о намерениях купить товары, заказать услуги или аренды теперь легко и быстро</h1>
-				<h1>2. Ожидать предложений на почту!</h1>
-				<h1>3. Минимум времени, минимум контактов, бытрота решения проблемы!</h1>
-
-				-->
-			</div>
-
-
-			<div class="advantages">
-				<!-- <div class="owl-carousel" owl-carousel> -->
-				<div class="titles_container user_select_none">
-
-
-					<div class="title hvr-buzz-out">
-						<md-icon>touch_app</md-icon>
-						<h3>Быстро и Легко разместить намерение</h3>
-						<div class="triangle"></div>
-					</div>
-					<div class="title hvr-buzz-out">
-						<md-icon>visibility_off</md-icon>
-						<h3>Минимум опубликованых контактов</h3>
-						<div class="triangle"></div>
-					</div>
-					<div class="title hvr-buzz-out">
-						<md-icon>ring_volume</md-icon>
-						<h3>Отсутствие навязчивости</h3>
-						<div class="triangle"></div>
-					</div>
-					<div class="title hvr-buzz-out">
-						<md-icon>euro_symbol</md-icon>
-						<h3>Возможность выбрать лучшее предложение</h3>
-						<div class="triangle"></div>
-					</div>
-					<div class="title hvr-buzz-out">
-						<md-icon>update</md-icon>
-						<h3>Экономия времени</h3>
-						<div class="triangle"></div>
-					</div>
-				</div>
-
-				<div class="owl-carousel owl-theme p_container" owl-carousel>
-					<div class="item"><p>Вы можете в несколько кликов в течении 5 минут создать и разместить объявление.<br><strong>Это класс!</strong></p></div>
-					<div class="item"><p>От Вас требуется только один публичный контакт - почтовый адрес куда будут приходить предложения. Номер телефона нужен для поддержки работы сайта и контакта с Вами. Телефон не будет показан на сайте. Это супер!</p></div>
-					<div class="item"><p>Вы рассматриваете предложения и не контактируете с поставщиком пока Вы этого сами не пожелаете.Это зе бест!</p></div>
-					<div class="item"><p>Вы можете из нескольких предложение выбрать лучшее по цене или учловиям.Это просто вообще!</p></div>
-					<div class="item"><p>Вы можете разместив намерение - продолжать работать, остальное сдалеает система.Это....слов уже нет!</p></div>
-				</div>
-			</div>
-
-			<div class="advert_form"
-				ng-class="{'expand':!new_advert.isEmpty()||new_advert.getOnceCompleted()}"
-				>
-				<div class="circle"></div>
-				<div class="circle"></div>
-				<div class="circle"></div>
-				<div class="circle"></div>
-				
-
-				<form name=advert_form>
-				
-					<div class="input_row title_price">
-						<md-input-container>
-							<label>
-								<div id="label_1" typed-js text="Куплю ^1000Toyota Camry 2008г,черный до 120 тыс км;
-																	Куплю ^1000Щебень фракция 20х40m 10 мешков;
-																	Сниму ^1000квартиру, Площадь Победы, 1ком, один человек;
-																	Посмотреть зуб^1000, МЕТРО Лукьяновская, в районе 15:00 29.05"
-								></div>
-								<div class="static_label">Напишите Ваше намерение:</div>
-							</label>
-							<input
-								ng-model="new_advert['Title']"
-								md-maxlength=5
-								name="title"
-								>
-								
-							<div class="hint" ng-show="!check_error('title')">Длина сообщения не может быть больше 200 символов</div>
-
-
-							<div class="messages" ng-messages="advert_form.title.$error">
-								<div ng-message="md-maxlength">Максимально допустимая длина заголовка - 30 символов!</div>
-							</div>
-							
-						</md-input-container>
-
-						<md-input-container>
-							<label>
-								Цена:
-							</label>
-							<input
-								ng-model="new_advert['Price']"
-								>
-						</md-input-container>
-						
-					</div>
-
-
-					
-					<div class="input_row optional">
-						<div class="title_tab">Опционально:</div>
-						<div class="input_row address">
-							<md-input-container>
-								<label>
-									Регион:
-								</label>
-								<md-select
-									ng-model="new_advert['Region']"
-									>
-									<md-option 
-										ng-repeat="region in REGIONS.data"
-										value="{{region}}"
-										>
-										{{region}}
-									</md-option>
-								</md-select>
-							</md-input-container>
-
-							<md-input-container>
-								<label>
-									Город:
-								</label>
-								<md-select
-									ng-model="new_advert['City']"
-									>
-									<md-option
-										ng-repeat="city in REGIONS.data"
-										value="{{city}}"
-										>
-									{{city}}
-									</md-option>
-								</md-select>
-							</md-input-container>
-							
-							
-							<md-input-container>
-								<label>
-									Улица:
-								</label>
-								<input
-									ng-model="new_advert['Street']"
-									>
-							</md-input-container>
-						</div>
-							
-						<div class="input_row large_descr">
-							<md-input-container class="md-block">
-								<label>
-									Детальное описание:
-								</label>
-								<textarea
-									ng-model="new_advert['Description']"
-									></textarea>
-							</md-input-container>
-						</div>
-						
-					</div>
-
-					<div class="input_row submit_container">
-						<md-button class="md-button md-raised md-ink-ripple"
-							ng-disabled="new_advert.isEmpty()"
-							>
-							СОЗДАТЬ
-						</md-button>
-					</div>
-
-				</form>
-
-			</div>
-		</div>
-
-		<div class="results_content">
-			<ui-view></ui-view>
-		</div>
-
+		<div ui-view></div>
 	</div>
 
 

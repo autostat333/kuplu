@@ -1,0 +1,267 @@
+.profile_user_info
+	{
+	display:flex;
+	justify-content:space-between;
+	align-items:flex-start;
+	
+	
+	
+	.left_col
+		{
+		width:230px;
+		text-align:center;
+		//border-right:1px solid lighten($secondary_text,30%); 
+
+		.avatar_container, .key_figures, .title
+			{
+			max-width:190px;
+			width:100%;
+			margin-left:auto;
+			margin-right:auto;
+			}
+		
+		.avatar_container
+			{
+			text-align:center;
+			height:100%;
+			position:relative;
+			
+			img.avatar
+				{
+				height:100px;
+				width:100px;
+				background: white;
+				//border-radius: 50%;
+				padding: 5px;
+				background:transparent;
+				transition:all linear 0.2s;
+				transform:scale(1,1);
+				}
+				
+				
+			button, .md-ripple-container
+				{
+				border-radius:50%;
+				}
+
+			button
+				{
+				position: absolute;
+
+				margin: auto !important;
+				background: rgba(0, 0, 0, 0);
+				color: gray;
+				border-radius: 0px;
+				transition: all linear 0.2s;
+				//transform: scaleY(0);				
+				transform:scale(0,0);
+				transform-origin:center;
+				opacity:0;
+				
+				bottom:0px;
+				right:0px;
+
+				//left:0px;
+				//top:0px;
+
+				height:25px;
+				width:25px;
+				min-height:25px;
+				min-width:25px !important;
+				padding:5px;
+				box-sizing:content-box;
+				//width: 190px; 
+				//height:100%;
+				md-icon
+					{
+					height:25px;
+					width:25px;
+					line-height:25px;
+					vertical-align:top;
+					}
+				
+				}
+			}
+		.avatar_container:hover
+			{
+			img
+				{
+				opacity:0.5;
+				//transform:scale(0.5,0.5);
+				}
+			
+
+			button
+				{
+				//transform:scaleY(1);
+				transform:scale(1,1);
+				opacity:1;
+				
+				}
+			}
+		
+		
+		.title
+			{
+			margin-top:30px;
+			text-transform:uppercase;
+			color:black;
+			text-align:left;
+			}
+		
+		.key_figures
+			{
+			margin-top:15px;
+			.item
+				{
+				margin-top:10px;
+				text-align:left;
+				div 
+					{
+					display:inline-block;
+					vertical-align:bottom;
+					
+					}
+				div:nth-child(1)
+					{	
+					font-size:12px;
+					color:gray;
+					width:170px;
+					line-height:18px;
+					}
+				div:nth-child(2)
+					{	
+					font-size:18px;
+					line-height:18px;
+					color:gray;
+					}
+					
+					
+				}
+			
+			}
+			
+		}
+	
+	
+	
+	
+	
+	.right_col
+		{
+		width:calc(100% - 230px);
+		box-sizing:border-box;
+		padding:20px;
+		
+	
+		
+		.private_info, .password
+			{
+			form
+				{
+				padding:5px;
+				box-sizing:border-box;
+				display:flex;
+				justify-content:space-between;
+				width:100%;
+				border-radius:5px;
+				
+					
+				
+				label,input,md-icon
+					{
+					transition:all linear 0.2s !important;
+					}
+					
+				md-input-container:not(.md-input-focused)
+					{
+					md-icon
+						{
+						color:rgba(214, 214, 214, 0.87);
+						}
+					}
+				
+				md-input-container input
+					{
+					font-size:16px;
+					}
+					
+					
+				}
+				
+				
+			.btn_block
+				{
+				display:none;
+				margin-top:10px;
+				text-align:right;
+				}
+
+				
+			button
+				{
+				margin-left:15px !important;
+				font-size:12px;
+				line-height:30px;
+				min-height:30px;
+				md-icon
+					{
+					min-height:14px;
+					min-width:14px;
+					font-size:14px;
+					width:14px;
+					height:14px;
+					line-height:12px;
+					}
+				}
+			
+			form.active
+				{
+				background:rgba(189, 234, 255, 0.13);
+				.btn_block
+					{
+					display:block;
+					}
+				}
+
+			
+			
+			}
+
+			
+		.private_info
+			{
+			.group
+				{
+				width:45%;
+				}
+			
+			}
+			
+			
+		.password
+			{
+			margin-top:40px;
+			form[name=passwordChange]
+				{
+				box-sizing:border-box;
+				display:flex;
+				justify-content:space-between;
+				width:100%;
+				margin-top:0px;
+
+				md-input-container
+					{
+					margin-top:0px;
+					width:26%;
+					}
+				}
+		
+			
+			}
+
+			
+		
+		}
+	
+	}

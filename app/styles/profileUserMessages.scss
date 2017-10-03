@@ -1,0 +1,195 @@
+.profile_user_messages
+	{
+	
+	.chat_container
+		{
+		height:500px;
+		margin-bottom:70px;
+
+		
+		.left
+			{
+			width:45%;
+			}
+		.right
+			{
+			width:55%;
+			}
+		
+	
+		.advert
+			{
+			padding:0px !important;
+			border:0px;
+			
+			.avatar
+				{
+				width:70px;
+				text-align:center;
+				border-right: 1px dashed #c7c7c7;
+				padding: 3px;
+				margin-right:3px;
+				
+				
+				img
+					{
+					float:none;
+					margin-left:auto;
+					margin-right:auto;
+					}
+				
+				.user_name
+					{
+					font-size:12px;
+					text-align:center;
+					text-overflow:ellipsis;
+					//white-space:nowrap;
+					overflow:hidden;
+					}
+				
+				}
+			.description_col
+				{
+				width:calc(100% - 70px - 100px);
+				}
+
+		
+				
+			.price_tools_col
+				{
+				width:90px;
+				}
+				
+			
+			.title, .price_tools_col .price, .price_tools_col .price_desc, .region
+				{
+				font-size:12px;
+				}
+			
+			
+			.desc
+				{
+				display:none;
+				}
+
+				
+			}
+			
+		li.person
+			{
+			padding-top:12px !important;
+			padding-left:calc(5% + 1px) !important;
+			padding-right:calc(5% + 1px) !important;
+			margin-top:auto !important;
+			margin-left:auto !important;
+			}
+			
+		li:hover
+			{
+			background:rgba(156, 81, 137, 0.82) !important;	
+			}		
+		
+		li:hover, li.active
+			{
+
+			.advert
+				{
+				cursor:pointer;
+				background:transparent;
+				
+				.title, .price, .user_name
+					{
+					color:white;
+					}
+				
+				}			
+			}
+			
+
+		}
+		
+	.timeline_container
+		{
+		
+		.date_point
+			{
+			border-width:0px;
+			border-radius:0px;
+			justify-content:space-between;
+			flex-direction:row;
+			background:transparent !important;
+			width:160px;
+			top:0px;
+			padding-top:12px;
+			align-items:center;
+			color:lighten(gray,15%);
+			left:2%;
+			
+			.avatar
+				{
+				border-left:1px dashed #b9b9b9;
+				width:110px;
+				img, .name
+					{
+					display:inline-block;
+					vertical-align:middle;
+					}
+				
+				img
+					{
+				    width: 25px;
+					height: 25px;
+					border-radius: 50%;
+					}
+				
+				.name
+					{
+					color:black;
+					width: 100%;
+					white-space: nowrap;
+					text-overflow: ellipsis;
+					overflow: hidden;
+					width:80px;
+					font-weight:bold;
+					}
+				}
+			
+			
+			}
+		.advert_block.active
+			{
+			.date_point
+				{
+				color:gray;
+				}
+			}
+
+
+		.advert
+			{
+			height:55px;
+			margin-left:calc(2% + 160px);
+			}
+			
+			
+		.chat_container
+			{
+			margin-bottom:10px;
+			
+			.right
+				{
+				border:1px solid white;
+				background:#e8e8e8 !important;
+				}
+			.top
+				{
+				background: #d2d2d2 !important;
+				border-bottom: 1px solid #c1c1c1;
+				}
+			
+			}
+			
+		}
+		
+	
+	}

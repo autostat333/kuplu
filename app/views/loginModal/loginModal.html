@@ -1,0 +1,265 @@
+<md-dialog class="login_modal_container">
+
+	<myspinner ng-class={'on':spinner,'off':spinner==false}></myspinner>
+	
+	<md-toolbar>
+		<div class="md-toolbar-tools">
+			<h2>Войти в систему</h2>
+			<span flex></span>
+			<md-button
+				ng-click="closeModal()"
+				>
+				<md-icon>close</md-icon>
+			</md-button>
+		</div>
+		
+		
+	</md-toolbar>
+
+	<md-dialog-content>
+	
+	
+		<div class="login_form"
+			ng-show="signState=='login'"
+			>
+		
+		
+			<form
+				name="loginForm"
+				>
+			
+				<md-input-container>
+					<label>Логин</label>
+					<md-icon>email</md-icon>
+					<input
+						name="name"
+						ng-model="account['name']"
+						required
+						ng-change="inputChange()"
+						my-autofocus
+						type="email"
+						>
+					<!--
+					<div class="hint" ng-show="!checkError('name')||loginForm.name.$untouched">Ваш логин (почтовый адрес под которым Вы регистрировались)</div>
+					-->
+					
+					
+					<div ng-messages="loginForm.name.$error" class="ng-messages">
+						<div ng-message="required" class="ng-message">Обязательное поле</div>
+						<div ng-message="email" class="ng-message">Адресс почты введен не корректно</div>
+					</div>
+				
+				</md-input-container>
+			
+				<md-input-container>
+					<label>Пароль</label>
+					<md-icon>lock</md-icon>
+					<input
+						name="password"
+						ng-model="account['password']"
+						required					
+						ng-change="inputChange()"
+						type="password"
+						min-length="6"
+						>
+					
+					<!-- 
+					<div class="hint" ng-show="!checkError('password')||loginForm.password.$untouched">Ваш пароль при регистрации</div>
+					-->
+					
+					<div ng-messages="loginForm.password.$error" class="messages">
+						<div ng-message="required" class="message">Обязательное поле</div>
+						<div ng-message="min-length" class="message">Длина пароля не может быть меньше 6 символов!</div>
+					</div>
+					
+				</md-input-container>			
+			
+			</form>
+			
+			
+			
+			<md-button class="md-raised md-primary btn signin_btn"
+				ng-click="submitBtn()"
+				ng-disabled="account.isEmpty()||checkError('all','loginForm')"
+				enter-press="submitBtn()"
+				enter-target=".login_modal_container"
+				autofocus-disabled="true"
+				>Войти</md-button>
+			
+			<div class="message_card ng-hide"
+				ng-show="showError"
+				>
+				<md-icon>report_problem</md-icon>
+				<span>{{showError}}</span>
+			</div>
+			
+			<div class="signup_switch">
+				<span class="title">Если у Вас нет профиля - 
+					предлагем Вам зарегистрироваться и начать использовать систему
+				</span>
+				
+				<div class="signup_button hvr-icon-wobble-horizontal user_select_none"
+					role="button"
+					ng-click="goToSignUp()"
+					>
+					<md-icon>person</md-icon>
+					<span>Зарегистритроваться</span>
+					<md-icon>arrow_forward</md-icon>
+				</div>
+			</div>
+			
+			
+		</div>
+		
+		<!--SIGNUP FORM-->
+		<div class="signup_form"
+			ng-show="signState=='signUp'"
+			>
+			
+			<form
+				name="signupForm"
+				>
+				
+			<md-input-container>
+				<label>ВАШЕ ИМЯ:</label>
+				<md-icon>person_add</md-icon>
+					<input
+						name="visibleName"
+						ng-model="newAccount['visibleName']"
+						required
+						ng-change="inputChange()"
+						min-length="5"
+						>
+					<div class="messages" ng-messages="signupForm.visibleName.$error">
+						<div class="message" ng-message="required">Обязательное поле</div>
+						<div class="message" ng-message="min-length">Длина имени не может быть меньше 5 символов!</div>
+					</div>
+				
+			</md-input-container>
+				
+			<md-input-container>
+				<label>Вашa Почта ДЛЯ ВХОДА</label>
+				<md-icon>email</md-icon>
+				<input
+					name="name"
+					ng-model="newAccount['name']"
+					required
+					ng-change="inputChange()"
+					type="email"
+					>
+			
+				<!--
+				<div class="hint"
+					ng-show="!checkError('name','signupForm')||signupForm.name.$untouched"
+					>Ваш почтовый адрес по которому Вы будете заходить</div>
+				-->
+					
+					
+				<div class="messages" ng-messages="signupForm.name.$error">
+					<div class="message" ng-message="required">Обязательное поле</div>
+					<div ng-message="email" class="message">Адресс почты введен не корректно</div>
+				</div>
+			
+			</md-input-container>
+			
+			<md-input-container>
+				<label>Ваш Пароль</label>
+				<md-icon>lock</md-icon>
+				<input
+					name="password"
+					ng-model="newAccount['password']"
+					required
+					min-length="6"
+					ng-change="inputChange()"
+					type="password"
+					>
+			
+				<div class="hint"
+					ng-show="!checkError('password','signupForm')||signupForm.password.$untouched"
+					>не менее 6 любых символов</div>
+					
+				<div class="messages" ng-messages="signupForm.password.$error">
+					<div class="message" ng-message="required">Обязательное поле</div>
+					<div class="message" ng-message="min-length">Длина пароля не меньше <b>6</b> символов</div>
+				</div>
+			
+			</md-input-container>
+			<md-input-container>
+				<label>Подтвердите пароль</label>
+				<md-icon>lock</md-icon>
+				<input
+					name="passwordConfirm"
+					ng-model="passwordConfirm"
+					required
+					ng-change="inputChange();dropValidity()"
+					type="password"
+					>
+			
+				<div class="messages" ng-messages="signupForm.passwordConfirm.$error">
+					<div class="message" ng-message="required">Обязательное поле</div>
+					<div class="message" ng-message="passwordMatched">Пароль не совпадает</div>
+				</div>
+			
+			</md-input-container>
+			
+			<!-- 
+			<h5>Ниже просим ввести Ваш номер телефона, который может быть использован поддержкой сайта для комуникаций с Вами. 
+			Ваш телефон не будет показан на сайте в контексте объявлений.</h5>
+			-->
+			
+			<md-input-container class="phone_input">
+				<label>Ваш телефон</label>
+				<md-icon>local_phone</md-icon>
+				<span class="prefix">+38</span>
+				<input
+					name="phone"
+					ng-model="newAccount['phone']"
+					required
+					ng-change="inputChange()"
+					phone-mask='newAccount["phone"]'
+					phone-validator
+					ng-model-options="{'allowInvalid':true}"
+					>
+			
+				<div class="hint"
+					ng-show="!checkError('phone','signupForm')||signupForm.phone.$untouched"
+					>Формат ввода 093 111 11 11</div>
+					
+				<div class="messages" ng-messages="signupForm.phone.$error">
+					<div class="message" ng-message="required">Номер телефона - обязательное поле!</div>
+					<div class="message" ng-message="phone-validator">Проверте формат правильность номера телефона</div>
+				</div>
+			
+			</md-input-container>
+			
+			</form>
+			
+			
+			<md-button
+				class="md-raised md-primary btn signup_btn"
+				ng-click="submitBtn()"
+				ng-disabled="checkError('all','signupForm')||newAccount.isEmpty()"
+				>
+				Зарегистрироваться
+			</md-button>
+		
+
+			<div class="message_card"
+				ng-show="showError"
+				>
+				<md-icon>report_problem</md-icon>
+				<span>{{showError}}</span>
+			</div>
+
+		
+		</div>
+		
+	</md-dialog-content>
+	
+</md-dialog>
+
+
+
+
+
+

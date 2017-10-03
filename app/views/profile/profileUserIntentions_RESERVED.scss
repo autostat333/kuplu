@@ -1,0 +1,403 @@
+.profile_user_intentions
+	{
+	
+	
+	.key_figures, .timeline_header, .active_intentions
+		{
+		//width:90%;
+		//margin-left:auto;
+		//margin-right:auto;
+		width:100%;
+		
+		}
+	.active_intentions
+		{
+		margin-top:50px;
+		}
+	
+	
+	//HISTORY of INTENTIONS
+	.timeline_container
+		{
+		width:100%;
+		margin-top:50px;
+		
+		
+		.month_container	
+			{
+			width:90%;
+			margin-left:auto;
+			margin-right:auto;
+
+			height:auto;
+			position:relative;
+			}
+		
+		.vertical_line
+			{
+			position:absolute;
+			left:7%;
+			height:100%;
+			width:1px;
+			background:#dedede;
+			z-index:1;
+			top:0px;
+			}
+		
+		
+		.block
+			{
+			overflow:hidden;
+			height:auto;
+			min-height:75px;
+			//border:1px solid gray;
+			}
+		
+		.block:nth-child(1)
+			{
+			.vertical_line
+				{
+				top:20px;
+				height:calc(100% - 20px);
+				}
+			}
+		.block:last-child
+			{
+			.vertical_line
+				{
+				height:20px;
+				}
+			}
+	
+
+
+		.advert_block
+			{
+			position:relative;
+			z-index:2;
+			cursor:pointer;
+
+			.advert
+				{
+				cursor:pointer;
+				//background:white;
+				width:calc(100% - 20%);
+				max-width:750px;
+				margin-left:14%;
+				position:relative;
+				z-index:2;
+				outline-width:0px;
+				
+				border:0px;
+				padding:10px;
+				
+				
+				.title
+					{
+					font-size:14px;
+					}
+				.region, price_desc
+					{
+					font-size:12px;
+					}
+				.price
+					{
+					font-size:18px;
+					color:rgba(38, 51, 69, 0.8);
+					}
+				
+				.desc, .chat_container
+					{
+					//height:auto;
+					//max-height:0px;
+					height:0px;
+					overflow:hidden;
+					transition:height linear 0.4s;
+					}
+				}
+				
+			.advert.active
+				{
+				.desc, .chat_container
+					{
+					//max-height:1000px;
+					height:300px;
+					}
+				}
+			
+			.advert:hover
+				{
+				background:transparent;
+				}
+			
+			.date_point
+				{
+				position:absolute;
+				left:calc(7% - 19px);
+				width:38px;
+				height:38px;
+				top:8px;
+				color:$dark_primary;
+				background:white;
+				border-radius:50%;
+				z-index:2;
+				
+				text-align:center;
+				display:flex;
+				padding:0px;
+				justify-content:center;
+				align-items:center;
+				flex-direction:column;
+				font-size:12px;
+				border:1px solid #dedede;
+				color:darken(#dedede,15%);
+				
+				.border
+					{
+					position:absolute;
+					top:0px;
+					right:0px;
+					width:50%;
+					height:100%;
+					overflow:hidden;
+					}
+				.border:before
+					{
+					box-sizing:border-box;
+					//content:"";
+					width:200%;
+					margin-left:-100%;
+					height:100%;
+					border:1px solid #dedede;
+					border-radius:50%;
+					display:block;
+					}
+				
+				}
+			
+			.hor_line
+				{
+				display:none;
+				position:absolute;
+				top:35px;
+				left:7%;
+				margin:auto auto;
+				width:8%;
+				z-index:2;
+				height:1px;
+				background:#dadada;
+				}
+			
+			
+			
+			}
+			
+		.advert_block:hover
+			{
+			background:#f3f3f3;
+			}
+			
+		.current_date, .registration_date
+			{
+			box-sizing:border-box;
+			min-width:300px;
+			margin-left:auto;
+			margin-right:auto;
+			width:90%;
+			position:relative;
+			display:flex;
+			align-items:center;
+			justify-content:space-between;
+			z-index:2;
+			min-height:40px;
+			div
+				{
+				width:140px;
+				color: gray;
+				text-align: center;
+				padding: 3px 6px 3px 6px;
+				font-size: 14px;
+				font-weight: bold;
+				//color: #3a3a3a;
+				color:#4e4e4e;
+				}
+			}
+			
+		.current_date:before, .registration_date:before
+			{
+			width:calc(50% - 85px);
+			height:0px;
+			border-top:1px dashed #dadada;
+			content:"";
+			display:block;
+			}
+			
+		.current_date:after, .registration_date:after
+			{
+			width:calc(50% - 85px);
+			height:0px;
+			border-top:1px dashed #dadada;
+			content:"";
+			display:block;
+			}
+			
+		
+		}
+	
+	
+	
+	//KEY FIGURES
+	.key_figures>div:nth-child(2)
+		{
+		width:90%;
+		margin-left:auto;
+		margin-right:auto;
+		display:flex;
+		justify-content:space-between;
+		align-items:flex-start;
+		margin-bottom:20px;
+		margin-top:30px;
+		
+		.item
+			{
+			div.title
+				{
+				color:#263345;
+				text-transform:uppercase;
+				font-size:14px;
+				color:gray;
+				height:35px;
+				}
+			div.value
+				{
+				color:#263345;
+				text-align:center;
+				font-size:40px;
+				font-weight:bold;
+				}
+			}
+		
+		
+		}
+	
+	
+	//ACTIVE INTENTIONS
+	.active_intentions_container
+		{
+		.advert
+			{
+			padding:10px;
+			
+			position:relative;
+			outline-width:0px;
+			border-bottom:0px;
+			padding-bottom:15px;
+			
+			width: 90%;
+			margin-left: auto;
+			margin-right: auto;
+			margin-top:40px;
+			overflow:visible;
+			background:transparent;
+			
+				
+			.price
+				{
+				color:#263345;
+				}
+			
+			//min height should be to make some additional height when no description
+			//and prevent overlay by transparent bottom plaha
+			.desc  
+				{
+				min-height:20px;
+				}
+				
+				
+				
+			.btn_block
+				{
+				margin-top:13px;
+				width: 100%;
+				height: 100%;
+				//background: linear-gradient(to top, rgb(255, 255, 255) 0%, rgba(255, 255, 255, 0.95) 30%, rgba(255, 255, 255, 0.9) 45%, rgba(255, 255, 255, 0.85) 55%, rgba(0, 0, 255, 0) 90%);
+				box-sizing: border-box;
+				font-size: 12px;
+				text-transform: uppercase;
+				/* justify-content: center; */
+				letter-spacing: 1px;
+				
+				.show_more
+					{
+					background:rgb(250,250,250);
+					md-icon,span 
+						{
+						position:relative;
+						cursor:pointer;
+						color: rgb(154, 80, 139);
+						//opacity:0.5;
+						
+						}
+					span
+						{
+						padding:3px;
+						}
+					
+					}
+				
+				.new_messages
+					{
+					color: white;
+					background: rgba(154, 80, 139, 0.68);
+					padding: 3px;
+					vertical-align: middle;
+					font-size: 12px;
+					text-transform:lower-case;
+					}
+					
+				.bottom_toolkit
+					{
+					display:inline-block;
+					margin-left:30px; 
+					transition:all ease 0.15s;
+					transform-origin:bottom;
+					
+					.status, .edit
+						{ 
+						md-icon, span
+							{
+							color:#1ba993;
+							}
+						}
+					
+					}
+					
+				.bottom_toolkit.ng-hide-add, .bottom_toolkit.ng-hide-remove-active
+					{
+					opacity:1;
+					transform:scaleY(1);
+					}
+				
+				.bottom_toolkit.ng-hide-add-active, .bottom_toolkit.ng-hide-remove
+					{
+					opacity:0;
+					transform:scaleY(0);
+					}
+				
+				}
+
+				
+				
+			}
+			
+		.advert:not(.active):hover
+			{
+			background:#f3f3f3;
+			}
+			
+		}
+	
+	
+	
+	
+	}

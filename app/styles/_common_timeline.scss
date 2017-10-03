@@ -1,0 +1,316 @@
+//HISTORY of INTENTIONS
+.timeline_container
+	{
+	width:100%;
+	margin-top:50px;
+	
+	
+	.month_container	
+		{
+		width:90%;
+		margin-left:auto;
+		margin-right:auto;
+
+		height:auto;
+		position:relative;
+		}
+	
+	
+	.block
+		{
+		overflow:hidden;
+		height:auto;
+		min-height:50px;
+		//border:1px solid gray;
+		}
+	
+	.block:nth-child(1)
+		{
+		.vertical_line
+			{
+			top:20px;
+			height:calc(100% - 20px);
+			}
+		}
+	.block:last-child
+		{
+		.vertical_line
+			{
+			height:20px;
+			}
+		}
+
+
+
+	.advert_block
+		{
+		position:relative;
+		z-index:2;
+		cursor:pointer;
+		outline-width:0px;
+		
+
+		.advert
+			{
+			cursor:pointer;
+			//background:white;
+			width:calc(100% - 20%);
+			max-width:750px;
+			margin-left:calc(3% + 70px);
+			position:relative;
+			z-index:2;
+			outline-width:0px;
+			
+			border:0px;
+			padding:10px;
+			
+		
+		
+			height:45px;
+			overflow:hidden;
+			transition:height linear 0.2s;
+
+			
+			.title
+				{
+				font-size:14px;
+				width:100%;
+				text-overflow:ellipsis;
+				overflow:hidden;
+				white-space:nowrap;
+				}
+			.region, price_desc
+				{
+				font-size:12px;
+				}
+			.price
+				{
+				font-size:18px;
+				color:rgba(38, 51, 69, 0.8);
+				}
+				
+			.desc
+				{
+				font-size:13px;
+				letter-spacing:1px;
+				}
+				
+			h4
+				{
+				margin-bottom:5px;
+				}
+			
+			}
+			
+		
+		.advert:hover
+			{
+			background:transparent;
+			}
+		
+		.date_point
+			{
+			position:absolute;
+			left:3%;
+			width:50px;
+			top:12px;
+			color:$dark_primary;
+			z-index:2;
+			
+			text-align:center;
+			display:flex;
+			padding:0px;
+			justify-content:space-around;
+			align-items:flex-start;
+			flex-direction:row;
+			font-size:12px;
+			color:#7b7b7b;
+			
+			
+			}
+		
+		
+		
+		
+		}
+		
+	.advert_block:hover
+		{
+		background:#f3f3f3;
+		}
+		
+	.advert_block.active
+			{
+			background:#f3f3f3;
+			
+			.title
+				{
+				white-space:normal;
+				}
+			
+			.advert
+				{
+				//height:auto;
+				}
+			
+			}
+
+		
+	.current_date, .registration_date
+		{
+		box-sizing:border-box;
+		min-width:300px;
+		margin-left:auto;
+		margin-right:auto;
+		width:90%;
+		position:relative;
+		display:flex;
+		align-items:center;
+		justify-content:space-between;
+		z-index:2;
+		min-height:40px;
+		div
+			{
+			width:140px;
+			color: gray;
+			text-align: center;
+			padding: 3px 6px 3px 6px;
+			font-size: 14px;
+			font-weight: bold;
+			//color: #3a3a3a;
+			color:#4e4e4e;
+			}
+		}
+		
+	.current_date:before, .registration_date:before
+		{
+		width:calc(50% - 85px);
+		height:0px;
+		border-top:1px dashed #dadada;
+		content:"";
+		display:block;
+		}
+		
+	.current_date:after, .registration_date:after
+		{
+		width:calc(50% - 85px);
+		height:0px;
+		border-top:1px dashed #dadada;
+		content:"";
+		display:block;
+		}
+		
+		
+	//customization of chat_container
+	.chat_container
+		{
+		height:300px !important;
+		background:#f3f3f3 !important;
+		padding-bottom:15px;
+		
+		//for spinner
+		
+		
+		
+		.container_
+			{
+			height:100%;
+			padding-left:0px;
+			
+			.right
+				{
+				height:100%;
+				width:72%;
+				
+				.chat
+					{
+					padding-bottom:15px !important;
+					}
+				
+				}
+				
+			.left
+				{
+				width:26%;
+				}
+			
+			
+			}
+			
+		.container_ .left, ul
+			{
+			border-width:0px;
+			//border-right:1px solid #e6e6e6;
+			//border-right:1px solid #b3b3b3;
+			border-right:1px solid #d8d8d8
+			}
+			
+		.container_ .right
+			{
+			border-left:1px solid white;
+			}
+			
+			
+		.container_, .right, .left, ul li, .person .time, .top
+			{
+			background:#f3f3f3 !important;
+			}
+		
+		.container_ ul li:hover, .container_ ul li.active
+			{
+			background:#b3b3b3 !important;
+			.time
+				{
+				background:#b3b3b3 !important;
+				}
+			}
+			
+		.bubble.you, .bubble.you:before			
+			{
+			background:#b3b3b3 !important;
+			}
+			
+		.container_ ul li:after
+			{
+			display:none;
+			}
+		
+			
+			
+		//make a litle small chat_container
+		.left .person
+			{
+			margin-left:0px !important;
+			margin-top:0px !important;
+			padding:5px !important;
+			img
+				{
+				height:30px;
+				width:30px;
+				}
+			.name
+				{
+				font-size:12px;
+				line-height:30px;
+				width: calc(100% - 50px); 
+				}
+			
+			}
+			
+		.right .bubble
+			{
+			margin-bottom:5px !important;
+			font-size:12px;
+			padding:6px !important;
+			}
+			
+		.right .top span
+			{
+			font-size:14px;
+			}
+
+		
+		}
+		
+	
+	}

@@ -3443,6 +3443,8 @@ forEach({
 
 function createEventHandler(element, events) {
   var eventHandler = function(event, type) {
+	  
+	  
     // jQuery specific api
     event.isDefaultPrevented = function() {
       return event.defaultPrevented;
@@ -3517,6 +3519,11 @@ function specialMouseHandlerWrapper(target, event, handler) {
 forEach({
   removeData: jqLiteRemoveData,
 
+  getData:function(element)
+	{
+	return jqLiteExpandoStore(element, true);
+	},
+  
   on: function jqLiteOn(element, type, fn, unsupported) {
     if (isDefined(unsupported)) throw jqLiteMinErr('onargs', 'jqLite#on() does not support the `selector` or `eventData` parameters');
 
@@ -4607,7 +4614,6 @@ function createInjector(modulesToLoad, strictDi) {
         for (i = 0, ii = queue.length; i < ii; i++) {
           var invokeArgs = queue[i],
               provider = providerInjector.get(invokeArgs[0]);
-
           provider[invokeArgs[1]].apply(provider, invokeArgs[2]);
         }
       }
@@ -24928,7 +24934,6 @@ function classDirective(name, selector) {
       link: function(scope, element, attr) {
         var oldVal;
 
-		debugger;
         scope.$watch(attr[name], ngClassWatchAction, true);
 
         attr.$observe('class', function(value) {

@@ -1,10 +1,26 @@
-module.exports = function modelsFactory($q,$http)
+module.exports.$inject = ['$q','$http','$mdDialog'];
+module.exports = function modelsFactory($q,$http,$mdDialog)
     {
 
     var HOST = 'http://localhost:3008/';
 
+	
+	function handleError(errMess)
+		{
+			
+		//here possible send request
+		return $mdDialog.show($mdDialog
+			.alert()
+			.title('Упс,')
+			.textContent(errMess)
+			.ok('Закрыть')
+			.multiple(true)
+			)
+		}
+	
+	
     //internal method for SENDING HTTP REQUESTS
-    function send_http(url,method,data)
+    function send_http(url,method,data,errMess)
         {
         var defer = $q.defer();
 
@@ -14,14 +30,25 @@ module.exports = function modelsFactory($q,$http)
             'url':url,
             'data':data
         }).then(
-            function(res)
+            function(response)
             {
-            defer.resolve(res.data);
+			response = response.data;
+			if (response.Error)
+				{
+				handleError(response.Error).then(function()
+					{
+					defer.resolve(response);
+					})
+				}
+			defer.resolve(response);
             },
             function(err)
             {
-            //HANDLE ERRORS from server
-            defer.resolve('Error'); //simply answer error to run logic for error
+			var msgText = errMess||err.message||'Возникла проблема получения ответа от сервера по урлу:'+url;
+			handleError(msgText).then(function()
+				{
+				defer.resolve({'Error':err.message}); //simply answer error to run logic for error
+				})
             });
 
         return defer.promise;
@@ -31,15 +58,19 @@ module.exports = function modelsFactory($q,$http)
 
     return function(model_type)
         {
-		if (model_type=='regions')
-			return require('../models/regionsModel.js')($q,send_http);
-		
-		if (model_type=='adverts')
-			return require('../models/advertsModel.js')($q,send_http);
+		switch(model_type)
+			{
+			case 'regions':
+				return require('../models/regionsModel.js')($q,send_http);
+			case 'adverts':
+				return require('../models/advertsModel.js')($q,send_http);
+			case 'categories':
+				return require('../models/regionsModel.js')($q,send_http);
+			}
+			
 		
         };
 
     }
 
 
-module.exports.$inject = ['$q','$http'];

@@ -1,49 +1,60 @@
-
-module.exports = function(async)  //do not forget add dependency to server.js
+module.exports = function(async,db,regions)  //do not forget add dependency to server.js
     {
     
  
     var $scope = {};
-	$scope.get_regions = get_regions;
+	$scope.getRegions = getRegions;
  
 
+ 
 
     return $scope;
 
 
 	
-	function get_regions(callback)
+	function getRegions(callback)
 		{
-		callback(null,[
-			'Украина',
-			'Винницкая область',
-			'Волынская область',
-			'Днепропетровская область',
-			'Донецкая область',
-			'Житомирская область',
-			'Закарпатская область',
-			'Запорожская область',
-			'Ивано-Франковская область',
-			'Киевская область',
-			'Кировоградская область',
-			'Курорт Буковель',
-			'Луганская область',
-			'Львовская область',
-			'Николаевская область',
-			'Одесская область',
-			'Полтавская область',
-			'Ровенская область',
-			'Сумская область',
-			'Тернопольская область',
-			'Харьковская область',
-			'Херсонская область',
-			'Хмельницкая область',
-			'Черкасская область',
-			'Черниговская область',
-			'Черновицкая область'
-			]);
+		
+		var cursor = db.collection('regions').find({});
+		
+		cursor.count(function(err,count)
+			{
+			if (err||!count)
+				{	
+				err.message+='; Problem to get count of regions (error or it is equal to 0)!';
+				callback(err);
+				return false;
+				}
+			var stop = false;
+			var res = [];
+			cursor.each(function(err,doc)
+				{
+				try
+					{
+					if (err) throw err;
+					if (stop) return false;
+					
+					if (!doc)
+						{	
+						regions.data = res; //refresh regions;
+						callback(null,{'data':res,'Error':''});
+						}
+						
+					else
+						res.push(doc);
+						
+					}
+				catch(err){err.message+=";Some error happened when cursor.each for regions!",callbac(err);stop = true;return false}
+				})
+
+
+			})
+	
 		}
 	
 
+	
+	
+	
     };
 

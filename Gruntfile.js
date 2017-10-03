@@ -34,14 +34,22 @@ module.exports = function(grunt)
             src: [
                 //'./bower_components/angular/angular.min.js',
                 './bower_components/angular/angular.js',
-                './bower_components/jquery/dist/jquery.min.js',
+                //'./bower_components/jquery/dist/jquery.min.js',
+				'./bower_components/jquery/dist/jquery.js',
                 './bower_components/angular-aria/angular-aria.min.js',
-                './bower_components/angular-animate/angular-animate.min.js',
-                //'./bower_components/angular-material/angular-material.min.js',
-                './bower_components/angular-material/angular-material.js',
+                //'./bower_components/angular-animate/angular-animate.min.js',
+				'./bower_components/angular-animate/angular-animate.js',
+				'./bower_components/angular-messages/angular-messages.min.js',
+                //'./app/non_bower_libs/angular-material.min.js',
+                './app/non_bower_libs/angular-material.js',
                 './bower_components/angular-ui-router/release/angular-ui-router.min.js',
+				//'./bower_components/angular-ui-router/release/angular-ui-router.js',
+				'./bower_components/angular-jwt/dist/angular-jwt.min.js',
                 './bower_components/owl.carousel/dist/owl.carousel.min.js',
 				'./bower_components/typed.js/dist/typed.min.js',
+				'./app/non_bower_libs/angular-pagination/pagination.min.js',
+				//'./app/non_bower_libs/angular-pagination/pagination.js',
+				'./node_modules/perfect-scrollbar/dist/js/perfect-scrollbar.min.js'
 				],
             dest: './app/dist/libs_bundle.js',
             },
@@ -53,9 +61,10 @@ module.exports = function(grunt)
               separator:''
               },
             src:[
-                './bower_components/angular-material/angular-material.min.css',
+				'./bower_components/angular-material/angular-material.min.css',
                 './bower_components/owl.carousel/dist/assets/owl.carousel.min.css',
                 './bower_components/owl.carousel/dist/assets/owl.theme.default.min.css',
+				'./node_modules/perfect-scrollbar/dist/css/perfect-scrollbar.min.css'
                 //'./app/non_bower_libs/Hover-master/css/hover-min.css',
                 //'./app/non_bower_libs/animate.css',
             ],

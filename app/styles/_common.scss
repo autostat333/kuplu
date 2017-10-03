@@ -40,6 +40,7 @@
   {
   width:100%;
   height:100%;
+  display:table;
   position:relative;
   }
 
@@ -49,8 +50,13 @@ body
   background:#f7f7f7;
   padding:0px !important;
   box-sizing:border-box;
+  height:100%;
   }
 
+[ui-view='']
+	{
+	height:100%;
+	}
 
 
 .transitioned
@@ -63,7 +69,7 @@ body
 .transitioned.very_fast{transition-duration:0.3s;}
 .transitioned.normal{transition-duration:0.7s;}
 .transitioned.slow{transition-duration:1s;}
-.transitioned_off{transition-duration:0s;}
+.notransitioned{transition-duration:0s;}
 
 
 md-icon
@@ -79,7 +85,14 @@ md-icon
   user-select:none;
   }
 
+  
+  
 
+.not_visible
+	{
+	visibility:hidden;
+	}	
+	
 
 //set colors
 $primary:#9b518b;  //most frequent color
@@ -95,20 +108,114 @@ $text:#555; //for plain text
 $devider:#eee;
 
 
+//$input_error:rgb(221,44,0); //red color for error on input fields when title page
+$input_error:rgb(189, 0, 0); //red color for error on input fields when title page
+$error:#ff5e5e; //color for input fields not from title
 
-.md-button.md-raised:not([disabled])
+
+//!!!ONLY for TITLE
+.advert_form
 	{
-	background:#55A79A!important;
-	color:white;
+	.md-button.md-raised.md-primary:not([disabled])
+		{
+		background:#55A79A!important;
+		color:white;
+		}
+
+	}
+	
+	
+	
+.md-button
+	{
+	min-width:0px !important;
+	margin:0px !important;
+	overflow:visible;
+	}
+
+
+
+.md-primary.flat //for not raised buttons
+	{
+	span
+		{
+		color:$dark_primary;
+		}
+	}
+	
+//for cancel button
+button.cancel, button.cancel span
+	{
+	color:#954f90 !important;
+	md-icon{color:#954f90;}
+	}
+
+
+	
+.md-button.md-raised.md-primary:not([disabled])	
+	{
+	color:darken($accent,30%);
+	span
+		{
+		color:white;
+		}
+		
+	background:$accent !important; 
+	}
+	
+.md-button.md-raised.md-primary:not([disabled]):hover
+	{
+	color:darken($accent,30%);
+	span
+		{
+		color:white;
+		}
+	background:darken($accent,10%) !important; 
+	}	
+
+
+	
+.md-button.md-raised.md-primary.primary:not([disabled])	
+	{
+	span
+		{
+		color:white;
+		}
+		
+	background:$primary !important; 
+	}
+	
+.md-button.md-raised.md-primary.primary:not([disabled]):hover
+	{
+	span
+		{
+		color:white;
+		}
+	background:darken($primary,10%) !important; 
 	}
 
 
 
 
+	
+//disable select for button
+[ng-click]
+	{
+	user-select:none;
+	}
+	
+.md-ripple-container
+	{
+	color:black !important;
+	}
+	
+
 //letter-spacing for headers and titles
 h1,h2,{letter-spacing:3px !important;}
 
 h3, h4,h5,h6,h7 {letter-spacing:2px !important;}
+
+h4,h5,h6,h7{font-weight:100;letter-spacing:1px !important;}
 	 
 span,p,label, input, textarea {letter-spacing:2px !important;}
 button span{letter-spacing:1px !important;}

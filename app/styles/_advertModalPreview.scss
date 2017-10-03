@@ -1,0 +1,47 @@
+.advert_modal_preview
+	{
+
+	.md-toolbar-tools
+		{
+		justify-content:space-between;
+		}
+	
+	button:first-child
+		{
+		margin-right:15px !important;
+		}
+		
+	md-dialog-content
+		{
+		padding:20px;
+		}
+		
+	.advert:hover
+		{
+		background:white !important;
+		}
+		
+	.advert
+		{
+		width:100%;
+		max-width:600px;
+		
+		
+		.title
+			{
+			font-size:16px;
+			}
+		.desc
+			{
+			font-size:14px;
+			}
+			
+		.price
+			{
+			font-size:18px;
+			}
+		
+		}
+		
+	
+	}

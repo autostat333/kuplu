@@ -1,0 +1,304 @@
+<div class="create_advert_container">
+	<myspinner ng-class="{'on':spinner,'off':!spinner,'global':spinner=='global'}"></myspinner>
+
+	<div class="title">
+		<h1>Куплю онлайн</h1>
+		<h1>Доска намерений</h1>
+		<h1>КУПИТЬ, ЗАКАЗАТЬ, АРЕНДОВАТЬ</h1>
+
+		</div>
+
+
+	<div class="advantages">
+		<!-- <div class="owl-carousel" owl-carousel> -->
+		<div class="titles_container user_select_none">
+
+
+			<div class="advantage">
+				<div class="front">
+					<md-icon>touch_app</md-icon>
+					<h3>Быстро и Легко разместить намерение</h3>
+				</div>
+				<div class="back">
+					<p>Вы можете в несколько кликов в течении 5 минут создать и разместить объявление</p>
+				</div>			
+			</div>
+
+			<div class="advantage">
+				<div class="front">
+					<md-icon>visibility_off</md-icon>
+					<h3>Минимум опубликованых контактов</h3>
+				</div>
+				<div class="back">
+					<p>Вся переписка проходит модерацию специалистами сервиса, Ваши контакты не поубликуются я прямом виде</p>
+				</div>			
+
+			</div>
+			<div class="advantage">
+				<div class="front">
+					<md-icon>ring_volume</md-icon>
+					<h3>Отсутствие навязчивых звонков</h3>
+				</div>
+				<div class="back">
+					<p>Вы рассматриваете предложения и не контактируете с поставщиком пока Вы этого сами не пожелаете</p>
+				</div>			
+
+			</div>
+			<div class="advantage">
+				<div class="front">
+					<md-icon>euro_symbol</md-icon>
+					<h3>Выберете лучшее предложение</h3>
+				</div>
+				<div class="back">
+					<p>Вы можете из нескольких предложение выбрать лучшее по цене или уcловиям.</p>
+				</div>							
+				
+			</div>
+			<div class="advantage">
+				<div class="front">
+					<md-icon>update</md-icon>
+					<h3>Экономте Ваше время на покупку</h3>
+				</div>
+				<div class="back">
+					<p>Вы можете разместив намерение - продолжать работать, остальное сдалеает система</p>
+				</div>							
+				
+			</div>
+		</div>
+		
+	</div>
+
+	<div class="advert_form"
+		ng-class="{'expand':newAdvert.$getOnceCompleted()}"
+		>
+		<div class="circle"></div>
+		<div class="circle"></div>
+		<div class="circle"></div>
+		<div class="circle"></div>
+		
+
+		<form name=advert_form>
+		
+			<div class="input_row title_price"
+				ng-class="{'price_units':newAdvert['IsPricePerUnit']}"
+				>
+				<md-input-container>
+					<label>
+						<div id="label_1" typed-js text="Куплю ^1000Toyota Camry 2008г,черный до 120 тыс км;
+															Куплю ^1000Щебень фракция 20х40m 10 мешков;
+															Сниму ^1000квартиру, Площадь Победы, 1ком, один человек;
+															Посмотреть зуб^1000, МЕТРО Лукьяновская, в районе 15:00 29.05"
+						></div>
+						<div class="static_label">Напишите Ваше намерение:</div>
+					</label>
+					<input
+						ng-model="newAdvert['Title']"
+						md-maxlength=70
+						min-length=10
+						required
+						name="title"
+						ng-focus="newAdvert.$setFocused(true)"
+						ng-blur="newAdvert.$setFocused(false)"
+						>
+						
+					<div class="hint" ng-show="!check_error('title')||!advert_form['title'].$touched">Максимально коротко заглавие намерения</div>
+
+
+					<div class="messages" ng-messages="advert_form.title.$error">
+						<div ng-message="md-maxlength">Максимально допустимая длина заголовка - 70 символов!</div>
+						<div ng-message="required">Обязательное поле</div>
+						<div class="message" ng-message="min-length">Длина не может быть меньше 10 символов</div>
+					</div>
+					
+				</md-input-container>
+
+				
+				<!--
+					to make possible auto select entire value
+					ng-focus="newAdvert.setFocused(true);onceFocused=true;selectInputText('price')"
+				-->
+				<md-input-container>
+					<label>
+						Цена:
+					</label>
+					
+					<div class="currency_tmblr"
+						ng-show="newAdvert['Price']"
+						>
+						<md-tooltip md-direction="top" md-delay=400>Выбрать валюту</md-tooltip>
+						<div							
+							ng-class="{'active':newAdvert['Currency']==' грн'}"
+							ng-click="newAdvert['Currency']=' грн'"
+							> грн
+						</div>
+						<div
+							ng-click="newAdvert['Currency']='$'"
+							ng-class="{'active':newAdvert['Currency']=='$'}"
+							>$
+						</div>
+
+					</div>
+
+
+					<input
+						ng-model="newAdvert['Price']"
+						name="price"
+						required
+						md-maxlength=10
+						ng-focus="newAdvert.$setFocused(true);onceFocused=true"
+						ng-blur="newAdvert.$setFocused(false)"
+						currency-mask="{{newAdvert['Currency']}}"
+						>
+					
+					
+						<!-- 
+						ng-show="(!check_error('price')||!advert_form['price'].$touched)&&!newAdvert['Price']"
+						-->
+					<div class="hint" 
+						ng-show="!onceFocused"
+						>
+						Всего или за ед.
+						</div>							
+					
+					<div class="tmblr_container" 
+						ng-show="!check_error('price')&&onceFocused||onceFocused&&!advert_form.price.$touched"
+						>
+						<span class="price_tmblr"
+							ng-class="{'active':!newAdvert['IsPricePerUnit']}"
+							ng-click="newAdvert['IsPricePerUnit']=false"
+							>Всего</span>
+						<span class="price_tmblr"
+							ng-class="{'active':newAdvert['IsPricePerUnit']}"
+							ng-click="newAdvert['IsPricePerUnit']=true"
+							>за ед.</span>
+					</div>
+					
+					<div class='messages' ng-messages="advert_form.price.$error">
+						<div class="message" ng-message="required">Обязательное поле</div>
+						<div class="message" ng-message="md-maxlength">Макс. 10 символов</div>
+					</div>
+					
+				</md-input-container>
+				
+				<md-input-container
+					ng-show="newAdvert['IsPricePerUnit']"
+					>
+					<label>
+						Единица:
+					</label>
+					<input
+						ng-model="newAdvert['PriceUnit']"
+						name="priceUnit"
+						md-maxlength=10
+						ng-focus="newAdvert.$setFocused(true);selectInputText('priceUnit')"
+						ng-blur="newAdvert.$setFocused(false)"
+						>
+					<div class="hint"
+						ng-show="!check_error('priceUnit')||!advert_form.priceUnit.$touched"
+						>кг, шт....</div>
+					
+					<div class="messages" ng-messages="advert_form.priceUnit.$error">
+						<div class="message" ng-message="md-maxlength">Макс. 10 символов</div>
+					</div>
+					
+				</md-input-container>
+				
+				
+			</div>
+
+
+			
+			<div class="input_row optional">
+				<div class="title_tab">Опционально:</div>
+				<div class="input_row address">
+					<md-input-container>
+						<label>
+							Регион:
+						</label>
+						<md-select
+							ng-model="selectedRegion"
+							>
+							<md-option 
+								ng-repeat="region in REGIONS.data"
+								ng-value="region"
+								>
+								{{region.name}}
+							</md-option>
+						</md-select>
+					</md-input-container>
+
+					<md-input-container>
+						<label>
+							Город:
+						</label>
+						<md-select
+							ng-model="selectedCity"
+							>
+							<md-option
+								ng-repeat="city in selectedRegion['cities']"
+								ng-value="city"
+								>
+							{{city.name}}
+							</md-option>
+						</md-select>
+					</md-input-container>
+					
+					
+					<md-input-container>
+						<label>
+							Улица:
+						</label>
+						<input
+							name="street"
+							ng-model="newAdvert['Street']"
+							md-maxlength="30"
+							min-length=5
+							min-length-not-required
+							>
+							
+						<div class="messages" ng-messages="advert_form.street.$error">
+							<div class="message" ng-message="md-maxlength">Длина не может превышать 30 символов</div>
+							<div class="message" ng-message="min-length">Длина не может быть меньше 5 символов</div>
+						</div>
+					</md-input-container>
+				</div>
+					
+				<div class="input_row large_descr">
+					<md-input-container class="md-block">
+						<label>
+							Детальное описание:
+						</label>
+						<textarea
+							name="description"
+							ng-model="newAdvert['Description']"
+							md-maxlength=200
+							min-length=20
+							min-length-not-required
+							>
+						</textarea>
+						
+						
+						
+						<div class="messages" ng-messages="advert_form.description.$error">
+							<div class="message" ng-message="md-maxlength">Длина не может превышать 200 символов</div>
+							<div class="message" ng-message="min-length">Длина не может быть меньше 20 символов</div>
+						</div>
+						
+					</md-input-container>
+				</div>
+				
+			</div>
+
+			<div class="input_row submit_container">
+				<md-button class="md-button md-raised md-primary md-ink-ripple"
+					ng-disabled="newAdvert.isEmpty()||check_error('all')"
+					ng-click="submitAdvert()"
+					>
+					СОЗДАТЬ
+				</md-button>
+			</div>
+
+		</form>
+
+	</div>
+</div>

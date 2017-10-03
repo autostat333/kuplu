@@ -1,0 +1,71 @@
+<md-dialog class="advert_modal_preview">
+	
+	<md-toolbar>
+		<div class="md-toolbar-tools">
+			<h2>Подтвердите создание намерения</h2>
+			
+			<md-button ng-click="closeModal()"><md-icon>close</md-button>
+				
+			</md-button>
+		</div>
+	
+	</md-toolbar>
+
+	<md-dialog-content>
+		<h3 class="md-headline">Ваше намерение будет иметь следующий вид:</h3>
+		
+
+		<div class="advert md-whiteframe-1dp">
+			<div class="for_flex">
+				<div class="description_col">
+					<div class="date">Опубликовано {{created|date:'yyyy-MM-dd HH:mm'}}</div>
+					<div class="title">{{newAdvert['Title']}}</div>
+					<div class="region">{{newAdvert['Region']['name']}}  {{newAdvert['City']['name']}}</div>
+					<div class="desc">{{newAdvert['Description']}}</div>
+
+				</div>
+				
+				<div class="price_tools_col">
+					<div class="price">{{newAdvert['Price']|mycurrency}} {{newAdvert['Currency']}}</div>
+					<div class="price_desc" ng-show="newAdvert['IsPricePerUnit']">(за {{newAdvert['PriceUnit']}})</div>
+					<div class="price_desc" ng-show="!newAdvert['IsPricePerUnit']">(всего)</div>
+				</div>
+			</div>
+				
+			
+		</div>
+
+
+		
+	</md-dialog-content>
+
+	<md-dialog-actions>
+		<md-button class="cancel"
+			ng-click="closeModal()"
+			>
+			Вернуться к редактированию
+		</md-button>
+
+		<md-button class="md-raised md-primary"
+			ng-click="submit()"
+			>
+			Создать
+		</md-button>
+
+		
+		
+	</md-dialog-actions>
+
+</md-dialog>
+
+
+
+
+
+
+
+
+
+
+
+

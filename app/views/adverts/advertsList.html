@@ -1,0 +1,114 @@
+<div class="adverts_container container">
+	<myspinner ng-class="{'on':spinner,'off':!spinner}"></myspinner>
+
+
+	<div class="widget md-whiteframe-1dp params">
+		<form>
+			<md-input-container>
+				<label>Сортировать:</label>
+				<md-select
+					ng-model="sortingId"
+					>
+					<md-option value="">Не сортировать</md-option>
+					<md-option
+						ng-repeat="opt in sortingOptions"
+						value={{opt['id']}}
+						>{{opt['label']}}</md-option>
+				</md-select>
+				
+			</md-input-container>
+			
+			<md-input-container>
+				<label>Регион</label>
+				<md-select
+					ng-model="PARAMS['filtring']['region']"
+					>
+					<md-option value="">Не задавать</md-option>
+					<md-option
+						ng-repeat="region in $parent.REGIONS.data"
+						value={{region['_id']}}
+						>{{region['name']}}</md-option>
+				</md-select>
+			</md-input-container>
+
+			<md-input-container>
+				<label>Показать после</label>
+				<md-datepicker
+					ng-model="PARAMS['filtring']['date']['from']"
+					md-open-on-focus
+					>
+				</md-datepicker>
+			</md-input-container>
+			
+			
+			<md-input-container>
+				<md-switch
+					ng-model="PARAMS['filtring']['onlyUserAdverts']"
+					>
+					Только мои
+				</md-switch>
+			</md-input-container>
+			
+				
+			<md-button class="md-primary flat"
+				ng-click="applyParams()"
+				>
+				Применить
+			</md-button>
+				
+			
+			
+		</form>
+
+		
+		
+	</div>
+
+
+
+	<div class="widget table_list md-whiteframe-1dp">
+
+
+		<div class="header">
+			<h3>Список намерений</h3>
+
+		</div>
+	
+	
+		<div class="advert"
+			ng-repeat="it in ADVERTS.data"
+			>
+			<div class="for_flex">
+				<div class="description_col">
+					<div class="date">{{it['Created']|date:'yyyy-MM-dd HH:mm'}}</div>
+					<div class="title">{{it['Title']}}</div>
+					<div class="region">{{it['Region']['name']}} {{it['City']['name']}}</div>
+					<div class="desc">{{it['Description']}}</div>
+
+				</div>
+				
+				<div class="price_tools_col">
+					<div class="price">{{it['Price']|mycurrency}} {{it['Currency']}}</div>
+					<div class="price_desc" ng-show="it['IsPricePerUnit']">(за {{it['PriceUnit']}})</div>
+					<div class="price_desc" ng-show="!it['IsPricePerUnit']">(всего)</div>
+					<md-button class="md-raised md-primary">Откликнуться</md-button>				
+				</div>
+			</div>
+				
+			
+		</div>
+
+	</div>
+	
+	
+	<cl-paging 
+		flex 
+		cl-pages="pages" 
+		cl-steps="6" 
+		cl-align="center center" 
+		cl-current-page="pageCurrent"
+		></cl-paging>
+	
+	
+
+</div>

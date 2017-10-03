@@ -1,0 +1,203 @@
+.profile_user_intentions
+	{
+	
+	
+	.key_figures, .timeline_header, .active_intentions
+		{
+		//width:90%;
+		//margin-left:auto;
+		//margin-right:auto;
+		width:100%;
+		
+		}
+	.active_intentions
+		{
+		margin-top:50px;
+		}
+	
+	
+
+	
+	
+	
+	//KEY FIGURES
+	.key_figures>div:nth-child(2)
+		{
+		width:90%;
+		margin-left:auto;
+		margin-right:auto;
+		display:flex;
+		justify-content:space-between;
+		align-items:flex-start;
+		margin-bottom:20px;
+		margin-top:30px;
+		
+		.item
+			{
+			div.title
+				{
+				color:#263345;
+				text-transform:uppercase;
+				font-size:14px;
+				color:gray;
+				height:35px;
+				}
+			div.value
+				{
+				color:#263345;
+				text-align:center;
+				font-size:40px;
+				font-weight:bold;
+				}
+			}
+		
+		
+		}
+	
+	
+	//ACTIVE INTENTIONS
+	.active_intentions_container
+		{
+		.advert
+			{
+			padding:10px;
+			
+			position:relative;
+			outline-width:0px;
+			border-bottom:0px;
+			padding-bottom:15px;
+			
+			width: 90%;
+			margin-left: auto;
+			margin-right: auto;
+			margin-top:40px;
+			overflow:visible;
+			background:transparent;
+			
+				
+			.price
+				{
+				color:#263345;
+				}
+			
+			//min height should be to make some additional height when no description
+			//and prevent overlay by transparent bottom plaha
+			.desc  
+				{
+				min-height:20px;
+				}
+				
+				
+				
+			.btn_block
+				{
+				margin-top:13px;
+				width: 100%;
+				height: 100%;
+				//background: linear-gradient(to top, rgb(255, 255, 255) 0%, rgba(255, 255, 255, 0.95) 30%, rgba(255, 255, 255, 0.9) 45%, rgba(255, 255, 255, 0.85) 55%, rgba(0, 0, 255, 0) 90%);
+				box-sizing: border-box;
+				font-size: 12px;
+				text-transform: uppercase;
+				/* justify-content: center; */
+				letter-spacing: 1px;
+				
+				.show_more
+					{
+					background:rgb(250,250,250);
+					border-radius:4px;
+					md-icon,span 
+						{
+						position:relative;
+						cursor:pointer;
+						color: rgb(154, 80, 139);
+						//opacity:0.5;
+						
+						}
+					span
+						{
+						padding:3px;
+						}
+					
+					}
+				.show_more.active
+					{
+					background:rgb(238, 238, 238);
+					border-radius:4px 4px 0px 0px;
+					}
+					
+				.new_messages
+					{
+					color: white;
+					background: rgba(154, 80, 139, 0.68);
+					padding: 3px;
+					vertical-align: middle;
+					font-size: 12px;
+					text-transform:lower-case;
+					}
+					
+				.bottom_toolkit
+					{
+					display:inline-block;
+					margin-left:30px; 
+					transform-origin:bottom;
+					
+					.status, .edit
+						{ 
+						md-icon, span
+							{
+							color:#1ba993;
+							}
+						}
+					
+					}
+					
+				.bottom_toolkit.ng-animate
+					{
+					transition:all ease 0.3s;
+					}
+
+				
+				.bottom_toolkit.ng-hide-add
+					{
+					opacity:1;
+					transform:scaleY(1);
+					}
+
+				.bottom_toolkit.ng-hide-add-active
+					{
+					opacity:0;
+					transform:scaleY(0);
+					}
+										
+				
+				.bottom_toolkit.ng-hide-remove
+					{
+					opacity:0;
+					transform:scaleY(0);
+					}					
+					
+				.bottom_toolkit.ng-hide-remove-active
+					{
+					opacity:1;
+					transform:scaleY(1);
+					}
+					
+					
+					
+				}
+
+				
+				
+			}
+			
+		.advert:not(.active):hover
+			{
+			background:#f3f3f3;
+			}
+			
+		}
+	
+	
+	
+	
+	}

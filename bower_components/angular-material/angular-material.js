@@ -1342,7 +1342,10 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
           documentElement.style.cssText = prevDocumentStyle;
 
           // The body loses its scroll position while being fixed.
-          body.scrollTop = viewportTop;
+          //body.scrollTop = viewportTop;
+		  //I have commented this rows because in my case scrolled is html
+		  $('html').scrollTop(viewportTop);
+		  
         };
       }
 

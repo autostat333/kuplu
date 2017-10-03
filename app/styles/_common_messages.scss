@@ -1,0 +1,63 @@
+.message_card
+	{
+	width:100%;
+	
+	text-align: center;
+	background: #fdf2f2;
+	box-sizing: border-box;
+	margin: 15px auto 15px auto;
+	overflow:hidden;
+	padding: 8px;
+	
+
+
+	
+	
+	md-icon
+		{
+		font-size:45px;
+		width:45px;
+		height:45px;
+		display:block;
+		color:$input_error;
+		}
+	
+	
+	span
+		{
+		font-size:14px;
+		letter-spacing:1px !important;
+		color:$input_error;
+		}
+
+	
+	}
+	
+	
+	
+.message_card.ng-animate
+	{
+	transition:all linear 0.2s;
+	transform-origin:top;
+	}
+	
+	
+	
+.message_card.ng-hide-add, .message_card.ng-hide-remove.ng-hide-remove-active
+	{
+	transform:scale(1,1);
+	opacity:1;
+	height:80px;
+	padding:8px;
+	}
+
+
+
+.message_card.ng-hide-remove, .message_card.ng-hide-add.ng-hide-add-active
+	{
+	transform:scale(1,0);
+	opacity:0;
+	height:0px;
+	padding:0px;
+	}
+

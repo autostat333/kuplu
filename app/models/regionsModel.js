@@ -9,20 +9,38 @@ module.exports = function SalesModel($q,send_http)
 
     function _get()
         {
-        return send_http('./api/regions/get','GET').then(function(res)
+        return send_http('./api/regions/get','GET').then(function(response)
             {
-            if (res==='Error')
-                {
-                alert('Something happens when obtain all sales!')
-                return false;
-                }
-            for (var each in res)
-                {
-                regions.data.push(res[each]);
-                }
+			if (response.Error)
+				{
+				return response;
+				}
+				
+			regions.data = [];
+            for (var each in response.data)
+                regions.data.push(response.data[each]);
+	
+			regions.data.sort(sortPattern)
+				
+			for (var i=0;el = regions[i++];)
+				{
+				el.cities.sort(sortPattern);
+				}
+	
+			return response;
             });
+			
+			
         }
 
+		
+	function sortPattern(a,b)
+		{
+		a = a['name'];
+		b = b['name'];
+		return a<b?-1:(a>b?1:0);
+		}
+		
 
     return regions;
 
