@@ -1,70 +1,114 @@
-module.exports = function ProfileUserInfoCntr($scope,$timeout)
+module.exports = function ProfileUserInfoCntr($scope,$timeout,$models,$rootScope,$mdDialog,$q)
 	{
 	
 	$scope.init = init;
-	$scope.personClick = personClick;
-	$scope.advertHistoryClick = advertHistoryClick;
+	
+		
+	$scope.getAllPrivateAdverts = getAllPrivateAdverts;
+	$scope.getAllHistoryAdverts = getAllHistoryAdverts;
+	
+	
+	$scope.closeAdvert = closeAdvert;
+	$scope.editAdvert = editAdvert;
+	
+	
+	$scope.$on('$destroy',function()
+		{	
+		$scope.destroyed = true;
+		})
 	
 	$scope.init();
 	
 	function init()
 		{
-		console.log('User Info');
+		$scope.ADVERTS = $models('adverts');
+		$scope.ADVERTS_HISTORY = $models('adverts');
+		
+		$scope.spinner = true;
+		$q.all([
+				$scope.getAllPrivateAdverts(),
+				$scope.getAllHistoryAdverts()
+				]).then(function()
+					{
+					if ($scope.destroyed) return false;
+					$scope.spinner = false;
+					})
 		
 		}
 		
 		
-	function personClick(idx, findChat,personName,e)
+	function getAllPrivateAdverts()
 		{
-		if (e) e.stopPropagation();
 			
-        $('.right .top .name').html(personName);
-        $('.chat').removeClass('active-chat');
-		
-        $('.left .person').removeClass('active');
-		
-        $($('li[data-chat='+findChat+']')[idx]).addClass('active');
-		
-		
-		var elem = $($('.chat[data-chat = '+findChat+']')[idx]);
-		
-		elem.addClass('active-chat');
-
-		setTimeout(function()
-			{
-			var scrollHeight = elem[0].scrollHeight;
-			elem.scrollTop(scrollHeight);
-			},0);
-		
+		var defer = $q.defer();
 			
+		$scope.ADVERTS.$get({'filtring':{'onlyUserAdverts':true},'withUsers':true}).then(function(response)
+			{			
+			defer.resolve();
+			})
+		return defer.promise;
 		}
 		
 		
 		
-	function advertHistoryClick(idx,active)
+	function getAllHistoryAdverts()
 		{
+		var defer = $q.defer();
+			
+		//history = true means get adverts from advertsHistory collection
+		$scope.ADVERTS_HISTORY.$get({'filtring':{'onlyUserAdverts':true,'history':true}}).then(function(response)
+			{			
+			defer.resolve();
+			})
+		return defer.promise;	
+		}
 		
-		var elem = $('.month_container .advert')[idx];
-		elem = $(elem);
-		if (active)
-			{
-			$timeout(function()
+		
+		
+		
+		
+	function closeAdvert(advert)
+		{
+		$mdDialog.show($mdDialog
+			.confirm()
+			.title('Вы действительно хотите закрыть намерение?')
+			.cancel('Вернуться')
+			.ok('Продолжить')
+			).then(function()
 				{
-				var height = elem[0].scrollHeight;
-				//elem.animate({'height':height},100);
-				elem.css({'height':height});
-				},0)				
-			}
-		else
-			{
-			//elem.animate({'height':45});
-			elem.css({'height':45});
-				
-			}
-			
+				$scope.spinner = true;
+				advert.$close().then(function(response)
+					{
+					if ($scope.destroyed) return false;
+					$scope.spinner = false;
+					if (response.Error) return false;
+					$scope.ADVERTS_HISTORY.$unshift(response.data);
+					})
+				})
 		}
 		
+		
+		
+	function editAdvert(advert)
+		{	
+		$mdDialog.show({
+			'templateUrl':'./views/profile/ModalEditAdvert.html',
+			controller:'profileModalEditAdvertCntr',
+			muplitple:true,
+			//escapeToClose:true,
+			//clickOutsideToClose:true,
+			locals:{'advert':advert}
+			}).then(function(response)
+				{
+				$.extend(advert,response);
+				})
+		}
+		
+		
+		
+		
+
 		
 	}
 	
-module.exports.$inject = ['$scope','$timeout'];
+module.exports.$inject = ['$scope','$timeout','$models','$rootScope','$mdDialog','$q'];

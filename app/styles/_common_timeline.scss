@@ -50,12 +50,18 @@
 		outline-width:0px;
 		
 
+		.advert.with_user
+			{
+			width:calc(97% - 160px);
+			}
+		
 		.advert
 			{
 			cursor:pointer;
 			//background:white;
-			width:calc(100% - 20%);
-			max-width:750px;
+			//width:calc(100% - 20%);
+			width:calc(97% - 70px);
+			//max-width:750px;
 			margin-left:calc(3% + 70px);
 			position:relative;
 			z-index:2;
@@ -82,6 +88,7 @@
 			.region, price_desc
 				{
 				font-size:12px;
+				min-height:25px;
 				}
 			.price
 				{
@@ -155,6 +162,17 @@
 			
 			}
 
+	.advert_block.active .advert.with_user
+		{
+		
+		
+		.chat_container
+			{
+			height:400px !important;
+			transition:unset;
+			}
+		}
+			
 		
 	.current_date, .registration_date
 		{
@@ -200,11 +218,15 @@
 		display:block;
 		}
 		
-		
-	//customization of chat_container
+
+	
+	.chat_container.messages
+		{height:300px !important;}	
+
 	.chat_container
 		{
-		height:300px !important;
+		transition:height linear 0.5s;
+		height:100px !important;
 		background:#f3f3f3 !important;
 		padding-bottom:15px;
 		
@@ -219,7 +241,7 @@
 			
 			.right
 				{
-				height:100%;
+				height:calc(100% - 47px);
 				width:72%;
 				
 				.chat

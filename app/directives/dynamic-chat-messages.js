@@ -6,7 +6,13 @@ module.exports = function dynamicChat($timeout)
 			{
 				
 			$scope.init = init;
-			$scope.stopPropagation = stopPropagation;
+			$scope.resizeAdvert = resizeAdvert;
+			$scope.scrollToBottom = scrollToBottom;
+			
+			$scope.$on('$destroy',function ()
+				{
+				$scope.advertElem.attr('style','');
+				})
 			
 			
 			$scope.init();
@@ -14,18 +20,46 @@ module.exports = function dynamicChat($timeout)
 			function init()
 				{
 				$scope.spinner = true;
+				$scope.advertElem = $(elem).parent();
+				$scope.resizeAdvert();
 				
-				$timeout(function(){$scope.spinner = false},2000);
+				$scope.advert.$completeWithMessages().then(function()
+					{
+					$timeout(function(){$scope.spinner = false;},200)
+					$scope.scrollToBottom();
+					})
+				
 				
 				}
 			
-			function stopPropagation(e)
+			
+			
+							
+			function scrollToBottom()
 				{
-				e.stopPropagation();
+				
+				setTimeout(function()
+					{
+					var elem_ = $(elem).find('.chat');
+					var scrollHeight = elem_[0].scrollHeight;
+					elem_.scrollTop(scrollHeight);
+					},0);
+					
+					 
 				}
-			
-			
-			
+
+
+
+			function resizeAdvert()
+				{
+				$timeout(function()
+					{
+					var heightAdvertHead = $scope.advertElem.find('.for_flex')[0].scrollHeight;
+					var height = heightAdvertHead+$(elem).height();
+					$scope.advertElem.css({'height':height});
+					},0)										
+				}
+
 			
 			
 			
@@ -35,69 +69,23 @@ module.exports = function dynamicChat($timeout)
 		template:''+
 			''+
 			'<div class="chat_container"'+
-			'	ng-click="stopPropagation($event)"'+
 			'	>'+
 			'	<myspinner class="history on" ng-class="{\'on\':spinner,\'off\':!spinner}"></myspinner>'+
 			''+
-			'	<div class="container_"'+
-			'		ng-show="!spinner"'+
-			'		>'+
+			'	<div class="container_">'+
 			'		<div class="right">'+
-			'			<div class="top"><span>To: <span class="name">Dog Woofson</span></span></div>'+
-			'			<div class="chat active-chat" data-chat="person3Q" perfect-scrollbar>'+
-			'			'+
+			'			<div class="top"><span>To: <span class="name">{{advert[\'OwnerObj\'][\'visibleName\']}}</span></span></div>'+
+			'			<div class="chat active-chat" perfect-scrollbar>'+
 			'			'+
 			'				<div class="conversation-start">'+
 			'					<span>Today, 3:38 AM</span>'+
 			'				</div>'+
-			'				<div class="bubble you">'+
-			'					Hey human!'+
+			'				<div class="bubble"'+
+			'					ng-class="{\'you\':message[\'from\']==$root.USER._id,\'me\':message[\'from\']!=$root.USER._id}"'+
+			'					ng-repeat="message in advert[\'Messages\'][$root.USER._id]"'+
+			'					>'+
+			'					{{message[\'text\']}}'+
 			'				</div>'+
-			'				<div class="bubble you">'+
-			'					Umm... Someone took a shit in the hallway.'+
-			'				</div>'+
-			'				<div class="bubble me">'+
-			'					... what.'+
-			'				</div>'+
-			'				<div class="bubble me">'+
-			'					Are you serious?'+
-			'				</div>'+
-			'				<div class="bubble you">'+
-			'					I mean...'+
-			'				</div>'+
-			'				<div class="bubble you">'+
-			'					It’s not that bad...'+
-			'				</div>'+
-			'				<div class="bubble you">'+
-			'					But we’re probably gonna need a new carpet.'+
-			'				</div>'+
-			'				<div class="conversation-start">'+
-			'					<span>Today, 3:38 AM</span>'+
-			'				</div>'+
-			'				<div class="bubble you">'+
-			'					Hey human!'+
-			'				</div>'+
-			'				<div class="bubble you">'+
-			'					Umm... Someone took a shit in the hallway.'+
-			'				</div>'+
-			'				<div class="bubble me">'+
-			'					... what.'+
-			'				</div>'+
-			'				<div class="bubble me">'+
-			'					Are you serious?'+
-			'				</div>'+
-			'				<div class="bubble you">'+
-			'					I mean...'+
-			'				</div>'+
-			'				<div class="bubble you">'+
-			'					It’s not that bad...'+
-			'				</div>'+
-			'				<div class="bubble you">'+
-			'					But we’re probably gonna need a new carpet.'+
-			'				</div>'+
-			'				'+
-			'				'+
-			'			</div>'+
 			'		</div>'+
 			'	</div>'+
 			'</div>'

@@ -5,9 +5,9 @@
   "main": "Gruntfile.js",
   "dependencies": {
     "async": "^2.4.1",
+    "body-parser": "^1.17.2",
     "express": "^4.15.3",
     "grunt": "^1.0.1",
-    "body-parser": "^1.17.2",
     "grunt-browserify": "^4.0.1",
     "grunt-cli": "^1.2.0",
     "grunt-contrib-clean": "^0.7.0",
@@ -15,7 +15,12 @@
     "grunt-contrib-sass": "^1.0.0",
     "grunt-contrib-uglify": "^0.11.1",
     "grunt-contrib-watch": "^0.6.1",
+    "jdenticon": "^1.7.2",
+    "jsonwebtoken": "^8.1.0",
+    "lodash": "^4.17.4",
+    "logger": "0.0.1",
     "mongodb": "=2.2.28",
+    "perfect-scrollbar": "=0.8.1",
     "request": "=2.81.0"
   },
   "devDependencies": {},

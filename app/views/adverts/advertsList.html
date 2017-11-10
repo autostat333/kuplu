@@ -41,7 +41,9 @@
 			</md-input-container>
 			
 			
-			<md-input-container>
+			<md-input-container
+				ng-class="{'not_visible':!$root.USER}"
+				>
 				<md-switch
 					ng-model="PARAMS['filtring']['onlyUserAdverts']"
 					>
@@ -50,8 +52,9 @@
 			</md-input-container>
 			
 				
-			<md-button class="md-primary flat"
+			<md-button class="md-raised md-primary"
 				ng-click="applyParams()"
+				ng-class="{'not_visible':paramsIsEqual()}"
 				>
 				Применить
 			</md-button>
@@ -70,7 +73,7 @@
 
 
 		<div class="header">
-			<h3>Список намерений</h3>
+			<h3>Список намерений</h3><span class="adverts_number">(ВСЕГО {{ADVERTS.count}})</span>
 
 		</div>
 	
@@ -91,7 +94,18 @@
 					<div class="price">{{it['Price']|mycurrency}} {{it['Currency']}}</div>
 					<div class="price_desc" ng-show="it['IsPricePerUnit']">(за {{it['PriceUnit']}})</div>
 					<div class="price_desc" ng-show="!it['IsPricePerUnit']">(всего)</div>
-					<md-button class="md-raised md-primary">Откликнуться</md-button>				
+					<md-button class="md-raised md-primary"
+						ng-show="$root.USER._id!=it['Owner']&&!it['Messages'][$root.USER._id]"
+						ng-click="sendMessage(it)"
+						>Откликнуться</md-button>
+					<md-button class="your_intention"
+						ng-show="$root.USER._id==it['Owner']"
+						>Ваше намерение</md-button>
+					<md-button class="clicked_by_you"
+						ng-show="$root.USER._id!=it['Owner']&&it['Messages'][$root.USER._id]"
+						>Вы откликнулись</md-button>
+
+
 				</div>
 			</div>
 				

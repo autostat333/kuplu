@@ -9,7 +9,7 @@ var request = require('request');
 var logger = require('logger').createLogger('LOG_ERRORS');
 var bodyParser = require('body-parser'); //for parsing body and retrieve post data
 var jwt = require('jsonwebtoken');
-
+var path = require('path');
 
 app.locals.SCRIPT_DIR = __dirname;
 
@@ -34,12 +34,37 @@ app.use('/views', express.static(__dirname+'/app/views'));
 app.use('/dist', express.static(__dirname+'/app/dist'));
 app.use('/styles', express.static(__dirname+'/app/styles'))
 app.use('/non_bower',express.static(__dirname+'/app/non_bower_libs'));
-
-app.use(function (req, res, next) {
-  next();
-})
+app.use('/'+config['AVATAR_FOLDER'].replace('./',''),express.static(path.join(__dirname,config['AVATAR_FOLDER'])));
 
 
+app.use('/',function (req, res, next) 
+	{
+	if (!req.headers['authorization'])
+		req.USER = false;	
+	else
+		{
+		try
+			{
+			req.USER = jwt.verify(req.headers['authorization'].replace('Bearer ',''),config['SECRET']);		
+			}
+		catch(err)
+			{
+			//for the case if token expires - send a exact message "Token is expired" to prevent showing
+			//error popup, only logout
+			if (err.message=='jwt expired')
+				err.msg = 'Token is expired';
+			else
+				err.msg = "Неверный токен!";
+			next(err);
+			return false;
+			};
+		}
+		
+	
+	next();
+	})
+
+app.use(bodyParser({limit:'50mb'}));
 app.use(bodyParser.json());
 
 
@@ -111,7 +136,7 @@ app.get('/api/regions/get',function(req,resp,next)
 
 app.post('/api/adverts/get',function(req,resp,next)
 	{
-	advertsCntr().getAll(req.body,function(err,res)	
+	advertsCntr().getAll(req.body,req.USER,function(err,res)	
 		{
 		if (err)
 			{
@@ -122,14 +147,98 @@ app.post('/api/adverts/get',function(req,resp,next)
 		resp.send(res);
 		})
 		
+	})
+
+//by flag 'withUsers' to show adverts with users
+app.post('/api/adverts/get/private',function(req,resp,next)
+	{
+	if (!req.USER)
+		{
+		var err = new Error();
+		err.msg = "Вы не авторизированы! Пожалуйста, войдите в систему!";
+		next(err);
+		return false;
+		}
+		
+	
+	advertsCntr().getAllWithUsers(req.body,req,function(err,res)	
+		{
+		if (err)
+			{
+			err.msg = "Возникла проблема на сервере при получении списка все намерений!";
+			next(err);
+			return false;
+			}
+			
+		resp.send(res);
+		})
 		
 	})
 	
+//by flag 'withUsers' to show adverts with users
+app.post('/api/adverts/get/related',function(req,resp,next)
+	{
+	if (!req.USER)
+		{
+		var err = new Error();
+		err.msg = "Вы не авторизированы! Пожалуйста, войдите в систему!";
+		next(err);
+		return false;
+		}
+		
+	//it is basically the same as get all but completed with owner object to show avatars
+	advertsCntr().getAllRelatedToUser(req.body,req.USER,function(err,res)	
+		{
+		if (err)
+			{
+			err.msg = "Возникла проблема на сервере при получении списка всечх намерений на которые откликнулся пользователь!";
+			next(err);
+			return false;
+			}
+			
+		resp.send(res);
+		})
+		
+	})	
+	
+	
+//to complete messages of advert
+app.post('/api/adverts/get/:id',function(req,resp,next)
+	{
+	if (!req.USER)
+		{
+		var err = new Error("Вы не авторизированы! Пожалуйста, войдите в систему!");
+		err.msg = err.message;
+		next(err);
+		return false;
+		}
+		
+	advertsCntr().getAdvertById(req,function(err,res)
+		{
+		if (err) 
+			{
+			err.msg = "Возникли проблемы при получении advert по ИД!";
+			next(err);
+			return false;
+			}
+		resp.send(res);
+		})
+		
+		
+	})
 
 
 app.post('/api/adverts/create',function(req,resp,next)
     {
-	advertsCntr().createAdvert(req.body,function(err,res)
+	if (!req.USER)
+		{
+		var err = new Error();
+		err.msg = "Вы не авторизированы! Пожалуйста, войдите в систему!'";
+		next(err);
+		return false;
+		}
+		
+	advertsCntr().createAdvert(req.body,req.USER,function(err,res)
 		{
 		if (err)
 			{
@@ -141,6 +250,76 @@ app.post('/api/adverts/create',function(req,resp,next)
 		})
     });
 
+
+app.post('/api/adverts/close',function(req,resp,next)
+    {
+	if (!req.USER)
+		{
+		var err = new Error();
+		err.msg = "Вы не авторизированы! Пожалуйста, войдите в систему!'";
+		next(err);
+		return false;
+		}
+		
+	advertsCntr().closeAdvert(req.body,req.USER,function(err,res)
+		{
+		if (err)
+			{
+			err.msg = "Возникла ошибка на сервере при попытке удалить намерение!";
+			next(err);
+			return false;
+			}
+		resp.send(res);
+		})
+    });
+
+	
+app.post('/api/adverts/update',function(req,resp,next)
+    {
+	if (!req.USER)
+		{
+		var err = new Error();
+		err.msg = "Вы не авторизированы! Пожалуйста, войдите в систему!'";
+		next(err);
+		return false;
+		}
+		
+	advertsCntr().updateAdvert(req.body,req.USER,function(err,res)
+		{
+		if (err)
+			{
+			err.msg = "Возникла ошибка на сервере при попытке изменить намерение!";
+			next(err);
+			return false;
+			}
+		resp.send(res);
+		})
+    });
+
+	
+	
+app.post('/api/adverts/messages/add',function(req,resp,next)
+	{
+	if (!req.USER)
+		{
+		var err = new Error();
+		err.msg = "Вы не авторизированы! Пожалуйста, войдите в систему!'";
+		next(err);
+		return false;
+		}
+		
+	advertsCntr().addMessage(req,function(err,res)
+		{
+		if (err)
+			{
+			err.msg = "Возникли проблемы при отправке сообщения автору намерения!";
+			next(err);
+			return false;
+			}
+		resp.send(res);
+		})
+		
+	})
 
 app.post('/login',function(req,resp,next)
 	{
@@ -172,7 +351,89 @@ app.post('/signup',function(req,resp, next)
 		})
 	})
 
+	
+	
+app.post('/avatar/update',function(req,resp,next)
+	{
+	if (!req.USER)
+		{
+		var err = {};
+		err.msg = 'Вы не авторизированы! Пожалуйста, войдите в систему!';
+		next(err);
+		return false;
+		}
+		
+	accountCntr().updateAvatar(req,function(err,res)
+		{
+		if (err)
+			{
+			err.msg = 'Возникла проблема при сохранении аватарки!';
+			next(err);
+			return false;
+			}
+		resp.send(res); //as a result - new avatarUrl
+		})
+		
+	})
+	
 
+	
+app.post('/api/profile/update',function(req,resp,next)
+	{
+	if (!req.USER)
+		{
+		var err = {};
+		err.msg = 'Вы не авторизированы! Пожалуйста, войдите в систему!';
+		next(err);
+		return false;
+		}
+		
+	accountCntr().updateProfile(req, function(err,res)
+		{
+		if (err)
+			{
+			err.msg = "Возникли проблемы при сохранении новых данных профиля!";
+			next(err);
+			return false;
+			}
+		resp.send(res);
+		})
+		
+		
+	})
+
+
+app.post('/api/password/update',function(req,resp,next)
+	{
+	if (!req.USER)
+		{
+		var err = {};
+		err.msg = 'Вы не авторизированы! Пожалуйста, войдите в систему!';
+		next(err);
+		return false;
+		}
+		
+	accountCntr().updatePassword(req, function(err,res)
+		{
+		if (err)
+			{
+			err.msg = "Возникли проблемы при изменении пароля!";
+			next(err);
+			return false;
+			}
+		resp.send(res);
+		})
+		
+		
+	})
+
+	
+	
+	
+
+
+	
+	
 app.use(handleError);
 
 function handleError(err,req,resp,next)

@@ -1,0 +1,164 @@
+.modal_edit_advert
+	{
+
+	md-modal-content
+		{
+		overflow-y:scroll;
+		}
+	
+	
+	form
+		{
+		width:100%;
+		padding:30px;
+		box-sizing:border-box;
+		
+		.title_container
+			{
+			md-input-container
+				{
+				width:100%;
+				}
+			
+			}
+
+			
+			
+		input,textarea, md-select
+			{
+			font-size:16px !important;
+			}
+
+		input, textarea, label
+			{
+			transition:all ease 0.3s !important;
+			}
+
+			
+			
+		.row
+			{
+			display:flex;
+			justify-content:space-between;
+			}
+			
+		.regions_container
+			{	
+			md-select-value
+				{
+				text-align:center;
+				}
+				
+			md-input-container
+				{
+				width:40%;
+				}
+		
+			}
+			
+		.description_container
+			{
+			md-input-container{width:100%;}
+			
+			
+			}		
+
+		.street_container
+			{
+			md-input-container
+				{
+				width:80%;
+				min-width:200px;
+				}
+			}
+			
+			
+		.price_container
+			{
+			justify-content:flex-end;
+			height:150px;
+			overflow:hidden;
+			md-input-container
+				{
+				label:after
+					{
+					content:'';
+					}
+
+				.currency_label
+					{
+					color:#949494;
+					}
+					
+				.currency_tmblr .active
+					{
+					background:rgba(255, 4, 4, 0.42);
+					color:white;
+					}
+				.currency_tmblr
+					{
+					color:rgba(255, 4, 4, 0.42);
+					}
+					
+				.tmblr_container
+					{
+					font-size: 11px;
+					text-transform: uppercase;
+					span{outline-width:0px;}
+					cursor:pointer;
+					display:inline-block;
+					
+					.active
+						{
+						border: 1px solid rgba(255, 4, 4, 0.42);
+						padding: 1px 5px 1px 5px;
+						color: rgba(255, 56, 56, 0.75);
+						}
+					}
+					
+					
+				width:200px;
+				input
+					{
+					text-align:right;
+					}
+				}
+			
+			
+
+			
+			.unit_container
+				{
+				margin-left:30px;
+				width:100px;
+				}
+				
+			.unit_container.ng-animate
+				{
+				transition:all linear 0.2s;
+				}
+			
+			.unit_container.ng-hide-add{width:100px;opacity:1}
+			.unit_container.ng-hide-add-active{width:0px;opacity:0}
+			.unit_container.ng-hide-remove{width:0px;opacity:0}
+			.unit_container.ng-hide-remove-active{width:100px;opacity:1}
+			
+			
+			
+			}		
+
+
+			
+		}
+	
+	
+	md-dialog-actions
+		{
+		button:nth-of-type(1)
+			{
+			margin-right:20px !important;
+			}
+			
+		}
+	
+	}

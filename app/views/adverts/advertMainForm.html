@@ -144,10 +144,12 @@
 						ng-model="newAdvert['Price']"
 						name="price"
 						required
-						md-maxlength=10
+						max-price=1000000000
+						min-price=1
 						ng-focus="newAdvert.$setFocused(true);onceFocused=true"
 						ng-blur="newAdvert.$setFocused(false)"
 						currency-mask="{{newAdvert['Currency']}}"
+						ng-model-options={'allowInvalid':true}
 						>
 					
 					
@@ -175,7 +177,8 @@
 					
 					<div class='messages' ng-messages="advert_form.price.$error">
 						<div class="message" ng-message="required">Обязательное поле</div>
-						<div class="message" ng-message="md-maxlength">Макс. 10 символов</div>
+						<div class="message" ng-message="max-price">Макс. значение 10 млн </div>
+						<div class="message" ng-message="min-price">Мин. значение 0,01 </div>
 					</div>
 					
 				</md-input-container>
@@ -257,7 +260,7 @@
 							>
 							
 						<div class="messages" ng-messages="advert_form.street.$error">
-							<div class="message" ng-message="md-maxlength">Длина не может превышать 30 символов</div>
+							<div class="message" ng-message="md-maxlength">Длина улицы не может превышать 30 символов</div>
 							<div class="message" ng-message="min-length">Длина не может быть меньше 5 символов</div>
 						</div>
 					</md-input-container>

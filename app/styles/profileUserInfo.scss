@@ -10,11 +10,12 @@
 		{
 		width:230px;
 		text-align:center;
+		padding-top:20px;
 		//border-right:1px solid lighten($secondary_text,30%); 
 
 		.avatar_container, .key_figures, .title
 			{
-			max-width:190px;
+			//max-width:120px;
 			width:100%;
 			margin-left:auto;
 			margin-right:auto;
@@ -28,10 +29,10 @@
 			
 			img.avatar
 				{
-				height:100px;
-				width:100px;
+				//height:100px;
+				width:90%;
 				background: white;
-				//border-radius: 50%;
+				border-radius: 50%;
 				padding: 5px;
 				background:transparent;
 				transition:all linear 0.2s;
@@ -165,12 +166,21 @@
 				justify-content:space-between;
 				width:100%;
 				border-radius:5px;
+				transition:all ease 0.5s;
+				border-radius:5px;
 				
 					
 				
 				label,input,md-icon
 					{
 					transition:all linear 0.2s !important;
+					}
+					
+				.md-errors-spacer{visibility:hidden;}
+					
+				md-input-container
+					{
+					width:calc(100% - 20px);
 					}
 					
 				md-input-container:not(.md-input-focused)
@@ -181,18 +191,62 @@
 						}
 					}
 				
+				md-input-container.md-input-invalid
+					{
+					.md-errors-spacer {visibility:visible};
+					}
+				
+				
 				md-input-container input
 					{
 					font-size:16px;
+					padding-left:7px;
+					}
+					
+				.group.phone
+					{
+					label
+						{
+						left:75px;
+						}
+					
+					span
+						{
+						position: absolute;
+						left: 33px;
+						top: 9px;
+						color: black;
+						font-weight: bold;
+						}
+					md-input-container
+						{
+						padding-left:75px;
+						width:225px;
+						}
+					
 					}
 					
 					
+				//below class to show input field as changed and ready to save
+				.group
+					{
+					md-input-container.changed input
+						{
+						background:rgba(0, 137, 255, 0.06);
+						//color:#e36349;
+						}
+					md-input-container.changed.md-input-invalid input
+						{
+						background:rgba(255, 0, 129, 0.06);
+						//color:#c36464;
+						}
+					}
+					
 				}
-				
 				
 			.btn_block
 				{
-				display:none;
+				//display:none;
 				margin-top:10px;
 				text-align:right;
 				}
@@ -239,11 +293,45 @@
 			}
 			
 			
+		form.formChanged
+			{
+			background:rgba(196, 228, 255, 0.16);
+			}
+			
+			
+			
+		//determine animation for buttons container
+		.btn_block
+			{
+			width:300px;
+			margin-left:auto;
+			margin-right:0px;
+			}
+		
+		.btn_block.ng-hide-add
+			{
+			opacity:1;
+			}
+			
+		.btn_block.ng-hide-add-active
+			{
+			animation:fadeOut 0.5s;
+			}
+			
+			
 		.password
 			{
 			margin-top:40px;
+			
+			.sub_title
+				{
+				margin-bottom:0px;
+				}
+			
+			
 			form[name=passwordChange]
 				{
+				padding-top:25px;
 				box-sizing:border-box;
 				display:flex;
 				justify-content:space-between;
@@ -254,6 +342,19 @@
 					{
 					margin-top:0px;
 					width:26%;
+					}
+				}
+		
+			md-input-container:nth-of-type(2):not(.md-input-focused):not(.md-input-invalid),
+			md-input-container:nth-of-type(3):not(.md-input-focused):not(.md-input-invalid)
+				{
+				label, md-icon
+					{
+					color:rgba(107, 107, 107, 0.87) !important;
+					}
+				input
+					{
+					border-bottom-color:lighten(rgba(107, 107, 107, 0.87),15%) !important;
 					}
 				}
 		

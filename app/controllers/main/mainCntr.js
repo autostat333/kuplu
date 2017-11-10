@@ -5,7 +5,8 @@ module.exports = function MainCntr($scope,$filter,$timeout,$models,$mdDialog,$te
 	$scope.cur_dt = cur_dt;
 	$scope.init = init;
 	$scope.logout = logout;
-	$scope.login = login;
+	$scope.login = login; //for sharing between childs controllers (advertForm, advertList)
+	$scope.loginAndReload = loginAndReload; //for login from login button
 	$scope.goToProfile = goToProfile;
 
 
@@ -70,9 +71,14 @@ module.exports = function MainCntr($scope,$filter,$timeout,$models,$mdDialog,$te
 			controller:'loginCntr',
 			clickOutsideToClose:true,
 			escapeToClose:true
-			
 			})
 		
+		}
+	
+	
+	function loginAndReload()
+		{
+		$scope.login().then(function(){window.location.reload()});
 		}
 	
 	

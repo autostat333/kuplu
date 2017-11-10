@@ -41,9 +41,13 @@ module.exports = function CurrencyMask($filter,$timeout,$compile)
 				//debugger;
 				setTimeout(function()
 					{
-					var padding = $(element.parent('md-input-container')[0]).find('.currency_label').width();
+					var currencyLabel = $(element.parent('md-input-container')[0]).find('.currency_label');
+					var contentLength = currencyLabel.html();
+					contentLength = contentLength.length||0;
+					padding = contentLength*6+4;
+					//var padding = currencyLabel.width();
 					element.css('padding-right',padding);
-					})
+					},0)
 				});
 			
 			(function init()
@@ -68,18 +72,28 @@ module.exports = function CurrencyMask($filter,$timeout,$compile)
 
 				keyUp(); //to catch SELECTION_PART
 				
-				$timeout(function(){render(val)},0);
-				return formatToModel(val);
+				var valModel = formatToModel(val);
+				
+				var newVal; 
+				if ((newVal=validateInput(val))!=val)
+					$timeout(function()
+						{
+						ngModel.$viewValue = ngModel.$$lastCommittedViewValue = newVal;
+						ngModel.$render();
+						setCursor();
+						},0)
+						
+				return valModel;
 				})
 
-				
+				 
 				
 			//logic for ng-currency formatting
 			function formatToModel(val)
 				{
-				//debugger;
-				val = val.replace(/[^\d,]*([\d,]*)/g,'$1');
-				//convert to absolute value, not float
+
+				val = val.replace(/[^\d,]*([\d,]*)/g,'$1'); 
+				//convert to absolute value, not float 
 				val = val.toString();
 				val = val.split(',');
 				if (val.length!=1)
@@ -91,60 +105,54 @@ module.exports = function CurrencyMask($filter,$timeout,$compile)
 				else
 					val = val[0]+'00';
 					
+				
 				val = val.replace(/^0+(?=\d)/g,''); //because if value is equal to 0045,45 - it remains in model as 04545
 					
-				return val;
+				return parseInt(val);
 				}
 			
 			function formatToInput(val)
 				{
-				var val_org = val;
-				val = formatToModel(val);
-				if (!val)return val;
+				if (!val) return val;
 				val = val/100;
-				val = val.toString().replace('.',',');
-				if (val.indexOf(',')!=-1)
-					val = val.replace(/(\d)(?=(\d\d\d)+,)|(,\d{0,2}).*/g,'$1$3 ');
+				val = val.toString();
+				val = val.replace('.',',');
+				if (val.indexOf(',')==-1)
+					val+=',00';
+				
+				val = validateInput(val); //put spaces between digits
+				return val;
+				}
+			
+
+			function validateInput(valFromInput)
+				{
+				if (!valFromInput)return valFromInput;
+				valFromInput = valFromInput.replace(/[^\d,]*([\d,]*)/g,'$1'); 
+				//trim extra 00056,55
+				valFromInput = valFromInput.replace(/^0*(\d.*)|(0,.*)/,'$1'); 
+				
+				if (valFromInput.indexOf(',')!=-1)
+					newVal = valFromInput.replace(/(\d)(?=(\d\d\d)+,)|(,\d{0,2}).*/g,'$1$3 ');
 				else
-					val = val.replace(/(\d)(?=(\d\d\d)+$)/g,'$1 ');
+					newVal = valFromInput.replace(/(\d)(?=(\d\d\d)+$)/g,'$1 ');
 				
 				//check whether end of typied value equal contains ',', to render values like '1,'
 				//where after comma no any digits
-				if (val_org.indexOf(',')!=-1&&val.indexOf(',')==-1)
-					val = val+',';
+				if (valFromInput.indexOf(',')!=-1&&newVal.indexOf(',')==-1)
+					newVal = newVal+',';
 					
-				if (val_org=='0,0') return '0,0'; //only hardcode for value 0,0
+				//check whether start of typied value equal contains ',', to render values like ',1' to '0,1'
+				if (newVal.indexOf(',')==0)
+					newVal = '0'+newVal;
+					
+				if (valFromInput=='0,0') return '0,0'; //only hardcode for value 0,0
 				
-				return val.trim();
+				
+				return newVal.trim();
 				}
-			
-			
-			//render nesseccary (taken from ngModelWatch source code)
-			function render(modelValue)
-				{
-				var formatters = ngModel.$formatters,
-				idx = formatters.length;
 
-				var viewValue = modelValue;
-				while (idx--) 
-					{
-					viewValue = formatters[idx](viewValue);
-					}
-					
-				if (ngModel.$viewValue !== viewValue) //after replacing all symbols - not equal to current val of input
-					{
-					ngModel.$$updateEmptyClasses(viewValue);
-					ngModel.$viewValue = ngModel.$$lastCommittedViewValue = viewValue;
-					ngModel.$render();
-					//set new cursor position (equal to previous)
 
-					// It is possible that model and view value have been updated during render
-					ngModel.$$runValidators(ngModel.$modelValue, ngModel.$viewValue, function(){});
-					}
-					
-
-				setCursor();
-				}
 				
 			function setCursor()
 				{
@@ -167,7 +175,7 @@ module.exports = function CurrencyMask($filter,$timeout,$compile)
 					element[0].setSelectionRange(pos,pos);
 				BACKSPACE_SPACE = false;
 
-				} 
+				}
 				
 			element.on('keydown',function(e)
 				{
@@ -179,7 +187,7 @@ module.exports = function CurrencyMask($filter,$timeout,$compile)
 				
 					if (pos>0&&(val[pos-1]==' '))
 						{
-						SELECTION_PART = val.substr(pos-1,);
+						SELECTION_PART = val.substr(pos-1);
 						BACKSPACE_SPACE = true;						
 						}
 						
@@ -201,6 +209,27 @@ module.exports = function CurrencyMask($filter,$timeout,$compile)
 				SELECTION_START = element[0].selectionStart; 
 					
 				}
+			
+			
+		
+			element.on('blur',function()
+				{
+				var new_val = formatToInput(ngModel.$modelValue);
+				ngModel.$viewValue = new_val;
+				ngModel.$render();
+					/*
+				var val = ;
+				if (!val) return false
+				debugger;
+				val_ = val.replace(/^[^1-9,]*(?:(?:(,\d{0,2}).*)|(?:([1-9][0-9]*)(,\d{0,2})*.*))*$/,'$1$2$3');
+
+				
+				ngModel.$viewValue = val_;
+				ngModel.$commitViewValue();
+				ngModel.$viewValue = val;
+				render(val_);
+					*/
+				})
 			
 			
 			//on blur should be to final checking

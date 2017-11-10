@@ -1,12 +1,25 @@
 module.exports = function AdvertsCntr(config,db, userError,regions)
 	{
 	var async = require('async');
-	
+	var ObjectId = require('mongodb').ObjectId;
+	var _ = require('lodash');
 	
 	$scope = {};
 	
 	$scope.getAll = getAll;
+	$scope.getAllRelatedToUser = getAllRelatedToUser;
+	$scope.getAllWithUsers = getAllWithUsers;
+	$scope.getAdvertById = getAdvertById;
+	
+
+
 	$scope.createAdvert = createAdvert;
+	$scope.updateAdvert = updateAdvert;
+	$scope.closeAdvert = closeAdvert;
+	$scope.addMessage = addMessage;
+
+	
+	$scope.transformAdvert = transformAdvert;
 	
 	$scope._checkObligatory = _checkObligatory;
 	$scope._checkRules = _checkRules;
@@ -16,6 +29,7 @@ module.exports = function AdvertsCntr(config,db, userError,regions)
 	$scope._checkFilterDate = _checkFilterDate;
 	$scope._checkFilterRegion = _checkFilterRegion;
 	$scope._checkFilterUserAdverts = _checkFilterUserAdverts;
+	$scope._checkFilterRelatedUserAdverts = _checkFilterRelatedUserAdverts;
 	$scope._checkSorting = _checkSorting;
 	$scope._checkAllowedFields = _checkAllowedFields;
 	
@@ -42,11 +56,23 @@ module.exports = function AdvertsCntr(config,db, userError,regions)
 		'UserId':{}
 		};
 
+		
+		
+	//it is params for projection, to prevent sending in user object passwords and phones
+	//takes part in two methods - getAllWithUsers & getById
+
+	var excludeFieldsFromUser = {};
+	excludeFieldsFromUser['password'] = 0;
+	excludeFieldsFromUser['phone'] = 0;
+	excludeFieldsFromUser['created'] = 0;
+	excludeFieldsFromUser['name'] = 0;
+		
+		
 
 	return $scope;
 	
 	
-	function getAll(params,callback)
+	function getAll(params,USER,callback)
 		{
 			
 		try
@@ -56,13 +82,21 @@ module.exports = function AdvertsCntr(config,db, userError,regions)
 			$scope._checkFilterDate(params);
 			$scope._checkFilterRegion(params);
 			$scope._checkFilterUserAdverts(params);
+			$scope._checkFilterRelatedUserAdverts(params);
 			
 			$scope._checkSorting(params);
 				
+
+			var find = $scope._transformFiltringParams(params,USER);
 				
-			var find = $scope._transformFiltringParams(params);
 				
-			var cursor = db.collection('adverts').find(find)
+			//if request to DB from history
+			if (params&&params['filtring']['history'])
+				var cursor = db.collection('advertsHistory').find(find,{'Messages':0,'RelatedUsers':0});
+			else
+				var cursor = db.collection('adverts').find(find);
+			
+			
 			
 			if (params['sorting'])
 				cursor = cursor.sort(params['sorting']);
@@ -80,13 +114,15 @@ module.exports = function AdvertsCntr(config,db, userError,regions)
 				data['count'] = count;
 				cursor.each(function(err,doc)
 					{
-					if (stop) return false; //to prevent twoi times call callback
+					if (stop) return false; //to prevent two times call callback
 					if (!doc)
 						{
 						callback(null,data);
 						stop = true;
 						return false;
 						}
+						
+					doc = $scope.transformAdvert(doc,USER) //remove all messages which are not allow for user
 					data['data'].push(doc);					
 					})
 				})
@@ -103,6 +139,270 @@ module.exports = function AdvertsCntr(config,db, userError,regions)
 			}
 		
 		}
+	
+	
+	//this method gets all adverts and complete it with users (relatedUsersList)
+	//but finally it remains only all users if user is owner
+	function getAllWithUsers(params,req,callback)
+		{
+			
+			
+		$scope.getAll(params,req.USER,function(err,res)
+			{
+			if (err instanceof userError)
+				{
+				callback(null,{'data':'','Error':err.Error,'userError':true});
+				return false;
+				}
+			if (err){callback(err);return false;}
+				
+			//complete users
+			async.each(res['data'],function(advert,callback)
+				{
+				if (!advert['RelatedUsers']||!(advert['RelatedUsers'] instanceof Array))
+					{
+					callback();
+					return false;
+					}
+				
+				var ids = advert['RelatedUsers'].map(function(_id){return ObjectId(_id)});
+				db.collection('users').find({'_id':{'$in':ids}},excludeFieldsFromUser).toArray(function(err,docs)
+					{
+					if (err){err.message+='; Cannot get users for RelatedUsers';callback(err);return false}
+					advert.Users = docs;
+					callback();
+					})
+				},function(err,res_)
+					{
+					try
+						{
+						if (err) throw err;
+						callback(null,res);
+						}
+					catch(err)
+						{
+						err.message+='; Problems to execute getAllAdverts with users!';
+						callback(err);
+						return false;
+						}
+					})
+				
+				
+			})
+		}
+	
+	
+	
+	//it will get all transformed adverts (removed all not permitted messages and RelatedUser object)
+	//also it adds owner object
+	function getAllRelatedToUser(params,USER,callback)
+		{
+		params['filtring'] = params['filtring']||{'filtring':{}};
+		params['filtring']['relatedToUser'] = true;
+		$scope.getAll(params,USER,function(err,response)
+			{
+			if (err) {err.messages+='; Problems to obtain adverts related to user!';calback(err);return false};
+			async.each(response.data,function handleUser(advert,callback)
+				{
+				db.collection('users').findOne({'_id':ObjectId(advert['Owner'])},excludeFieldsFromUser,function pushOwner(err,doc)
+					{
+					if (err){err.message+='; Error when push user to array';callback(err);return false;}
+					advert['OwnerObj'] = doc;
+					callback();
+					})
+				},function finishGettingOwner(err,res)
+					{
+					if (err) {err.message+='; Error when get all adverts related to user!';callback(err);return false}
+					callback(null,response);
+					})
+			})
+					
+		}
+	
+	
+	
+	//by default returns with users
+	function getAdvertById(req,callback)
+		{
+		var _id = req.params['id'];
+		
+		async.series([
+			function getAdvert(callback)
+				{
+				if (req.body['filtring']&&req.body['filtring']['history'])
+					var collection = 'advertsHistory';
+				else
+					var collection = 'adverts';
+				
+				db.collection(collection).findOne({'_id':ObjectId(_id)},function(err,doc)
+					{
+					if (err) {err.message+='; Cannot get advert by Id from collection'; callback(err);return false};
+					$scope.advert = doc||{};
+					$scope.advert['Users'] = [];
+					callback();
+					});
+				},
+			function getUsersForAdvert(callback)
+				{
+				async.each($scope.advert['RelatedUsers'],function(_id,callback_)
+					{
+					db.collection('users').findOne({'_id':ObjectId(_id)},excludeFieldsFromUser,function(err,user)
+						{
+						if (err){err.message+='; Problem to obtain user when get advert by id!';callback_(err);return false;}
+						$scope.advert['Users'].push(user);
+						callback_();
+						})
+					},callback)
+				}
+			],function(err,res)
+				{
+				try
+					{
+					if (err) throw err;
+					$scope.advert = $scope.transformAdvert($scope.advert,req.USER);
+					callback(null,{'data':$scope.advert,'Error':''});
+					}
+				catch(err)
+					{
+					err.message+='; Some problems when execute asyncseries to get advert by ID';
+					callback(err);
+					return false;
+					}
+				})
+			
+			
+		}
+	
+	
+	function addMessage(req,callback)
+		{
+		try
+			{
+			var message = req.body,m;
+			if ((m=message.text.isValidFor('advert/message'))!=true) throw new userError(m);
+			message['ts'] = (new Date())*1;
+			async.series([
+					function getUser(callback)
+						{
+						db.collection('users').find(
+							{
+							'$or':[{'_id':ObjectId(message.from)},
+									{'_id':ObjectId(message.to)}]
+							})
+							.count(function(err,count)
+								{
+								if (err) {callback(err);return false}
+								if (count!=2)
+									{
+									var err = new userError('Отсутсвует или пользоветель которму адрессовано сообщение или автор сообщения!');
+									callback(err);
+									return false;
+									}
+								callback();
+								})
+						},
+					function saveMessage(callback)
+						{
+						var update = {};
+						
+						//if not owner
+						if (!message['owner'])
+							{
+							update['$addToSet'] = {};
+							update['$addToSet']['RelatedUsers'] = message.from;
+							update['$push'] = {};
+							var field = 'Messages'+'.'+message.from;
+							update['$push'][field] = message;
+							}
+						else
+							{
+							update['$push'] = {};
+							var field = 'Messages'+'.'+message.to;
+							update['$push'][field] = message;
+							}
+						
+						delete message['owner'];
+						
+						db.collection('adverts').update({'_id':ObjectId(message.advertId)},update,function(err,res)
+							{
+							if (res) $scope.message = message;
+							callback(err,res);
+							})
+
+						}
+				],function(err,res)
+					{
+					if (err instanceof userError)
+						{
+						callback(null,{'data':'','Error':err.Error,'userError':true});
+						return false;
+						}
+					if (err){err.message+='; Problems when update messages in DB or get user';callback(err);return false;}
+					callback(null,{'data':$scope.message,'Error':''});
+					})
+			}
+		catch(err)
+			{
+			if (err instanceof userError)
+				{
+				callback(null,{'data':'','Error':err.Error,'userError':true});
+				return false;
+				}
+				
+			err.message+='; Problems to start adding message!';
+			callback(err);
+			return false;
+			}
+			
+		
+		}
+	
+	
+	function closeAdvert(advert,user,callback)
+		{
+		try
+			{
+			if (user['_id']!=advert['Owner']) throw new userError('Вы не можете закрыть не свое намерение!');
+			
+			async.series([
+				function findOne(callback){db.collection('adverts').findOne({'_id':ObjectId(advert._id)},function(err,doc)
+					{
+					if (err) {err.message+='; Problems to get doc from DB for remjoving to advertsHistory collection';callback(err);return false}
+					$scope.advert = doc;
+					callback();
+					})},
+				function removeFromDb(callback){db.collection('adverts').remove({'_id':ObjectId($scope.advert['_id'])},callback)},
+				function insertToHistory(callback)
+					{
+					$scope.advert['_id_old'] = $scope.advert['_id'];
+					delete $scope.advert['_id']
+					db.collection('advertsHistory').insert($scope.advert,callback)
+					}
+				],function(err,res)
+					{
+					if (err) {err.message+='; Problems to remove or insert advert from DB!';callback(err);return false;}
+					callback(null,{'data':$scope.advert,'Error':''});
+					})
+				
+			}
+			
+		catch(err)
+			{
+			if (err instanceof userError)
+				{
+				callback(null,{'data':'',Error:err.Error,'userError':true});
+				return false;
+				}
+				
+			if (err){err.message+='; Problems to remove advert to history collection!';callback(err);return false}
+			
+			callback(null,{'data':advert,'Error':''});
+			return false;
+			}
+			
+			
+		}
+	
 	
 	
 	function _checkPagination(params)
@@ -164,7 +464,12 @@ module.exports = function AdvertsCntr(config,db, userError,regions)
 		
 		}
 
-	
+	function _checkFilterRelatedUserAdverts(params)
+		{
+		if (!params['filtring']||(params['filtring']&&!params['relatedToUser'])) return false;
+		
+		if (typeof params['filtring']['relatedToUser']!='boolean') throw new userError('Неверный формат флага для поля relatedToUser, должен быть булеан!');
+		}
 	
 	
 	function _checkSorting(params)
@@ -192,7 +497,7 @@ module.exports = function AdvertsCntr(config,db, userError,regions)
 			
 		}
 	
-	function _transformFiltringParams(params)
+	function _transformFiltringParams(params,USER)
 		{
 		var find = {};
 
@@ -221,7 +526,14 @@ module.exports = function AdvertsCntr(config,db, userError,regions)
 		//transform onlyUserAdverts
 		if (params['filtring']['onlyUserAdverts'])
 			{
-			find['Owner'] = params['userId'];
+			find['Owner'] = USER['_id'];
+			}
+			
+			
+		//transform relatedToUser flag
+		if (params['filtring']['relatedToUser'])
+			{
+			find['RelatedUsers'] = USER._id;
 			}
 			
 		//because error from mongoDB when ampty '$and'
@@ -232,10 +544,42 @@ module.exports = function AdvertsCntr(config,db, userError,regions)
 	
 		}
 	
+	function transformAdvert(advert,USER)
+		{
+		if (!USER)
+			{
+			delete advert['Messages'];
+			delete advert['RelatedUsers'];
+			delete advert['Users']; //it is not remains in DB but can be added from completeUsers
+			
+			return advert;
+			}
+			
+		//if auth user but he is not owner - return only his messages
+		if (USER._id!=advert['Owner']&&advert['Messages'])
+			{
+			var mes = advert['Messages'][USER._id];
+			advert['Messages'] = {};
+			advert['RelatedUsers'] = [];
+			//i include owner object to list of users
+			if (advert['Users']) advert['Users'] = advert['Users'].filter(function(el){return el['_id']==USER['_id']||el['_id']==advert['Owner']}); 
+			
+		
+			if (mes)
+				{
+				advert['Messages'][USER._id] = mes;
+				advert['RelatedUsers'] = [USER._id];					
+				}
+			
+			return advert
+			}
+		return advert; //for owner
+			
+		}
 	
 	
 	
-	function createAdvert(doc,callback)
+	function createAdvert(doc,USER,callback)
 		{
 		try
 			{
@@ -246,6 +590,7 @@ module.exports = function AdvertsCntr(config,db, userError,regions)
 			$scope._checkRules();
 			$scope._checkGeo();
 			
+			if (!USER) throw new Error('Отсутствует пользователь в токене или токен не корректный!');
 			
 			//!!!TODO CHEKC ALLOWED FIELDS
 			//!!!ADD USERS FOR FILTRING
@@ -255,6 +600,8 @@ module.exports = function AdvertsCntr(config,db, userError,regions)
 			$scope.advert['Created'] = new Date();
 			$scope.advert['CreatedDay'] = $scope.advert['Created'].toISOString().substr(0,10);
 			$scope.advert['CreatedTimeStamp'] = $scope.advert['Created'].getTime()+'';
+			$scope.advert['Owner'] = USER['_id'];
+			
 			
 			db.collection('adverts').insert($scope.advert,function(err,doc)
 				{
@@ -289,6 +636,86 @@ module.exports = function AdvertsCntr(config,db, userError,regions)
 			}
 			
 		}
+
+
+	
+	function updateAdvert(doc,USER,callback)
+		{
+		try
+			{
+			//check existance of obligation fields
+			//if error - it will be catched by catch and sended to front
+			
+			
+			$scope.advert = _.pick(doc,[
+						'Title',
+						'Description',
+						'Price',
+						'PriceUnit',
+						'Street',
+						'Currency',
+						'IsPricePerUnit',
+						'Region',
+						'City'])
+						
+			
+			$scope._checkObligatory();
+			$scope._checkRules();
+			$scope._checkGeo();
+			
+			if (!USER) throw new Error('Отсутствует пользователь в токене или токен не корректный!');
+			
+			//!!!TODO CHEKC ALLOWED FIELDS
+			//!!!ADD USERS FOR FILTRING
+			
+		
+			//convert to Int Price
+			$scope.advert['Price']*=1;
+			var updateDate = new Date();
+
+			
+			
+			db.collection('adverts').update({'_id':ObjectId(doc._id)},{'$set':$scope.advert,'$push':{'Updated':updateDate}},function(err,doc)
+				{
+				try
+					{
+					if (err) throw err;
+					callback(null,{'data':'','Error':''});
+					}
+				catch(err)
+					{
+					err.message+="Some error when update advert";
+					callback(err);
+					return false;
+					}
+					
+				})
+			
+			}	
+
+		catch(err)
+			{
+			//check whether iut is object userError
+			if (err.userError)
+				{
+				callback(null,err)
+				return false;
+				}
+				
+			err.message+="; Problem when passing validation or starting requests!";
+			callback(err);
+			return false;
+			}
+			
+		}
+
+
+
+
+
+
+
+
 		
 	
 	function _checkObligatory()

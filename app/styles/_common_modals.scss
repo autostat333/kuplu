@@ -7,8 +7,14 @@ md-dialog,
 md-toolbar
 	{
 	border-radius:0px !important;
+	
+
 	}
 	
+.md-toolbar-tools
+	{
+	justify-content:space-between;
+	}
 	
 md-toolbar:not(md-menu-toolbar)
 	{
@@ -110,8 +116,63 @@ md-dialog.confirmdialog
 		{
 		background:darken($accent,10%) !important;
 		}
-
-
 		
 	}
+	
+	
+	
+	//for confirmation ($dmDialog.confirm)
+md-dialog[role=dialog]:not(.custom)
+	{
+	width:500px;
+	
+	@media(max-width:700px)
+		{
+		width:300px;
+		}
+	
+	h2.md-title
+		{
+		text-align:center;
+		color:#5d5d5d;
+		letter-spacing:1px !important;
+		}
+		
+		
+	button:nth-of-type(1)
+		{
+		margin-right:20px !important;
+		color:#954f90 !important;
+		}
+		
+	button.md-default-theme:nth-of-type(2)
+		{
+		box-shadow:0 2px 5px 0 rgba(0,0,0,.26);
+		background:$accent;
+		color:white !important;
+		}
+	button.md-default-theme:nth-of-type(2):hover, button:nth-of-type(2):focus
+		{
+		background:darken($accent,15%) !important;
+		}
+		
+		
+	}
+	
+md-dialog.custom
+	{
+	width:650px;
+	
+	md-dialog-content
+		{
+		.md-headline
+			{
+			font-size:16px;
+			text-align:center;
+			}
+
+		}
+	
+	}
+	
 	

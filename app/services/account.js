@@ -13,8 +13,9 @@ module.exports = function accountProvider()
 	function encodeBase64(obj)
 		{
 		if (!obj) return obj;
+
 		if (typeof obj=='object')
-			obj = angular.toJSON(obj);
+			obj = angular.toJson(obj);
 
 		if (typeof obj=='string')
 			{
@@ -32,9 +33,8 @@ module.exports = function accountProvider()
 		}
 	
 	
-	
 	//interceptor is pushed in routes.js (config of angularjs)
-	this.interceptor = ['$rootScope','jwtHelper',function($rootScope, jwtHelper)
+	this.interceptor = ['$rootScope','jwtHelper','$injector',function($rootScope, jwtHelper,$injector)
 		{
 		return {
 			'request':function(config)
@@ -52,6 +52,23 @@ module.exports = function accountProvider()
 				if (response.data.token)
 					handleToken($rootScope,response.data.token,jwtHelper);
 				
+				if (response.data.Error=='Token is expired'&&$rootScope.USER)
+					{
+					response.data.Error = '';
+					$rootScope.USER = false;
+					window.localStorage.removeItem('token');
+					debugger;
+					var $mdDialog = $injector.get('$mdDialog');
+					$mdDialog.show($mdDialog
+						.alert()
+						.title('Упс,')
+						.content('Истекло время сессии, вам необходимо перелогиниться!')
+						.ok('OK!')).then(function()
+							{
+							window.location.reload();
+							})
+					}
+				
 				return response;
 				}
 					
@@ -65,12 +82,72 @@ module.exports = function accountProvider()
 		
 	this.$get = ['$http','$rootScope','$mdDialog','$q','jwtHelper',function($http,$rootScope,$mdDialog,$q,jwtHelper)	
 		{
-
+				
+		function handleError(msg)
+			{
+			return $mdDialog.show($mdDialog
+				.alert()
+				.title('Гоп стоп,')
+				.content(msg)
+				.ok('Закрыть')
+				)
+			}		
+		
+		
 		var proto_signUp = {
 		isEmpty: function()
 			{
 			return !this.name||!this.password;
+			},
+			
+		update:function()
+			{
+			var defer = $q.defer();
+			var data = encodeBase64(this);
+			$http.post('/api/profile/update',{'data':data}).then(function(response)
+				{
+				response = response.data;
+				if (response.Error)
+					{
+					handleError(response.Error).then(function()
+						{
+						defer.resolve(response);
+						})
+					return false;
+					}
+				defer.resolve(response);
+				},function(err)
+					{
+					handleError(err.Message).then(function(){defer.resolve({'data':'','Error':true})})
+					}.bind(this))
+					
+			return defer.promise;
+			},
+			
+		updatePassword:function(passObj)
+			{
+			var defer = $q.defer();
+			var data = encodeBase64(passObj);
+			$http.post('/api/password/update',{'data':data}).then(function(response)
+				{
+				response = response.data;
+				if (response.Error)
+					{
+					handleError(response.Error).then(function()
+						{
+						defer.resolve(response);
+						})
+					return false;
+					}
+				defer.resolve(response);
+				},function(err)
+					{
+					handleError(err.Message).then(function(){defer.resolve({'data':'','Error':true})})
+					}.bind(this))
+					
+			return defer.promise;			
 			}
+
 		};
 
 		
@@ -109,18 +186,7 @@ module.exports = function accountProvider()
 					
 				return obj;
 				},
-		
-	
 
-
-
-				
-				
-			logoout:function()
-				{
-				
-				},
-				
 				
 			login:function(data)
 				{
@@ -136,13 +202,25 @@ module.exports = function accountProvider()
 				$http.post('/login',data).then(function(response)
 					{
 					response = response.data;
+					//userError remains only this
+					//in future should be Error  - to show from http callbacks
+					//and userErrors - to show from controllers
+					//from backend should come userError as simple object {data:'',Error:'',userError:''}
+					if (response.Error&&!response.userError)
+						{
+						handleError(response.Error).then(function(){defer.resolve(response)});
+						return false;
+						}
+					
 					defer.resolve(response);
 					}.bind(this),function(err)
 						{
-						alert(err.message);
-						defer.resolve({Error:err.message});
+						var msg = !err?'Нет сообщений':err.message;
+						handleError(err.message).then(function()
+							{
+							defer.resolve({'data':'','Error':''})
+							})
 						})
-					
 					
 				return defer.promise;
 					
@@ -170,13 +248,25 @@ module.exports = function accountProvider()
 				$http.post('/signup',data).then(function(response)
 					{
 					response = response.data;
-					
+					//userError remains only this
+					//in future should be Error  - to show from http callbacks
+					//and userErrors - to show from controllers
+					//from backend should come userError as simple object {data:'',Error:'',userError:''}
+					if (response.Error&&!response.userError)
+						{
+						handleError(response.Error).then(function(){defer.resolve(response)})
+						return false;
+						}
+						
 					//token will de decoded and putted in rootScope in interceptor (above)
 					defer.resolve(response);
-					}.bind(this),function(err)
+					},function(err)
 						{
-						alert(err);
-						defer.resolve({Error:err.message});
+						var msg = !err?'Нет сообщений':err.message;
+						handleError(err.message).then(function()
+							{
+							defer.resolve({'data':'','Error':''})
+							})
 						})
 					
 					
@@ -190,8 +280,42 @@ module.exports = function accountProvider()
 				window.localStorage.removeItem('token');
 				$rootScope.USER = false;
 				window.location.reload();
-				}
+				},
 				
+			saveAvatar:function(base64)
+				{
+				var defer = $q.defer();
+				$http.post('/avatar/update',{'base64':base64}).then(function(response)
+					{
+					if (!response||!response.data)
+						{
+						defer.resolve({'data':'','Error':true});
+						return false;
+						}
+					if (response.data.Error)
+						{
+						handleError(response.data.Error)
+							.then(function()
+								{
+								defer.resolve({'data':'','Error':true});
+								})
+						return false;
+						}
+						
+					response = response.data;
+					defer.resolve(response);
+					
+					},function(err)
+						{
+						handleError('Произошла ошибка про отправке запроса на сохранение картинки!')
+							.then(function()
+								{
+								defer.resolve({'data':'','Error':true});
+								})
+						})
+				return defer.promise;
+				}
+	
 			}
 		}]
 	}

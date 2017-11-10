@@ -1,5 +1,5 @@
 <div class="profile_user_intentions">
-	
+	<myspinner class="off" ng-class="{'on':spinner,'off':!spinner}"></myspinner>
 	
 	<div class="key_figures">
 		<div class="sub_title">
@@ -31,33 +31,37 @@
 		<div class="active_intentions_container">
 			<div class="advert"
 				ng-class="{'active':showMessages}"
-				ng-repeat="it in [1,2,3]"
+				ng-repeat="advert in ADVERTS.data"
 				ng-init="showBottomToolkit=false"
 				ng-mouseover="showBottomToolkit = true"
 				ng-mouseleave="showBottomToolkit = false"
-				
+				chat-messages
 				>
 				<div class="for_flex">
 					<div class="description_col">
 					
-						
-						<div class="title">Найму рабочую бригаду для строительства дома до 200 кв м</div>
-						<div class="region">Киевская область, Киев</div>
-						
-						<div class="desc">
-							необходмо построить дом двух этажный из красного кирпича. Перекрытия бетонные. 10 км от Киева
-							Просьма отправлять ссылки на сделанные работы.
-						</div>
+						<div class="date">{{advert['Created']|date:'yyyy-MM-dd HH:mm'}}</div>
+						<div class="title">{{advert['Title']}}</div>
+						<div class="region">{{advert['Region']['name']}} {{advert['City']['name']}}</div>
+						<div class="desc">{{advert['Description']}}</div>
 
 						<!-- <div class="show_more"><span md-ink-ripple="#9a508b"><md-icon>expand_more</md-icon>Смотреть сообщения</span></div> -->
 						<div class="btn_block">
 						
 							<md-button class="show_more"
 								ng-click="showMessages=!showMessages"
-								ng-class="{'active':showMessages}"
+								ng-class="{'active':showMessages,'disabled':!advert.RelatedUsers.length}"
+								ng-disabled="!advert.RelatedUsers.length"
 								>
-								<md-icon>expand_more</md-icon>
-								Смотреть сообщения
+								<md-icon
+									ng-hide="!advert.RelatedUsers.length"
+									>expand_more</md-icon>
+								<span
+									ng-hide="!advert.RelatedUsers.length"
+									>Смотреть сообщения</span>
+								<span
+									ng-show="!advert.RelatedUsers.length"
+									>У Вас нет сообщений</span>
 							</md-button>
 
 							<span class="new_messages">1 новое</span>
@@ -66,11 +70,15 @@
 							<div class="bottom_toolkit"
 								ng-show="showBottomToolkit"
 								>
-								<md-button class="status">
-									<md-icon>build</md-icon>
-									Изменить статус
+								<md-button class="status"
+									ng-click="closeAdvert(advert)"
+									>
+									<md-icon>gavel</md-icon>
+									Закрыть намерение
 								</md-button>
-								<md-button class="edit">
+								<md-button class="edit"
+									ng-click="editAdvert(advert)"
+									>
 									<md-icon>edit</md-icon>
 									Редактировать
 								</md-button>
@@ -82,8 +90,9 @@
 					</div>
 				
 					<div class="price_tools_col">
-						<div class="price">900 000 грн</div>
-						<div class="price_desc">(всего)</div>
+						<div class="price">{{advert['Price']|mycurrency}} {{advert['Currency']}}</div>
+						<div class="price_desc" ng-show="advert['IsPricePerUnit']">(за {{advert['PriceUnit']}})</div>
+						<div class="price_desc" ng-show="!advert['IsPricePerUnit']">(всего)</div>
 					</div>
 				</div>
 
@@ -93,231 +102,68 @@
 					<div class="container_">
 						<div class="left"  perfect-scrollbar>
 							<ul class="people">
-								<li class="person" data-chat="person1"
-									ng-click="personClick($index,'person1','Thomas Bangalter')"
+								<li class="person"
+									ng-repeat="user in advert.Users"
+									ng-click="pickUser(user)"
+									ng-class="{'active':user.messagesVisible}"
 									>
-									<img src="https://s13.postimg.org/ih41k9tqr/img1.jpg" alt="" />
-									<span class="name">Thomas Bangalter</span>
-									<span class="time">2:09 PM</span>
-									<span class="preview">I was wondering...</span>
-								</li>
-								<li class="person" data-chat="person2"
-									ng-click="personClick($index,'person2','Dog Woofson')"
-									>
-									<img src="https://s3.postimg.org/yf86x7z1r/img2.jpg" alt="" />
-									<span class="name">Dog Woofson</span>
-									<span class="time">1:44 PM</span>
-									<span class="preview">I've forgotten how it felt before</span>
-								</li>
-								<li class="person" data-chat="person3"
-									ng-click="personClick($index,'person3','Louis CK')"
-									>
-									<img src="https://s3.postimg.org/h9q4sm433/img3.jpg" alt="" />
-									<span class="name">Louis CK</span>
-									<span class="time">2:09 PM</span>
-									<span class="preview">But we’re probably gonna need a new carpet.</span>
-								</li>
-								<li class="person" data-chat="person4"
-									ng-click="personClick($index,'person4','Bo Jackson')"
-									>
-									<img src="https://s3.postimg.org/quect8isv/img4.jpg" alt="" />
-									<span class="name">Bo Jackson</span>
-									<span class="time">2:09 PM</span>
-									<span class="preview">It’s not that bad...</span>
-								</li>
-								<li class="person" data-chat="person5"
-									ng-click="personClick('person5','Michael Jordan')"
-									>
-									<img src="https://s16.postimg.org/ete1l89z5/img5.jpg" alt="" />
-									<span class="name">Michael Jordan</span>
-									<span class="time">2:09 PM</span>
-									<span class="preview">Wasup for the third time like is 
-				you bling bitch</span>
-								</li>
-								<li class="person" data-chat="person6"
-									ng-click="personClick('person6','Drake')"
-									>
-									<img src="https://s30.postimg.org/kwi7e42rh/img6.jpg" alt="" />
-									<span class="name">Drake</span>
-									<span class="time">2:09 PM</span>
-									<span class="preview">howdoyoudoaspace</span>
-								</li>
-								
-																<li class="person" data-chat="person6"
-									ng-click="personClick('person6','Drake')"
-									>
-									<img src="https://s30.postimg.org/kwi7e42rh/img6.jpg" alt="" />
-									<span class="name">Drake</span>
-									<span class="time">2:09 PM</span>
-									<span class="preview">howdoyoudoaspace</span>
-								</li>
-								
-								
+									<img ng-src="{{user['avatarUrl']}}"/>
+									<span class="name">{{user['visibleName']}}</span>
+									<span class="time">{{user['lastMessage']['dateStr']}}</span>
+									<span class="preview">{{user['lastMessage']['text']}}</span>
+								</li>								
 							</ul>
 						</div>
 						<div class="right">
-							<div class="top"><span>To: <span class="name">Dog Woofson</span></span></div>
-							<div class="chat" data-chat="person1" perfect-scrollbar>
+							<div class="top"><span>To: <span class="name">{{getActiveUser()['visibleName']}}</span></span></div>
+				
+							<div class="wrap" 
+								ng-repeat="user in advert['Users']"
+								ng-if="user['messagesVisible']"
+								>
 							
+								<div class="chat active-chat"
+									perfect-scrollbar
+									user-id="{{user['_id']}}"
+									>
+									<div class="conversation-start">
+										<span>Today, 6:48 AM</span>
+									</div>
+									<div class="bubble"
+										ng-class="{'you':$root.USER._id==mess['from'],'me':$root.USER['_id']!=mess['from']}"
+										ng-repeat="mess in user['messages']"
+										>
+										{{mess['text']}}
+									</div>
+									
+								</div>
 							
-								<div class="conversation-start">
-									<span>Today, 6:48 AM</span>
-								</div>
-								<div class="bubble you">
-									Hello,
-								</div>
-								<div class="bubble you">
-									it's me.
-								</div>
-								<div class="bubble you">
-									I was wondering...
-								</div>
-								
-							</div>
-							<div class="chat" data-chat="person2" perfect-scrollbar>
-								<div class="conversation-start">
-									<span>Today, 5:38 PM</span>
-								</div>
-								<div class="bubble you">
-									Hello, can you hear me?
-								</div>
-								<div class="bubble you">
-									I'm in California dreaming
-								</div>
-								<div class="bubble me">
-									... about who we used to be.
-								</div>
-								<div class="bubble me">
-									Are you serious?
-								</div>
-								<div class="bubble you">
-									When we were younger and free...
-								</div>
-								<div class="bubble you">
-									I've forgotten how it felt before
-								</div>
-							</div>
-							
-							
-							
-							<div class="chat" data-chat="person3" perfect-scrollbar>
-							
-							
-								<div class="conversation-start">
-									<span>Today, 3:38 AM</span>
-								</div>
-								<div class="bubble you">
-									Hey human!
-								</div>
-								<div class="bubble you">
-									Umm... Someone took a shit in the hallway.
-								</div>
-								<div class="bubble me">
-									... what.
-								</div>
-								<div class="bubble me">
-									Are you serious?
-								</div>
-								<div class="bubble you">
-									I mean...
-								</div>
-								<div class="bubble you">
-									It’s not that bad...
-								</div>
-								<div class="bubble you">
-									But we’re probably gonna need a new carpet.
-								</div>
-								<div class="conversation-start">
-									<span>Today, 3:38 AM</span>
-								</div>
-								<div class="bubble you">
-									Hey human!
-								</div>
-								<div class="bubble you">
-									Umm... Someone took a shit in the hallway.
-								</div>
-								<div class="bubble me">
-									... what.
-								</div>
-								<div class="bubble me">
-									Are you serious?
-								</div>
-								<div class="bubble you">
-									I mean...
-								</div>
-								<div class="bubble you">
-									It’s not that bad...
-								</div>
-								<div class="bubble you">
-									But we’re probably gonna need a new carpet.
-								</div>
-								
-								
-							</div>
-							<div class="chat" data-chat="person4" perfect-scrollbar>
-								<div class="conversation-start">
-									<span>Yesterday, 4:20 PM</span>
-								</div>
-								<div class="bubble me">
-									Hey human!
-								</div>
-								<div class="bubble me">
-									Umm... Someone took a shit in the hallway.
-								</div>
-								<div class="bubble you">
-									... what.
-								</div>
-								<div class="bubble you">
-									Are you serious?
-								</div>
-								<div class="bubble me">
-									I mean...
-								</div>
-								<div class="bubble me">
-									It’s not that bad...
-								</div>
-							</div>
-							<div class="chat" data-chat="person5">
-								<div class="conversation-start">
-									<span>Today, 6:28 AM</span>
-								</div>
-								<div class="bubble you">
-									Wasup
-								</div>
-								<div class="bubble you">
-									Wasup
-								</div>
-								<div class="bubble you">
-									Wasup for the third time like is <br />you blind bitch
-								</div>
+								<div class="write"
+									ng-init="writeInputFocused = false"
+									ng-class="{'active':writeInputFocused}"
+									>
+									<!-- <a href="javascript:;" class="write-link attach"></a> -->
+									<input type="text"
+										ng-focus="writeInputFocused=true"
+										ng-blur="writeInputFocused=false"
+										enter-press="sendMess(advert)"
+										ng-model="message['text']"
+										>
+									<!-- 
+									<a href="javascript:;" class="write-link smiley"></a> -->
+									<md-icon
+										ng-show="!messSpinner"
+										ng-click="sendMess(advert)"
+										>send</md-icon>
+									<md-icon
+										class="mess_spinner spin animated fadeIn"
+										ng-show="messSpinner"
+										>cached</md-icon>
 
-							</div>
-							<div class="chat" data-chat="person6" perfect-scrollbar>
-								<div class="conversation-start">
-									<span>Monday, 1:27 PM</span>
-								</div>
-								<div class="bubble you">
-									So, how's your new phone?
-								</div>
-								<div class="bubble you">
-									You finally have a smartphone :D
-								</div>
-								<div class="bubble me">
-									Drake?
-								</div>
-								<div class="bubble me">
-									Why aren't you answering?
-								</div>
-								<div class="bubble you">
-									howdoyoudoaspace
 								</div>
 							</div>
-							<div class="write">
-								<a href="javascript:;" class="write-link attach"></a>
-								<input type="text" />
-								<a href="javascript:;" class="write-link smiley"></a>
-								<a href="javascript:;" class="write-link send"></a>
-							</div>
+
+
 						</div>
 					</div>
 				</div>
@@ -341,119 +187,54 @@
 		</div>
 
 		
-		<div class="block current_date">
-			<div>25 Мая 2017</div>
-		</div>
 
 		
-		<div class="month_container">
+		<div class="month_container"
+			ng-repeat="advert in ADVERTS_HISTORY.data"
+			chat-messages
+			>
+
+			<div class="block current_date"
+				ng-if="showHistorySplitter($index)"
+				>
+				<div>{{advert['dateForHistorySplitter']}}</div>
+			</div>
+
 			
 			<div class="block advert_block"
-				ng-repeat="it in [1,2,3,4,5,6]"
-				ng-click="active=!active;advertHistoryClick($index,active)"
-				ng-class="{'active':active}"
+				ng-click="showAdvert=!showAdvert;advertHistoryClick()"
+				ng-class="{'active':showAdvert}"
 				>
 				<div class="date_point">
-					<div>27</div>
-					<div>Сен</div>
+					<div>{{advert['Created']|date:'dd'}}</div>
+					<div>{{advert['Created']|date:'MMM'}}</div>
 				</div>
 
 			
 				<div class="advert">
 					<div class="for_flex">
 						<div class="description_col">
-							<div class="title">Найму рабочую бригаду для строительства дома до 200 кв м</div>
-							<div class="region">Киевская область, Киев</div>
+							<div class="title">{{advert['Title']}}</div>
+							<div class="region">{{advert['Region']['name']}} {{advert['City']['name']}}</div>
 							
-							<div class="desc">
-								необходмо построить дом двух этажный из красного кирпича. Перекрытия бетонные. 10 км от Киева
-								Просьма отправлять ссылки на сделанные работы.
-
-														необходмо построить дом двух этажный из красного кирпича. Перекрытия бетонные. 10 км от Киева
-								Просьма отправлять ссылки на сделанные работы.
-
-								
-							</div>
+							<div class="desc">{{advert['Description']}}</div>
 						</div>
 						
 						<div class="price_tools_col">
-							<div class="price">900 000 грн</div>
-							<div class="price_desc">(всего)</div>
+							<div class="price">{{advert['Price']|mycurrency}} {{advert['Currency']}}</div>
+							<div class="price_desc" ng-show="advert['IsPricePerUnit']">(за {{advert['PriceUnit']}})</div>
+							<div class="price_desc" ng-show="!advert['IsPricePerUnit']">(всего)</div>
 						</div>
 					</div>
 					
 					<h4>Ваши сообщения:</h4>
-					<dynamic-chat ng-if="active"></dynamic-chat>
-
-					
+					<dynamic-chat ng-if="showAdvert"></dynamic-chat>
 					
 					
 				</div>
 
 			</div>
 
-		</div>
-		
-		<div class="block registration_date">
-			<div>01 Сентября 2017</div>
-		</div>
-			
-
-
-		<div class="month_container">
-			
-			<div class="block advert_block"
-				ng-repeat="it in [1,2,3,4,5,6]"
-				>
-				<div class="vertical_line"></div>
-
-				<div class="hor_line"></div>		
-				<div class="date_point">
-					<div class="border"></div>
-					<div>27</div>
-					<div>Сен</div>
-				</div>
-
-			
-				<div class="advert"
-					ng-class="{'active':active}"
-					ng-click="active=!active"
-					>
-					<div class="for_flex">
-						<div class="description_col">
-							<div class="title">Найму рабочую бригаду для строительства дома до 200 кв м</div>
-							<div class="region">Киевская область, Киев</div>
-							
-							<div class="desc">
-								необходмо построить дом двух этажный из красного кирпича. Перекрытия бетонные. 10 км от Киева
-								Просьма отправлять ссылки на сделанные работы.
-								
-						
-														необходмо построить дом двух этажный из красного кирпича. Перекрытия бетонные. 10 км от Киева
-								Просьма отправлять ссылки на сделанные работы.
-
-								
-							</div>
-							
-							<div class="messages">
-							</div>
-						</div>
-					
-						<div class="price_tools_col">
-							<div class="price">900 000 грн</div>
-							<div class="price_desc">(всего)</div>
-						</div>
-
-					</div>
-				
-				</div>
-
-			</div>
-
-		</div>
-
-		<div class="block registration_date">
-			<div>25 Мая 2017</div>
 		</div>
 
 			

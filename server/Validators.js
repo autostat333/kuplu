@@ -201,6 +201,21 @@ module.exports = function ObjectPrototype(regions)
 					
 				}.bind(this)
 				
+			fns['advert/message'] = function(val)
+				{
+				var errMess = "Длина текста сообщения не может превышать 200 символов!";
+				val = val||this.valueOf();
+				
+				
+				if (!val||(typeof val !='string'))
+					return errMess;
+				
+				if (val.length>200)
+					return errMess
+					
+				return true;
+					
+				}.bind(this)
 				
 				
 				

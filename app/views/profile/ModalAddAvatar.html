@@ -1,0 +1,76 @@
+<md-dialog class="modal_add_avatar custom">
+
+	<myspinner class="off" ng-class="{'on':spinner,'off':!spinner}"></myspinner>
+
+	<md-toolbar>
+		<div class="md-toolbar-tools">
+			<h2>Добавить новую аватарку</h2>
+			<md-button
+				ng-click="closeModal()"
+				><md-icon>close</md-icon></md-button>
+		</div>
+	
+	</md-toolbar>
+
+
+
+	<md-dialog-content>
+		<div class="img_container">
+		
+		
+			<div class="upload_btn">
+				<div class="btn_container">
+					<input
+						ng-model="fileName" 
+						class="absolute"
+						type="file" 
+						onchange="angular.element(this).scope().loadFile(event)"
+						placeholder=""
+						>
+					<div class="title md-button absolute">
+						<span>Загрузить из файла...</span>
+					</div>
+				</div>
+			</div>
+			
+			<div class="drag_img_place" 
+				ondrop="angular.element(this).scope().onDrop(event)" 
+				ondragover="angular.element(this).scope().onDragOver(event)"
+				ng-show="!imgSource"
+				>
+				<md-icon>crop_original</md-icon>
+				<span>Затянуть картинку</span>
+			</div>
+			
+			<div class="img_croppie"
+				ng-show="imgSource"
+				>
+				<img>
+			</div>
+			
+		</div>
+		
+	
+	</md-dialog-content>
+
+
+	<md-dialog-actions>
+		<md-button
+			class="cancel"
+			ng-click="closeModal()"
+			>
+			Отменить
+		</md-button>
+		<md-button
+			class="md-button md-raised md-primary"
+			ng-click="saveAvatar()"
+			ng-disabled="!imgSource"
+			>
+			<md-icon>cloud_upload</md-icon>
+			Сохранить
+		</md-button>
+		
+		
+	</md-dialog-actions>
+	
+</md-dialog>

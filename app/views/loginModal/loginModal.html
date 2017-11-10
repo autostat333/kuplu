@@ -1,4 +1,4 @@
-<md-dialog class="login_modal_container">
+<md-dialog class="login_modal_container custom">
 
 	<myspinner ng-class={'on':spinner,'off':spinner==false}></myspinner>
 	
@@ -129,6 +129,7 @@
 						required
 						ng-change="inputChange()"
 						min-length="5"
+						max-length="20"
 						>
 					<div class="messages" ng-messages="signupForm.visibleName.$error">
 						<div class="message" ng-message="required">Обязательное поле</div>

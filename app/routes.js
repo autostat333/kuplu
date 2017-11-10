@@ -23,7 +23,7 @@ module.exports = function($stateProvider, $urlRouterProvider,$httpProvider,$acco
 			return { 
 				template:
 					'<md-dialog'+
-					'	class="_md md-default-theme md-transition-in confirmdialog"'+
+					'	class="_md md-default-theme md-transition-in confirmdialog custom"'+
 					'	tabindex="-1"'+
 					'	role="alertdialog"'+
 					'	>'+

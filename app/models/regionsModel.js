@@ -1,4 +1,4 @@
-module.exports = function SalesModel($q,send_http)
+module.exports = function RegionsModel($q,$rootScope,send_http)
     {
 
     //must be located in require
@@ -45,3 +45,5 @@ module.exports = function SalesModel($q,send_http)
     return regions;
 
     }
+	
+module.exports.$inject = ['$q','$rootScope','send_http'];

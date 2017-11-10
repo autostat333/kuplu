@@ -32,6 +32,9 @@ angular.module('app',['ui.router','ngMaterial','ngMessages','angular-jwt','cl.pa
 	.directive('perfectScrollbar',require('./directives/perfect-scrollbar.js'))
 	.directive('dynamicChat',require('./directives/dynamic-chat.js'))
 	.directive('dynamicChatMessages',require('./directives/dynamic-chat-messages.js'))
+	.directive('maxPrice',require('./directives/max_price.js'))
+	.directive('minPrice',require('./directives/min_price.js'))
+	.directive('chatMessages',require('./directives/chat-messages.js'))
 	
 	
 	//MAIN controller + 2 views (form advert and advert list)
@@ -39,6 +42,7 @@ angular.module('app',['ui.router','ngMaterial','ngMessages','angular-jwt','cl.pa
 	.controller('advertsWrapCntr',require('./controllers/adverts/advertsWrapCntr.js'))
 	.controller('advertMainFormCntr',require('./controllers/adverts/advertMainFormCntr.js'))
 	.controller('advertListCntr',require('./controllers/adverts/advertsListCntr.js'))
+	.controller('advertModalSendMessCntr',require('./controllers/adverts/advertModalSendMess.js'))
 	
 	//login cntr (for MODAL)
 	.controller('loginCntr',require('./controllers/loginModal/loginModalCntr.js'))
@@ -51,6 +55,8 @@ angular.module('app',['ui.router','ngMaterial','ngMessages','angular-jwt','cl.pa
 	.controller('profileUserInfoCntr',require('./controllers/profile/profileUserInfoCntr.js'))
 	.controller('profileUserIntentionsCntr',require('./controllers/profile/profileUserIntentionsCntr.js'))
 	.controller('profileUserMessagesCntr',require('./controllers/profile/profileUserMessagesCntr.js'))
+	.controller('profileModalAddAvatar',require('./controllers/profile/ModalAddAvatar.js'))
+	.controller('profileModalEditAdvertCntr',require('./controllers/profile/ModalEditAdvertCntr.js'))
 	
 	
 	

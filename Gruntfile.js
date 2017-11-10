@@ -36,7 +36,8 @@ module.exports = function(grunt)
                 './bower_components/angular/angular.js',
                 //'./bower_components/jquery/dist/jquery.min.js',
 				'./bower_components/jquery/dist/jquery.js',
-                './bower_components/angular-aria/angular-aria.min.js',
+                //'./bower_components/angular-aria/angular-aria.min.js',
+				'./bower_components/angular-aria/angular-aria.js',
                 //'./bower_components/angular-animate/angular-animate.min.js',
 				'./bower_components/angular-animate/angular-animate.js',
 				'./bower_components/angular-messages/angular-messages.min.js',
@@ -49,7 +50,9 @@ module.exports = function(grunt)
 				'./bower_components/typed.js/dist/typed.min.js',
 				'./app/non_bower_libs/angular-pagination/pagination.min.js',
 				//'./app/non_bower_libs/angular-pagination/pagination.js',
-				'./node_modules/perfect-scrollbar/dist/js/perfect-scrollbar.min.js'
+				'./node_modules/perfect-scrollbar/dist/js/perfect-scrollbar.min.js',
+				'./bower_components/Croppie/croppie.min.js'
+				
 				],
             dest: './app/dist/libs_bundle.js',
             },
@@ -64,7 +67,8 @@ module.exports = function(grunt)
 				'./bower_components/angular-material/angular-material.min.css',
                 './bower_components/owl.carousel/dist/assets/owl.carousel.min.css',
                 './bower_components/owl.carousel/dist/assets/owl.theme.default.min.css',
-				'./node_modules/perfect-scrollbar/dist/css/perfect-scrollbar.min.css'
+				'./bower_components/Croppie/croppie.css',
+				'./node_modules/perfect-scrollbar/dist/css/perfect-scrollbar.css'
                 //'./app/non_bower_libs/Hover-master/css/hover-min.css',
                 //'./app/non_bower_libs/animate.css',
             ],

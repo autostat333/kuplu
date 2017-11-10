@@ -1,0 +1,91 @@
+<md-dialog class="advert_modal_mess custom">
+	<myspinner class="off" ng-class="{'on':spinner,'off':!spinner}"></myspinner>
+	<md-toolbar>
+		<div class="md-toolbar-tools">
+			<h2>Отправить отклик</h2>
+			
+			<md-button ng-click="closeModal()"><md-icon>close</md-button>
+				
+			</md-button>
+		</div>
+	
+	</md-toolbar>
+
+	<md-dialog-content>
+		
+
+		<div class="advert md-whiteframe-1dp">
+			<div class="for_flex">
+				<div class="description_col">
+					<div class="date">Опубликовано {{advert['Created']|date:'yyyy-MM-dd HH:mm'}}</div>
+					<div class="title">{{advert['Title']}}</div>
+					<div class="region">{{advert['Region']['name']}}  {{advert['City']['name']}}</div>
+					<div class="desc">{{advert['Description']}}</div>
+
+				</div>
+				
+				<div class="price_tools_col">
+					<div class="price">{{advert['Price']|mycurrency}} {{advert['Currency']}}</div>
+					<div class="price_desc" ng-show="advert['IsPricePerUnit']">(за {{advert['PriceUnit']}})</div>
+					<div class="price_desc" ng-show="!advert['IsPricePerUnit']">(всего)</div>
+				</div>
+			</div>
+			
+		</div>
+
+		<h3 class="md-headline">Напишите внизу текст сообщения для отправки автору намерения</h3>
+	
+		<form name="formMess">
+			<md-input-container>
+				<label>Текст</label>
+				<textarea
+					ng-model="message['text']"
+					rows="2"
+					md-maxlength="200"
+					required
+					name="text"
+					my-autofocus
+					></textarea>
+				<div class="messages" ng-messages="formMess.text.$error">
+					<div class="message" ng-message="md-maxlength">Максимальная длина сообщения 500 символов</div>
+					<div class="message" ng-message="required">Обязательное поля для заполнения</div>
+				</div>				
+			</md-input-container>
+
+		</form>
+		
+		
+	</md-dialog-content>
+	
+	<md-dialog-actions>
+		<md-button class="cancel"
+			ng-click="closeModal()"
+			>
+			<md-icon>close</md-icon>
+			Вернуться к списку
+		</md-button>
+
+		<md-button class="md-raised md-primary"
+			ng-click="send()"
+			>
+			<md-icon>send</md-icon>
+			Отправить
+		</md-button>
+
+		
+		
+	</md-dialog-actions>
+
+</md-dialog>
+
+
+
+
+
+
+
+
+
+
+
+

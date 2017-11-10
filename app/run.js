@@ -20,6 +20,10 @@ module.exports = function runBlock($http,$templateCache,$templateRequest,$timeou
 	$templateRequest('./views/profile/profileUserIntentions.html');
 	$templateRequest('./views/profile/profileUserMessages.html');
 	$templateRequest('./views/adverts/advertModalPreview.html');
+	$templateRequest('./views/profile/ModalAddAvatar.html');
+	$templateRequest('./views/adverts/advertModalSendMess.html');
+	$templateRequest('./views/profile/ModalEditAdvert.html');
+	
 
 
 	}

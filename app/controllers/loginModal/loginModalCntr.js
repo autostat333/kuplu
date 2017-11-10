@@ -81,31 +81,17 @@ module.exports = function loginModalCntr($scope,$account,$mdDialog)
 		$scope.spinner = true;
 		$account.login($scope.account).then(function(response)
 			{
+			$scope.spinner = false;
 			if (response.Error)
 				{
 				//for user Errors
 				if (response.userError)
 					{
 					$scope.showError = response.Error;
-					$scope.spinner = false;
-					return false;
-					}
-				else
-					{
-					//for server Errors
-					$mdDialog.show($mdDialog
-						.alert()
-						.ok('Закрыть')
-						.title('Упс,')
-						.content(response.Error)
-						.multiple(true)
-						)
-					$scope.spinner = false;
 					return false;
 					}
 				}
-			$scope.spinner = false;
-			$scope.closeModal();
+			$mdDialog.hide();
 			},function(){$scope.spinner = false;})
 			
 		}
@@ -139,25 +125,17 @@ module.exports = function loginModalCntr($scope,$account,$mdDialog)
 			if (response.Error)
 				{
 				//for user Errors
+				$scope.spinner = false;
+
 				if (response.userError)
 					{
 					$scope.showError = response.Error;
-					$scope.spinner = false;
 					return false;
 					}
-				//for server errors
-				$mdDialog.show($mdDialog
-					.alert()
-					.ok('Закрыть')
-					.title('Упс,')
-					.content(response.Error)
-					.multiple(true)
-					)
-				$scope.spinner = false;
 				return false;
 				}
 			$scope.spinner = false;
-			$scope.closeModal();
+			$mdDialog.hide();
 			},function(){$scope.spinner = false;})
 			
 		
@@ -178,7 +156,7 @@ module.exports = function loginModalCntr($scope,$account,$mdDialog)
 		
 	function closeModal()
 		{
-		$mdDialog.hide();
+		$mdDialog.cancel();
 			
 		}
 		

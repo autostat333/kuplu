@@ -39,7 +39,7 @@
 					ng-show="$root.USER"
 					>
 					<md-button class="user_btn" ng-click="open_dropdown($mdMenu,$event)">
-						<i class="material-icons">account_circle</i>
+						<img class="avatar" ng-src="{{$root.USER['avatarUrl']}}">
 						<span>{{$root.USER.visibleName}}</span>
 					</md-button>
 					<md-menu-content width="4">
@@ -57,7 +57,7 @@
 				</md-menu>
 				<md-button
 					ng-show="!$root.USER"
-					ng-click="login()"
+					ng-click="loginAndReload()"
 					>
 					<md-icon>input</md-icon>
 					<span>ВОЙТИ</span>

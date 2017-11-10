@@ -1,5 +1,4 @@
-module.exports.$inject = ['$q','$http','$mdDialog'];
-module.exports = function modelsFactory($q,$http,$mdDialog)
+module.exports = function modelsFactory($q,$http,$mdDialog,$rootScope,$filter)
     {
 
     var HOST = 'http://localhost:3008/';
@@ -33,7 +32,7 @@ module.exports = function modelsFactory($q,$http,$mdDialog)
             function(response)
             {
 			response = response.data;
-			if (response.Error)
+			if (response.Error&&!response.userError)
 				{
 				handleError(response.Error).then(function()
 					{
@@ -47,7 +46,7 @@ module.exports = function modelsFactory($q,$http,$mdDialog)
 			var msgText = errMess||err.message||'Возникла проблема получения ответа от сервера по урлу:'+url;
 			handleError(msgText).then(function()
 				{
-				defer.resolve({'Error':err.message}); //simply answer error to run logic for error
+				defer.resolve({'Error':msgText}); //simply answer error to run logic for error
 				})
             });
 
@@ -61,16 +60,18 @@ module.exports = function modelsFactory($q,$http,$mdDialog)
 		switch(model_type)
 			{
 			case 'regions':
-				return require('../models/regionsModel.js')($q,send_http);
+				return require('../models/regionsModel.js')($q,$rootScope,send_http);
 			case 'adverts':
-				return require('../models/advertsModel.js')($q,send_http);
+				return require('../models/advertsModel.js')($q,$rootScope,$filter,send_http);
 			case 'categories':
-				return require('../models/regionsModel.js')($q,send_http);
+				return require('../models/regionsModel.js')($q,$rootScope, send_http);
 			}
 			
 		
         };
 
     }
+	
+module.exports.$inject = ['$q','$http','$mdDialog','$rootScope','$filter'];
 
 

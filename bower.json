@@ -25,7 +25,8 @@
     "owl.carousel": "^2.2.1",
     "typed.js": "1.1.7",
     "angular-messages": "1.5.8",
-    "angular-jwt": "0.1.9"
+    "angular-jwt": "0.1.9",
+    "Croppie": "croppie#^2.5.0"
   },
   "resolutions": {
     "angular": "1.5.8",

@@ -1,0 +1,237 @@
+<md-dialog class="modal_edit_advert custom">
+
+	<myspinner class=off" ng-class="{'on':spinner,'off':!spinner}"></myspinner>
+
+	<md-toolbar>
+		<div class="md-toolbar-tools">
+			<h2>Редактировать намерение</h2>
+			<md-button
+				ng-click="closeModal()"
+				><md-icon>close</md-icon></md-button>
+
+		</div>
+		
+	</md-toolbar>
+
+	
+	<md-modal-content>
+		<div class="advert_edit_container">
+			<form name="advertEditForm">
+			
+				<div class="row title_container">
+			
+					<md-input-container>
+						<label>Заголовок намерения</label>
+						
+						<input
+							name="title"
+							ng-model="advert['Title']"
+							md-maxlength=70
+							min-length=10
+							required
+							>
+						
+						
+						<div class="hint" ng-show="!checkError('title')">Максимально коротко заглавие намерения</div>
+						<div ng-messages="advertEditForm['title']['$error']" class="messages">
+							<div class="message" ng-message="md-maxlength">Максимально допустимая длина заголовка - 70 символов!</div>
+							<div class="message" ng-message="required">Обязательное поле</div>
+							<div class="message" ng-message="min-length">Длина не может быть меньше 10 символов</div>
+						</div>
+						
+					</md-input-container>
+				</div>
+					
+				<div class="row regions_container">
+				
+					<!--REGION&CITY-->
+					<md-input-container>
+						<label>Регион</label>
+						<md-select
+							ng-model="selectedRegion"
+							>
+							<md-option value="">Выберите регион</md-option>
+							<md-option
+								ng-repeat="region in REGIONS.data"
+								ng-value="region"
+								>
+								{{region['name']}}
+							</md-option>
+						</md-select>
+					</md-input-container>
+					<md-input-container>
+						<label>Город:</label>
+						<md-select
+							ng-model="advert['City']"
+							>
+							<md-option value="">Выберите город</md-option>
+							<md-option
+								ng-repeat="city in selectedRegion['cities']"
+								ng-value="city"
+								>
+								{{city['name']}}
+							</md-option>
+						</md-select>
+					</md-input-container>				
+				
+
+				</div>
+				
+				<div class="row street_container">
+					<md-input-container>
+						<label>Улица</label>
+						<input
+							ng-model="advert['Street']"
+							name="street"
+							md-maxlength=30
+							min-length=5
+							min-length-not-required
+							>
+					
+					
+						<div class="hint" ng-show="!checkError('street')">Можете указать Вашу улицу для большей детализации</div>
+						<div class="messages" ng-messages="advertEditForm['street']['$error']">
+							<div class="message" ng-message="md-maxlength">Длина улицы не может превышать 30 символов</div>
+							<div class="message" ng-message="min-length">Длина улицы не может быть меньше 5 символов</div>
+						</div>
+						
+					</md-input-container>
+					
+					
+					
+				</div>
+				
+				
+				<div class="row description_container">
+					<!--PRICE-->
+					
+					<md-input-container>
+						<label>Детальное описание:</label>
+						<textarea
+							ng-model="advert['Description']"
+							rows="3"
+							min-length=20
+							md-maxlength=200
+							name="description"
+							min-length-not-required
+							>
+						
+						</textarea>
+						
+						<div class="hint" ng-show="!checkError('description')">Можете указать как можно детальней ваши пожелания (ценовые, критерии и т.д.)</div>
+							
+						<div class="messages" ng-messages="advertEditForm['description']['$error']">
+							<div class="message" ng-message="md-maxlength">Длина не может превышать 200 символов</div>
+							<div class="message" ng-message="min-length">Длина не может быть меньше 20 символов</div>
+						
+						</div>
+					
+					</md-input-container>
+				</div>
+				
+				<div class="row price_container">
+					<md-input-container>
+					
+						<label>Цена:</label>
+					
+						<div class="currency_tmblr"
+							ng-show="advert['Price']"
+							>
+							<md-tooltip md-direction="top" md-delay=400>Выбрать валюту</md-tooltip>
+							<div							
+								ng-class="{'active':advert['Currency']==' грн'}"
+								ng-click="advert['Currency']=' грн'"
+								> грн
+							</div>
+							<div
+								ng-click="advert['Currency']='$'"
+								ng-class="{'active':advert['Currency']=='$'}"
+								>$
+							</div>
+
+						</div>
+
+
+						<input
+							ng-model="advert['Price']"
+							name="price"
+							required
+							max-price=1000000000
+							min-price=1
+							ng-model-options="{'allowInvalid':true}"
+							
+							currency-mask="{{advert['Currency']}}"
+							>
+
+						<div class="hint" ng-show="!checkError('price')">Всего или за ед.</div>							
+						
+						<div class="tmblr_container">
+							<span class="price_tmblr"
+								ng-class="{'active':!advert['IsPricePerUnit']}"
+								ng-click="advert['IsPricePerUnit']=false;"
+								>Всего</span>
+							<span class="price_tmblr"
+								ng-class="{'active':advert['IsPricePerUnit']}"
+								ng-click="advert['IsPricePerUnit']=true;autofocus('[name=priceUnit]')"
+								>за ед.</span>
+						</div>
+						
+						<div class='messages' ng-messages="advertEditForm.price.$error">
+							<div class="message" ng-message="required">Обязательное поле</div>
+							<div class="message" ng-message="max-price">Макс. значение 10 млн </div>
+							<div class="message" ng-message="min-price">Мин. значение 0,01 </div>
+						</div>
+							
+					</md-input-container>
+					
+					
+					<md-input-container
+						class="unit_container"
+						ng-show="advert['IsPricePerUnit']"
+						>
+						<label>Единица:</label>
+						
+						<input
+							ng-model="advert['PriceUnit']"
+							name="priceUnit"
+							md-maxlength=10
+							>
+						<div class="hint">кг, шт....</div>
+						
+						<div class="messages" ng-messages="advertEditForm.priceUnit.$error">
+							<div class="message" ng-message="md-maxlength">Макс. 10 символов</div>
+						</div>
+						
+					</md-input-container>
+					
+				
+				</div>
+				
+				
+
+				
+				
+			</form>
+		
+		</div>
+	
+	</md-modal-content>
+	
+	
+	<md-dialog-actions>
+		<md-button class="md-button cancel"
+			ng-click="closeModal()"
+			>
+			Вернуться
+		</md-button>
+		
+		<md-button class="md-button md-raised md-primary"
+			ng-click="updateAdvert()"
+			ng-disabled="advertEditForm.$invalid||equals()"
+			>
+			Сохранить
+		</md-button>
+	</md-dialog-actions>
+	
+
+</md-dialog>

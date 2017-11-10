@@ -86,6 +86,16 @@
 			margin-top:10px !important;
 			}
 			
+			
+		.your_intention
+			{
+			color: #964f8f;
+			}
+		.clicked_by_you
+			{
+			color: #e86445;
+			}
+			
 		}
 	
 	}
@@ -100,9 +110,10 @@
 	
 //@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600);
 	
-.container *, .container *:before, .container *:after {
-  box-sizing: border-box;
-}
+.container *, .container *:before, .container *:after 
+	{
+	box-sizing: border-box;
+	}
 
 .container_ span,p 
 	{
@@ -124,6 +135,9 @@
 	
 	}
 
+	
+
+	
 .chat_container {
   position: relative;
   width:100%;
@@ -322,15 +336,31 @@
   font-family: 'Source Sans Pro', sans-serif;
   font-weight: 600;
 }
+
+
+.container_ .right .description_chat
+	{
+	padding: 10px;
+    font-size: 14px;
+    background: #eeeeee;
+	}
+
+
+.container_ .right .wrap
+	{
+	height: calc(100% - 48px);
+	}
+
 .container_ .right .chat {
   position: relative;
-  display: none;
+  //display: none;
   overflow: hidden;
   padding: 0 35px 92px;
   border-width: 1px 1px 1px 0;
   border-style: solid;
   border-color: #e6e6e6;
-  height: calc(100% - 48px);
+  height:100%;
+  //height: calc(100% - 48px);
   -webkit-box-pack: end;
       -ms-flex-pack: end;
           //justify-content: flex-end;
@@ -416,17 +446,54 @@
   background-color: #eceff1;
   width: calc(100% - 58px);
   border-radius: 5px;
+  transition:all linear 0.3s;
+  
+  
+  md-icon
+	{
+	cursor:pointer;
+	display:block;
+	margin-top:7px;
+	margin-left:auto;
+	margin-right:0px;
+	}
+
+	.mess_spinner.spin.ng-hide-add
+		{
+		display:none;
+		}
+
+
+	
 }
+.container_ .right .write.active
+	{
+	background:white;
+	md-icon
+		{
+		color:gray !important
+		}
+		
+	input
+		{
+		color:gray;
+		}
+		
+		
+	}
+	
 .container_ .right .write input {
   font-size: 16px;
   float: left;
-  width: 347px;
+  //width: 347px;
+  width:calc(100% - 40px);
   height: 40px;
   padding: 0 10px;
   color: #1a1a1a;
   border: 0;
   outline: none;
-  background-color: #eceff1;
+  //background-color: #eceff1;
+  background-color:transparent;
   font-family: 'Source Sans Pro', sans-serif;
   font-weight: 400;
 }
@@ -470,6 +537,7 @@
   padding: 13px 14px;
   vertical-align: top;
   border-radius: 5px;
+  max-width:calc(100% - 20px);
 }
 .container_ .right .bubble:before {
   position: absolute;

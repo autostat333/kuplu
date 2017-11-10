@@ -10,9 +10,9 @@ module.exports = function minLengthDirective()
 			//but I can allow nohting for input
 			var notRequired = attrs['minLengthNotRequired']; 
 			
+			
 			ngModel.$validators['min-length'] = function(val)
 				{	
-				
 				if (typeof val=='string'&&val.length<attrs['minLength'])
 					if ((notRequired==''||notRequired==true)&&val.length==0)
 						return true;

@@ -1,4 +1,4 @@
-module.exports = function AdvertsCntr($scope,$models, $mdDialog)
+module.exports = function AdvertsCntr($scope,$models, $mdDialog,$rootScope)
     {
 
     $scope.init = init;
@@ -6,6 +6,7 @@ module.exports = function AdvertsCntr($scope,$models, $mdDialog)
 	$scope.initSortingParams = initSortingParams;
 	$scope.applyParams = applyParams;
 	$scope.paramsIsEqual = paramsIsEqual;
+	$scope.sendMessage = sendMessage;
 	
 	$scope.initPaginationParams = initPaginationParams;
 	//pagination initializing in advertsWrapCntr 
@@ -75,10 +76,45 @@ module.exports = function AdvertsCntr($scope,$models, $mdDialog)
 		if ($scope.pageCurrent!=1)
 			$scope.pageCurrent = 1;
 		else
-			watcherPagination('force');
+			watcherPagination('force'); //to enforce getting adverts
 
 			
 		}
+	
+	
+	function sendMessage(advert)
+		{
+			
+		if (!$rootScope.USER)
+			{
+			$scope.login().then(function()
+				{
+				window.location.reload();
+				});
+				
+			return false;
+			}
+			
+			
+		openModal();
+			
+		function openModal()
+			{
+			return $mdDialog.show({
+				templateUrl:'./views/adverts/advertModalSendMess.html',
+				controller:'advertModalSendMessCntr',
+				muplitple:true,
+				escapeToClose:true,
+				scope:$scope.$new(),
+				clickOutsideToClose:true,
+				locals:{'advert':advert}
+				})
+				
+			}
+		
+		
+		}
+	
 	
 
 	function watcherSorting(newVal,oldVal)
@@ -107,6 +143,7 @@ module.exports = function AdvertsCntr($scope,$models, $mdDialog)
 		$scope.PARAMS['pagination']['skip'] = PAGINATION_LIMIT*($scope.pageCurrent-1);
 		$scope.PARAMS['pagination']['limit'] = PAGINATION_LIMIT;
 
+		$scope.spinner = true;
 		$scope.ADVERTS.$get($scope.PARAMS).then(function(response)
 			{
 			$scope.spinner = false;
@@ -137,4 +174,4 @@ module.exports = function AdvertsCntr($scope,$models, $mdDialog)
 	
     }
 
-module.exports.$inject = ['$scope','$models','$mdDialog'];
+module.exports.$inject = ['$scope','$models','$mdDialog','$rootScope'];

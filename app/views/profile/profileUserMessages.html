@@ -11,8 +11,10 @@
 		<div class="container_">
 			<div class="left"  perfect-scrollbar>
 				<ul class="people">
-					<li class="person" data-chat="person1"
-						ng-click="personClick_top('person1','Thomas Bangalter')"
+					<li class="person" 
+						ng-repeat="advert in ADVERTS.data"
+						ng-click="pickAdvert(advert)"
+						ng-class="{'active':advert['isVisible']}"
 						>
 						
 						<div class="advert">
@@ -20,222 +22,83 @@
 							<div class="advert">
 								<div class="for_flex">
 									<div class="avatar">
-										<img src="https://s3.postimg.org/yf86x7z1r/img2.jpg" alt="" />
-										<div class="user_name">Thomas Bandler</div>
+										<img ng-src="{{advert['OwnerObj']['avatarUrl']}}">
+										<div class="user_name">{{advert['OwnerObj']['visibleName']}}</div>
 									</div>
 								
 									<div class="description_col">
-										<div class="title">Найму рабочую бригаду для строительства дома до 200 кв м</div>
-										<div class="region">Киевская область</div>
-										<div class="desc">
-											необходмо построить дом двух этажный из красного кирпича. Перекрытия бетонные. 10 км от Киева
-											Просьма отправлять ссылки на сделанные работы.
-
-																	необходмо построить дом двух этажный из красного кирпича. Перекрытия бетонные. 10 км от Киева
-											Просьма отправлять ссылки на сделанные работы.
-
-											
-										</div>
+										<div class="title">{{advert['Title']}}</div>
+										<div class="region">{{advert['Region']['name']+' '+advert['City']['name']}} </div>
 									</div>
-									
+
+
 									<div class="price_tools_col">
-										<div class="price">900 000 грн</div>
-										<div class="price_desc">(всего)</div>
+										<div class="price">{{advert['Price']|mycurrency}} {{advert['Currency']}}</div>
+										<div class="price_desc" ng-show="advert['IsPricePerUnit']">(за {{advert['PriceUnit']}})</div>
+										<div class="price_desc" ng-show="!advert['IsPricePerUnit']">(всего)</div>
 									</div>
+
 								</div>
 							</div>
 						</div>
 						
 					</li>
-					
-					<li class="person" data-chat="person2"
-						ng-click="personClick_top('person2','Thomas Bangalter')"
-						>
-						
-						<div class="advert">
-									
-							<div class="advert">
-								<div class="for_flex">
-									<div class="avatar">
-										<img src="https://s3.postimg.org/h9q4sm433/img3.jpg" alt="" />
-										<div class="user_name">Thomas Bandler</div>
-									</div>
-								
-									<div class="description_col">
-										<div class="title">Найму рабочую бригаду для строительства дома до 200 кв м</div>
-										<div class="region">Киевская область</div>
-										<div class="desc">
-											необходмо построить дом двух этажный из красного кирпича. Перекрытия бетонные. 10 км от Киева
-											Просьма отправлять ссылки на сделанные работы.
-
-																	необходмо построить дом двух этажный из красного кирпича. Перекрытия бетонные. 10 км от Киева
-											Просьма отправлять ссылки на сделанные работы.
-
-											
-										</div>
-									</div>
-									
-									<div class="price_tools_col">
-										<div class="price">900 000 грн</div>
-										<div class="price_desc">(всего)</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						
-					</li>
-
-					<li class="person" data-chat="person3"
-						ng-click="personClick_top('person3','Thomas Bangalter')"
-						>
-						
-						<div class="advert">
-									
-							<div class="advert">
-								<div class="for_flex">
-									<div class="avatar">
-										<img src="https://s30.postimg.org/kwi7e42rh/img6.jpg" alt="" />
-										<div class="user_name">Thomas Bandler</div>
-									</div>
-								
-									<div class="description_col">
-										<div class="title">Найму рабочую бригаду для строительства дома до 200 кв м</div>
-										<div class="region">Киевская область</div>
-										<div class="desc">
-											необходмо построить дом двух этажный из красного кирпича. Перекрытия бетонные. 10 км от Киева
-											Просьма отправлять ссылки на сделанные работы.
-
-																	необходмо построить дом двух этажный из красного кирпича. Перекрытия бетонные. 10 км от Киева
-											Просьма отправлять ссылки на сделанные работы.
-
-											
-										</div>
-									</div>
-									
-									<div class="price_tools_col">
-										<div class="price">900 000 грн</div>
-										<div class="price_desc">(всего)</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						
-					</li>
-					
 				</ul>
 			</div>
 			
-			<div class="right">
-				<div class="top"><span>To: <span class="name">Dog Woofson</span></span>
-				
-				
+			<div class="right"
+				ng-repeat="advert in ADVERTS.data"
+				ng-if="advert['isVisible']"
+				>
+				<div class="description_chat">{{advert['Description']}}</div>
+			
+				<!--
+				<div class="top"><span>To: <span class="name">{{advert['OwnerObj']['visibleName']}}</span></span>
 				</div>
+				-->
 				
 				
-				<div class="chat" data-chat="person1" perfect-scrollbar>
-				
+				<div class="chat active-chat" perfect-scrollbar>
 				
 					<div class="conversation-start">
 						<span>Today, 6:48 AM</span>
 					</div>
-					<div class="bubble you">
-						Hello,
-					</div>
-					<div class="bubble you">
-						it's me.
-					</div>
-					<div class="bubble you">
-						I was wondering...
-					</div>
 					
-				</div>
-				<div class="chat" data-chat="person2" perfect-scrollbar>
-					<div class="conversation-start">
-						<span>Today, 5:38 PM</span>
+					<div class="bubble you"
+						ng-repeat="message in advert['Messages'][$root.USER._id]"
+						ng-class="{'you':$root.USER._id==message['from'],'me':$root.USER._id==message['to']}"
+						>
+						{{message['text']}}
 					</div>
-					<div class="bubble you">
-						Hello, can you hear me?
-					</div>
-					<div class="bubble you">
-						I'm in California dreaming
-					</div>
-					<div class="bubble me">
-						... about who we used to be.
-					</div>
-					<div class="bubble me">
-						Are you serious?
-					</div>
-					<div class="bubble you">
-						When we were younger and free...
-					</div>
-					<div class="bubble you">
-						I've forgotten how it felt before
-					</div>
-				</div>
-				
-				
-				
-				<div class="chat" data-chat="person3" perfect-scrollbar>
-				
-				
-					<div class="conversation-start">
-						<span>Today, 3:38 AM</span>
-					</div>
-					<div class="bubble you">
-						Hey human!
-					</div>
-					<div class="bubble you">
-						Umm... Someone took a shit in the hallway.
-					</div>
-					<div class="bubble me">
-						... what.
-					</div>
-					<div class="bubble me">
-						Are you serious?
-					</div>
-					<div class="bubble you">
-						I mean...
-					</div>
-					<div class="bubble you">
-						It’s not that bad...
-					</div>
-					<div class="bubble you">
-						But we’re probably gonna need a new carpet.
-					</div>
-					<div class="conversation-start">
-						<span>Today, 3:38 AM</span>
-					</div>
-					<div class="bubble you">
-						Hey human!
-					</div>
-					<div class="bubble you">
-						Umm... Someone took a shit in the hallway.
-					</div>
-					<div class="bubble me">
-						... what.
-					</div>
-					<div class="bubble me">
-						Are you serious?
-					</div>
-					<div class="bubble you">
-						I mean...
-					</div>
-					<div class="bubble you">
-						It’s not that bad...
-					</div>
-					<div class="bubble you">
-						But we’re probably gonna need a new carpet.
-					</div>
-					
 					
 				</div>
 			
-				<div class="write">
-					<a href="javascript:;" class="write-link attach"></a>
-					<input type="text" />
-					<a href="javascript:;" class="write-link smiley"></a>
-					<a href="javascript:;" class="write-link send"></a>
+				<div class="write"
+					ng-init="writeInputFocused = false;"
+					ng-class="{'active':writeInputFocused}"
+					>
+					<!-- <a href="javascript:;" class="write-link attach"></a> -->
+					<input type="text"
+						ng-focus="writeInputFocused=true"
+						ng-blur="writeInputFocused=false"
+						enter-press="sendMess(advert)"
+						ng-model="message['text']"
+						>
+					<!-- 
+					<a href="javascript:;" class="write-link smiley"></a> -->
+					<md-icon
+						ng-show="!$parent.$parent.messSpinner"
+						ng-click="sendMess(advert)"
+						>send</md-icon>
+					<md-icon
+						class="mess_spinner spin animated fadeIn"
+						ng-show="$parent.$parent.messSpinner"
+						>cached</md-icon>
+
 				</div>
+
+
+
 			</div>
 		</div>
 	</div>
@@ -250,122 +113,60 @@
 	
 	<div class="timeline_container">
 	
-		<div class="block current_date">
-			<div>25 Мая 2017</div>
-		</div>
+	
+		<div class="timesplitter"
+			ng-repeat="advert in ADVERTS_HISTORY.data"
+			>
+			<div class="block current_date"
+				ng-show="showHistorySplitter($index)"
+				>
+				<div>{{advert['dateForHistorySplitter']}}</div>
+			</div>
 
 		
-		<div class="month_container">
-			
 			<div class="block advert_block"
-				ng-repeat="it in [1,2,3,4,5,6]"
-				ng-click="active=!active;advertHistoryClick($index,active)"
-				ng-class="{'active':active}"
+				ng-class="{'active':advert['isVisible']}"
+				ng-click="advert['isVisible']=!advert['isVisible']"
 				>
 				<div class="date_point">
-					<div>27</div>
-					<div>Сен</div>
+					<div>{{advert['Created']|date:'dd'}}</div>
+					<div>{{advert['Created']|date:'MMM'}}</div>
 					<div class="avatar">
-						<img src="https://s30.postimg.org/kwi7e42rh/img6.jpg" alt="" />
-						<div class="name">Silvester Stalone</div>
+						<img ng-src="{{advert['OwnerObj']['avatarUrl']}}" alt="" />
+						<div class="name">{{advert['OwnerObj']['visibleName']}}</div>
 					</div>
 				</div>
 
 			
-				<div class="advert">
+				<div class="advert with_user">
 					<div class="for_flex">
 						<div class="description_col">
-							<div class="title">Найму рабочую бригаду для строительства дома до 200 кв м</div>
-							<div class="region">Киевская область, Киев</div>
+							<div class="title">{{advert['Title']}}</div>
+							<div class="region">{{advert['Region']['name']+' '+advert['City']['name']}}</div>
 							
 							<div class="desc">
-								необходмо построить дом двух этажный из красного кирпича. Перекрытия бетонные. 10 км от Киева
-								Просьма отправлять ссылки на сделанные работы.
-
-														необходмо построить дом двух этажный из красного кирпича. Перекрытия бетонные. 10 км от Киева
-								Просьма отправлять ссылки на сделанные работы.
-
-								
+								{{advert['Description']}}
 							</div>
 						</div>
 						
 						<div class="price_tools_col">
-							<div class="price">900 000 грн</div>
-							<div class="price_desc">(всего)</div>
+							<div class="price">{{advert['Price']|mycurrency}} {{advert['Currency']}}</div>
+							<div class="price_desc" ng-show="advert['IsPricePerUnit']">(за {{advert['PriceUnit']}})</div>
+							<div class="price_desc" ng-show="!advert['IsPricePerUnit']">(всего)</div>
 						</div>
+
 					</div>
 					
 					<h4>Ваши сообщения:</h4>
-					<dynamic-chat-messages ng-if="active"></dynamic-chat-messages>
+					<dynamic-chat-messages ng-if="advert['isVisible']"></dynamic-chat-messages>
 
-					
-					
-					
-				</div>
-
-			</div>
-
-		</div>
-		
-		<div class="block registration_date">
-			<div>01 Сентября 2017</div>
-		</div>
-			
-
-
-		<div class="month_container">
-			
-			<div class="block advert_block"
-				ng-repeat="it in [1,2,3,4,5,6]"
-				>
-				<div class="date_point">
-					<div class="border"></div>
-					<div>27</div>
-					<div>Сен</div>
-				</div>
-
-			
-				<div class="advert"
-					ng-class="{'active':active}"
-					ng-click="active=!active"
-					>
-					<div class="for_flex">
-						<div class="description_col">
-							<div class="title">Найму рабочую бригаду для строительства дома до 200 кв м</div>
-							<div class="region">Киевская область, Киев</div>
-							
-							<div class="desc">
-								необходмо построить дом двух этажный из красного кирпича. Перекрытия бетонные. 10 км от Киева
-								Просьма отправлять ссылки на сделанные работы.
-								
 						
-														необходмо построить дом двух этажный из красного кирпича. Перекрытия бетонные. 10 км от Киева
-								Просьма отправлять ссылки на сделанные работы.
-
-								
-							</div>
-							
-							<div class="messages">
-							</div>
-						</div>
-					
-						<div class="price_tools_col">
-							<div class="price">900 000 грн</div>
-							<div class="price_desc">(всего)</div>
-						</div>
-
-					</div>
-				
 				</div>
 
 			</div>
 
 		</div>
-
-		<div class="block registration_date">
-			<div>25 Мая 2017</div>
-		</div>
-
+			
 			
 	</div>
 

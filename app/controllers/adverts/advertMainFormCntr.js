@@ -130,7 +130,7 @@ module.exports = function AdvertMainFormCntr($scope,$filter,$timeout,$models,$md
 			controller:'advertModalPreviewCntr',
 			scope:$scope.$new(),
 			clickOutsideToClose:true,
-			scapeToClose:true,
+			escapeToClose:true,
 			multiple:true,
 			})
 			

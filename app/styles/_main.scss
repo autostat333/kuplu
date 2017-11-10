@@ -174,6 +174,7 @@
 					text-overflow: ellipsis;
 					overflow: hidden;
 					white-space: nowrap;
+					margin-left:7px;
 					}
 				i
 					{
@@ -181,7 +182,12 @@
 					vertical-align:middle;
 					}
 				}
-
+			img.avatar
+				{
+				height: 40px;
+				vertical-align: middle;
+				border-radius: 50%;
+				}
 
 			}
 
